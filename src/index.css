@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Optional: base font + container padding so 무스타일처럼 보이지 않도록 */
+html, body, #root { height: 100%; }
+body { @apply antialiased bg-white text-gray-900; }
+.container { @apply mx-auto max-w-5xl px-4; }

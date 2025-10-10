@@ -1,0 +1,167 @@
+export type Perfume = {
+  id: number;
+  name: string;
+  brand: string;
+  family: string; // fragrance family
+  top: string[];
+  heart: string[];
+  base: string[];
+  image?: string; // path from /public (e.g., "/images/xxx.jpg")
+};
+
+export const perfumes: Perfume[] = [
+  {
+    id: 1,
+    name: "Rainy Walk",
+    brand: "AromaLab",
+    family: "Fresh",
+    top: ["Bergamot", "Green Leaves"],
+    heart: ["Lily of the Valley", "Violet"],
+    base: ["Musk"],
+    image: "/images/rainy.jpg",
+  },
+  {
+    id: 2,
+    name: "Sunlit Cedar",
+    brand: "Northwood",
+    family: "Woody",
+    top: ["Grapefruit"],
+    heart: ["Cedar", "Vetiver"],
+    base: ["Amber", "Moss"],
+    image: "/images/cedar.jpg",
+  },
+  {
+    id: 3,
+    name: "Cotton Haze",
+    brand: "Soft Co.",
+    family: "Musk",
+    top: ["Aldehydes"],
+    heart: ["Iris"],
+    base: ["White Musk", "Vanilla"],
+    image: "/images/cotton.jpg",
+  },
+  {
+    id: 4,
+    name: "Blooming Tea",
+    brand: "Teaflor",
+    family: "Floral",
+    top: ["Lemon", "Tea"],
+    heart: ["Jasmine", "Peony"],
+    base: ["Mate"],
+    image: "/images/tea.jpg",
+  },
+  {
+    id: 5,
+    name: "Evening Fig",
+    brand: "Maison Feeg",
+    family: "Fruity",
+    top: ["Fig Leaf"],
+    heart: ["Fig", "Coconut"],
+    base: ["Tonka"],
+    image: "/images/fig.jpg",
+  },
+  {
+    id: 6,
+    name: "Amber Night",
+    brand: "Nocturne",
+    family: "Amber",
+    top: ["Pink Pepper"],
+    heart: ["Labdanum"],
+    base: ["Amber", "Vanilla"],
+    image: "/images/amber.jpg",
+  },
+  {
+    id: 7,
+    name: "Sea Salt Air",
+    brand: "Coast",
+    family: "Aquatic",
+    top: ["Sea Salt"],
+    heart: ["Driftwood"],
+    base: ["Musk"],
+    image: "/images/sea.jpg",
+  },
+  {
+    id: 8,
+    name: "Matcha Whisper",
+    brand: "Leafy",
+    family: "Green",
+    top: ["Matcha", "Mandarin"],
+    heart: ["Jasmine"],
+    base: ["Musk"],
+    image: "/images/matcha.jpg",
+  },
+  {
+    id: 9,
+    name: "Citrus Muse",
+    brand: "Canto",
+    family: "Citrus",
+    top: ["Orange", "Lemon", "Lime"],
+    heart: ["Neroli"],
+    base: ["Cedar"],
+    image: "/images/citrus.jpg",
+  },
+  {
+    id: 10,
+    name: "Rose Sable",
+    brand: "Atelier Rosé",
+    family: "Floral",
+    top: ["Raspberry"],
+    heart: ["Rose"],
+    base: ["Patchouli"],
+    image: "/images/rose.jpg",
+  },
+  {
+    id: 11,
+    name: "Sandal Cloud",
+    brand: "Calm",
+    family: "Woody",
+    top: ["Cardamom"],
+    heart: ["Sandalwood"],
+    base: ["Musk", "Amber"],
+    image: "/images/sandal.jpg",
+  },
+  {
+    id: 12,
+    name: "Lavender Field",
+    brand: "Provence Co.",
+    family: "Aromatic",
+    top: ["Bergamot"],
+    heart: ["Lavender"],
+    base: ["Tonka", "Cedar"],
+    image: "/images/lavender.jpg",
+  },
+  {
+    id: 13,
+    name: "Spice Route",
+    brand: "Voyager",
+    family: "Spicy",
+    top: ["Cinnamon"],
+    heart: ["Clove"],
+    base: ["Vanilla"],
+    image: "/images/spice.jpg",
+  },
+  {
+    id: 14,
+    name: "Coffee Bloom",
+    brand: "Roastery",
+    family: "Gourmand",
+    top: ["Coffee"],
+    heart: ["Caramel"],
+    base: ["Vanilla", "Patchouli"],
+    image: "/images/coffee.jpg",
+  },
+  {
+    id: 15,
+    name: "Morning Herb",
+    brand: "Herbory",
+    family: "Herbal",
+    top: ["Basil"],
+    heart: ["Thyme", "Rosemary"],
+    base: ["Moss"],
+    image: "/images/herb.jpg",
+  },
+];
+
+export function getPerfumeById(id: number): Perfume | undefined {
+  return perfumes.find((p) => p.id === id);
+}
