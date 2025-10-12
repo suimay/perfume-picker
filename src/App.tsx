@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, ReactNode } from "react";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer"; // Footer 추가
 
+// 페이지 컴포넌트 임포트
 import { Home } from "./pages/Home";
 import { Preferences } from "./pages/Preferences";
 import { Results } from "./pages/Results";
@@ -10,9 +12,6 @@ import { Login } from "./pages/Login";
 import { Signup } from "./pages/Signup";
 import { MyPage } from "./pages/MyPage";
 import AllPerfumes from "./pages/AllPerfumes";
-
-import Header from "./components/Header";
-import Footer from "./components/Footer";
 
 type Page =
   | "home"
@@ -24,12 +23,39 @@ type Page =
   | "all-perfumes"
   | string;
 
+// Layout 헬퍼 함수 정의: 모든 페이지를 Navbar와 Footer로 감쌉니다.
+const Layout = ({
+  children,
+  onNavigate,
+  user,
+  onLogout,
+  currentPage,
+}: {
+  children: ReactNode;
+  onNavigate: (page: Page) => void;
+  user: any;
+  onLogout: () => Promise<void> | void;
+  currentPage: Page;
+}) => (
+  <div className="flex flex-col min-h-screen">
+    {/* Navbar에 현재 페이지 정보를 전달하여 활성 메뉴를 표시 */}
+    <Navbar
+      onNavigate={onNavigate}
+      user={user}
+      onLogout={onLogout}
+      currentPage={currentPage}
+    />
+    <main className="flex-1">{children}</main>
+    <Footer />
+  </div>
+);
+
 function AppContent() {
   const { user, signOut } = useAuth();
   const [currentPage, setCurrentPage] = useState<Page>("home");
   const [preferences, setPreferences] = useState<any>(null);
 
-  /** 중앙 네비게이터: perfume-<id>로 오면 id를 localStorage에도 저장(상세 폴백용) */
+  /** 중앙 네비게이터 */
   const navigate = (page: Page, opts?: { prefs?: any }) => {
     if (opts?.prefs) setPreferences(opts.prefs);
 
@@ -47,152 +73,54 @@ function AppContent() {
 
     setCurrentPage(page);
   };
-  function App() {
-    const [currentPage, setCurrentPage] = useState("home");
-    const navigate = (page: string) => setCurrentPage(page);
 
-    return (
-      <div className="flex flex-col min-h-screen">
-        <Header onNavigate={navigate} />
+  const commonProps = {
+    onNavigate: navigate,
+    user: user,
+    onLogout: signOut,
+    currentPage: currentPage,
+  };
 
-        <main className="flex-1">
-          {currentPage === "home" && <div>홈 페이지</div>}
-          {currentPage === "all-perfumes" && (
-            <AllPerfumes onNavigate={navigate} />
-          )}
-          {currentPage.startsWith("perfume-") && (
-            <PerfumeDetail
-              id={Number(currentPage.replace("perfume-", ""))}
-              onNavigate={navigate}
-            />
-          )}
-          {/* 기타 페이지들 */}
-        </main>
+  let pageContent: ReactNode;
 
-        <Footer />
+  // 페이지 분기 처리
+  if (typeof currentPage === "string" && currentPage.startsWith("perfume-")) {
+    const idStr = currentPage.replace("perfume-", "").trim();
+    const perfumeId = Number(idStr);
+    pageContent = <PerfumeDetail id={perfumeId} onNavigate={navigate} />;
+  } else if (currentPage === "auth") {
+    pageContent = (
+      <div className="py-16">
+        <Login
+          onSuccess={() => navigate("home")}
+          onToggleMode={() => setCurrentPage("signup")}
+        />
       </div>
     );
-  }
-
-  // 상세 페이지 분기 (perfume-<id> 형태를 prop으로 전달)
-  if (typeof currentPage === "string" && currentPage.startsWith("perfume-")) {
-    const perfumeId = currentPage.replace("perfume-", "").trim();
-    return (
-      <>
-        <Navbar
-          onNavigate={navigate}
-          user={user}
-          currentPage={currentPage}
-          onLogout={signOut}
-        />
-        <PerfumeDetail perfumeId={perfumeId} onNavigate={navigate} />
-      </>
-    );
-  }
-
-  if (currentPage === "auth") {
-    return (
-      <>
-        <Navbar
-          onNavigate={navigate}
-          user={user}
-          currentPage={currentPage}
-          onLogout={signOut}
-        />
-        <Login
-          onNavigate={navigate}
-          onLogin={() => navigate("home")}
-          onSwitch={() => setCurrentPage("signup")}
-        />
-      </>
-    );
-  }
-
-  if (currentPage === "signup") {
-    return (
-      <>
-        <Navbar
-          onNavigate={navigate}
-          user={user}
-          currentPage={currentPage}
-          onLogout={signOut}
-        />
+  } else if (currentPage === "signup") {
+    pageContent = (
+      <div className="py-16">
         <Signup
-          onNavigate={navigate}
-          onSignup={() => navigate("home")}
-          onSwitch={() => setCurrentPage("auth")}
+          onSuccess={() => navigate("home")}
+          onToggleMode={() => setCurrentPage("auth")}
         />
-      </>
+      </div>
     );
+  } else if (currentPage === "mypage") {
+    pageContent = <MyPage onNavigate={navigate} user={user} />;
+  } else if (currentPage === "all-perfumes") {
+    pageContent = <AllPerfumes onNavigate={navigate} />;
+  } else if (currentPage === "preferences") {
+    pageContent = <Preferences onNavigate={navigate} />;
+  } else if (currentPage === "results") {
+    pageContent = <Results preferences={preferences} onNavigate={navigate} />;
+  }
+  // 홈 페이지 (기본값)
+  else {
+    pageContent = <Home onNavigate={navigate} user={user} />;
   }
 
-  if (currentPage === "mypage") {
-    return (
-      <>
-        <Navbar
-          onNavigate={navigate}
-          user={user}
-          currentPage={currentPage}
-          onLogout={signOut}
-        />
-        <MyPage onNavigate={navigate} user={user} />
-      </>
-    );
-  }
-
-  if (currentPage === "all-perfumes") {
-    return (
-      <>
-        <Navbar
-          onNavigate={navigate}
-          user={user}
-          currentPage={currentPage}
-          onLogout={signOut}
-        />
-        <AllPerfumes onNavigate={navigate} />
-      </>
-    );
-  }
-
-  if (currentPage === "preferences") {
-    return (
-      <>
-        <Navbar
-          onNavigate={navigate}
-          user={user}
-          currentPage={currentPage}
-          onLogout={signOut}
-        />
-        <Preferences onNavigate={navigate} />
-      </>
-    );
-  }
-
-  if (currentPage === "results") {
-    return (
-      <>
-        <Navbar
-          onNavigate={navigate}
-          user={user}
-          currentPage={currentPage}
-          onLogout={signOut}
-        />
-        <Results preferences={preferences} onNavigate={navigate} />
-      </>
-    );
-  }
-
-  return (
-    <>
-      <Navbar
-        onNavigate={navigate}
-        user={user}
-        currentPage={currentPage}
-        onLogout={signOut}
-      />
-      <Home onNavigate={navigate} user={user} />
-    </>
-  );
+  return <Layout {...commonProps}>{pageContent}</Layout>;
 }
 
 export default function App() {

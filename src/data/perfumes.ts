@@ -6,7 +6,24 @@ export type Perfume = {
   top: string[];
   heart: string[];
   base: string[];
-  image?: string; // path from /public (e.g., "/images/xxx.jpg")
+  feeling_tags: string[];
+  color_hex: string;
+  image?: string;
+  longevity: number; // 지속력 (0-10)
+  sillage: number; // 확산력 (0-10)
+  season_match: {
+    spring: number;
+    summer: number;
+    fall: number;
+    winter: number;
+  };
+  time_match: {
+    morning: number;
+    afternoon: number;
+    evening: number;
+    night: number;
+  };
+  purchase_url?: string;
 };
 
 export const perfumes: Perfume[] = [
@@ -18,7 +35,14 @@ export const perfumes: Perfume[] = [
     top: ["Bergamot", "Green Leaves"],
     heart: ["Lily of the Valley", "Violet"],
     base: ["Musk"],
+    feeling_tags: ["fresh", "calm", "sharp"],
+    color_hex: "#9EC9EA",
     image: "/images/rainy.jpg",
+    longevity: 5,
+    sillage: 7,
+    season_match: { spring: 3, summer: 4, fall: 2, winter: 1 },
+    time_match: { morning: 4, afternoon: 3, evening: 1, night: 0 },
+    purchase_url: "https://example.com/rainy_walk",
   },
   {
     id: 2,
@@ -28,7 +52,14 @@ export const perfumes: Perfume[] = [
     top: ["Grapefruit"],
     heart: ["Cedar", "Vetiver"],
     base: ["Amber", "Moss"],
+    feeling_tags: ["warm", "calm"],
+    color_hex: "#A65A37",
     image: "/images/cedar.jpg",
+    longevity: 8,
+    sillage: 5,
+    season_match: { spring: 2, summer: 1, fall: 4, winter: 3 },
+    time_match: { morning: 1, afternoon: 2, evening: 4, night: 3 },
+    purchase_url: "https://example.com/sunlit_cedar",
   },
   {
     id: 3,
@@ -38,7 +69,14 @@ export const perfumes: Perfume[] = [
     top: ["Aldehydes"],
     heart: ["Iris"],
     base: ["White Musk", "Vanilla"],
+    feeling_tags: ["warm", "sweet"],
+    color_hex: "#D3D6D8",
     image: "/images/cotton.jpg",
+    longevity: 6,
+    sillage: 6,
+    season_match: { spring: 4, summer: 3, fall: 4, winter: 4 },
+    time_match: { morning: 3, afternoon: 2, evening: 3, night: 4 },
+    purchase_url: "https://example.com/cotton_haze",
   },
   {
     id: 4,
@@ -48,7 +86,14 @@ export const perfumes: Perfume[] = [
     top: ["Lemon", "Tea"],
     heart: ["Jasmine", "Peony"],
     base: ["Mate"],
+    feeling_tags: ["fresh", "calm"],
+    color_hex: "#C4C462",
     image: "/images/tea.jpg",
+    longevity: 4,
+    sillage: 3,
+    season_match: { spring: 4, summer: 4, fall: 2, winter: 1 },
+    time_match: { morning: 4, afternoon: 4, evening: 1, night: 0 },
+    purchase_url: "https://example.com/blooming_tea",
   },
   {
     id: 5,
@@ -58,7 +103,14 @@ export const perfumes: Perfume[] = [
     top: ["Fig Leaf"],
     heart: ["Fig", "Coconut"],
     base: ["Tonka"],
+    feeling_tags: ["sweet", "warm"],
+    color_hex: "#EE545A",
     image: "/images/fig.jpg",
+    longevity: 6,
+    sillage: 7,
+    season_match: { spring: 3, summer: 4, fall: 3, winter: 2 },
+    time_match: { morning: 1, afternoon: 2, evening: 4, night: 3 },
+    purchase_url: "https://example.com/evening_fig",
   },
   {
     id: 6,
@@ -68,7 +120,14 @@ export const perfumes: Perfume[] = [
     top: ["Pink Pepper"],
     heart: ["Labdanum"],
     base: ["Amber", "Vanilla"],
+    feeling_tags: ["warm", "calm"],
+    color_hex: "#A65A37",
     image: "/images/amber.jpg",
+    longevity: 9,
+    sillage: 8,
+    season_match: { spring: 1, summer: 0, fall: 4, winter: 4 },
+    time_match: { morning: 0, afternoon: 1, evening: 4, night: 4 },
+    purchase_url: "https://example.com/amber_night",
   },
   {
     id: 7,
@@ -78,7 +137,14 @@ export const perfumes: Perfume[] = [
     top: ["Sea Salt"],
     heart: ["Driftwood"],
     base: ["Musk"],
+    feeling_tags: ["fresh", "sharp"],
+    color_hex: "#9EC9EA",
     image: "/images/sea.jpg",
+    longevity: 4,
+    sillage: 5,
+    season_match: { spring: 4, summer: 5, fall: 2, winter: 1 },
+    time_match: { morning: 4, afternoon: 5, evening: 2, night: 1 },
+    purchase_url: "https://example.com/sea_salt_air",
   },
   {
     id: 8,
@@ -88,7 +154,14 @@ export const perfumes: Perfume[] = [
     top: ["Matcha", "Mandarin"],
     heart: ["Jasmine"],
     base: ["Musk"],
+    feeling_tags: ["calm", "fresh"],
+    color_hex: "#C4C462",
     image: "/images/matcha.jpg",
+    longevity: 5,
+    sillage: 4,
+    season_match: { spring: 4, summer: 3, fall: 3, winter: 2 },
+    time_match: { morning: 4, afternoon: 4, evening: 2, night: 1 },
+    purchase_url: "https://example.com/matcha_whisper",
   },
   {
     id: 9,
@@ -98,7 +171,14 @@ export const perfumes: Perfume[] = [
     top: ["Orange", "Lemon", "Lime"],
     heart: ["Neroli"],
     base: ["Cedar"],
+    feeling_tags: ["fresh", "sharp"],
+    color_hex: "#F3AF42",
     image: "/images/citrus.jpg",
+    longevity: 3,
+    sillage: 4,
+    season_match: { spring: 5, summer: 5, fall: 1, winter: 0 },
+    time_match: { morning: 5, afternoon: 5, evening: 0, night: 0 },
+    purchase_url: "https://example.com/citrus_muse",
   },
   {
     id: 10,
@@ -108,7 +188,14 @@ export const perfumes: Perfume[] = [
     top: ["Raspberry"],
     heart: ["Rose"],
     base: ["Patchouli"],
+    feeling_tags: ["sweet", "fresh"],
+    color_hex: "#EE545A",
     image: "/images/rose.jpg",
+    longevity: 7,
+    sillage: 7,
+    season_match: { spring: 5, summer: 3, fall: 4, winter: 2 },
+    time_match: { morning: 2, afternoon: 4, evening: 3, night: 2 },
+    purchase_url: "https://example.com/rose_sable",
   },
   {
     id: 11,
@@ -118,7 +205,14 @@ export const perfumes: Perfume[] = [
     top: ["Cardamom"],
     heart: ["Sandalwood"],
     base: ["Musk", "Amber"],
+    feeling_tags: ["warm", "calm"],
+    color_hex: "#A65A37",
     image: "/images/sandal.jpg",
+    longevity: 8,
+    sillage: 7,
+    season_match: { spring: 1, summer: 0, fall: 4, winter: 5 },
+    time_match: { morning: 1, afternoon: 3, evening: 4, night: 5 },
+    purchase_url: "https://example.com/sandal_cloud",
   },
   {
     id: 12,
@@ -128,7 +222,14 @@ export const perfumes: Perfume[] = [
     top: ["Bergamot"],
     heart: ["Lavender"],
     base: ["Tonka", "Cedar"],
+    feeling_tags: ["calm", "sharp"],
+    color_hex: "#C497F4",
     image: "/images/lavender.jpg",
+    longevity: 6,
+    sillage: 5,
+    season_match: { spring: 4, summer: 3, fall: 3, winter: 2 },
+    time_match: { morning: 5, afternoon: 5, evening: 2, night: 1 },
+    purchase_url: "https://example.com/lavender_field",
   },
   {
     id: 13,
@@ -138,7 +239,14 @@ export const perfumes: Perfume[] = [
     top: ["Cinnamon"],
     heart: ["Clove"],
     base: ["Vanilla"],
+    feeling_tags: ["warm", "sweet"],
+    color_hex: "#A65A37",
     image: "/images/spice.jpg",
+    longevity: 9,
+    sillage: 9,
+    season_match: { spring: 1, summer: 0, fall: 5, winter: 5 },
+    time_match: { morning: 0, afternoon: 1, evening: 5, night: 4 },
+    purchase_url: "https://example.com/spice_route",
   },
   {
     id: 14,
@@ -148,7 +256,14 @@ export const perfumes: Perfume[] = [
     top: ["Coffee"],
     heart: ["Caramel"],
     base: ["Vanilla", "Patchouli"],
+    feeling_tags: ["sweet", "warm"],
+    color_hex: "#EE545A",
     image: "/images/coffee.jpg",
+    longevity: 7,
+    sillage: 8,
+    season_match: { spring: 2, summer: 1, fall: 4, winter: 5 },
+    time_match: { morning: 1, afternoon: 3, evening: 5, night: 5 },
+    purchase_url: "https://example.com/coffee_bloom",
   },
   {
     id: 15,
@@ -158,7 +273,14 @@ export const perfumes: Perfume[] = [
     top: ["Basil"],
     heart: ["Thyme", "Rosemary"],
     base: ["Moss"],
+    feeling_tags: ["fresh", "sharp"],
+    color_hex: "#C4C462",
     image: "/images/herb.jpg",
+    longevity: 5,
+    sillage: 4,
+    season_match: { spring: 5, summer: 4, fall: 3, winter: 1 },
+    time_match: { morning: 5, afternoon: 4, evening: 2, night: 1 },
+    purchase_url: "https://example.com/morning_herb",
   },
 ];
 

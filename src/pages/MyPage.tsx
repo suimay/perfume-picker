@@ -461,9 +461,6 @@ export function MyPage({ onNavigate, user }: MyPageProps) {
       </section>
 
       {/* 푸터 */}
-      <footer className="pt-6 pb-6 text-center text-xs text-neutral-500">
-        2025SUINWebProjectHYAG
-      </footer>
 
       {/* 프로필 편집 모달 */}
       {showEdit && (
