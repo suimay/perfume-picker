@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HYANG | 마이 페이지</title>
+    <link rel="stylesheet" href="style/reset.css">
+    <link rel="stylesheet" href="style/style.css">
+  </head>
+  <body data-page="mypage">
+    <header class="topbar">
+      <div class="topbar__inner">
+        <div class="topbar__logo">
+          <a href="index.html">HYANG</a>
+        </div>
+        <nav class="topbar__nav" aria-label="주요 메뉴">
+          <a class="topbar__link" href="index.html" data-nav="home">홈</a>
+          <a class="topbar__link" href="select.html" data-nav="select">취향 선택</a>
+          <a class="topbar__link" href="result.html" data-nav="result">추천 결과</a>
+          <a class="topbar__link" href="mypage.html" data-nav="mypage">마이 페이지</a>
+        </nav>
+        <div class="topbar__user" id="topbarUser">
+          <span class="topbar__status-dot"></span>
+          <span id="topbarUserName">Guest</span>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="layout">
+        <section class="section">
+          <header>
+            <h1 class="section__title">내가 북마크한 향수</h1>
+            <p class="form-card__description">
+              저장해둔 향수들을 한 곳에서 확인하세요. 자세한 정보를 보려면 카드의 상세보기 링크를 눌러주세요.
+            </p>
+          </header>
+          <div id="bookmarkList" class="results-grid" aria-live="polite"></div>
+          <div id="bookmarkEmptyState" class="empty-state" hidden>
+            <h2>북마크가 비어 있습니다</h2>
+            <p>마음에 드는 향수를 발견하면 카드의 북마크 버튼을 눌러 저장해보세요.</p>
+            <a class="button" href="result.html">추천 향수 보러가기</a>
+          </div>
+        </section>
+      </div>
+    </main>
+    <footer class="footer">
+      © 2024 HYANG. 당신의 향기를 기록하세요.
+    </footer>
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>

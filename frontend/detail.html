@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HYANG | 향수 상세보기</title>
+    <link rel="stylesheet" href="style/reset.css">
+    <link rel="stylesheet" href="style/style.css">
+  </head>
+  <body data-page="detail">
+    <header class="topbar">
+      <div class="topbar__inner">
+        <div class="topbar__logo">
+          <a href="index.html">HYANG</a>
+        </div>
+        <nav class="topbar__nav" aria-label="주요 메뉴">
+          <a class="topbar__link" href="index.html" data-nav="home">홈</a>
+          <a class="topbar__link" href="select.html" data-nav="select">취향 선택</a>
+          <a class="topbar__link" href="result.html" data-nav="result">추천 결과</a>
+          <a class="topbar__link" href="mypage.html" data-nav="mypage">마이 페이지</a>
+        </nav>
+        <div class="topbar__user" id="topbarUser">
+          <span class="topbar__status-dot"></span>
+          <span id="topbarUserName">Guest</span>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="layout" id="detailContainer">
+        <section class="detail-hero" id="detailContent" hidden>
+          <div class="detail-hero__visual" aria-hidden="true"></div>
+          <div class="detail-hero__content">
+            <span class="tag" id="detailBrand">BRAND</span>
+            <h1 class="hero__title" id="detailTitle">향수 이름</h1>
+            <p id="detailDescription">
+              향수 설명이 여기에 표시됩니다. 쿼리스트링으로 전달된 id에 기반해 데이터가 로드됩니다.
+            </p>
+            <div class="hero__actions">
+              <button class="bookmark-button" id="detailBookmarkButton" type="button">북마크</button>
+              <a class="card__link" href="result.html">추천 목록으로 돌아가기</a>
+            </div>
+            <div class="detail-hero__notes">
+              <div class="note-card">
+                <strong>탑 노트</strong>
+                <p id="detailTopNotes"></p>
+              </div>
+              <div class="note-card">
+                <strong>미들 노트</strong>
+                <p id="detailMiddleNotes"></p>
+              </div>
+              <div class="note-card">
+                <strong>베이스 노트</strong>
+                <p id="detailBaseNotes"></p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="empty-state" id="detailEmptyState">
+          <h2>향수를 찾을 수 없어요</h2>
+          <p>잘못된 링크이거나 아직 준비되지 않은 향수입니다. 추천 목록에서 다른 향수를 살펴보세요.</p>
+          <a class="button" href="result.html">추천 목록 보러가기</a>
+        </section>
+      </div>
+    </main>
+    <footer class="footer">
+      © 2024 HYANG. 향기로 연결되는 순간들.
+    </footer>
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HYANG | 취향 선택</title>
+    <link rel="stylesheet" href="style/reset.css">
+    <link rel="stylesheet" href="style/style.css">
+  </head>
+  <body data-page="select">
+    <header class="topbar">
+      <div class="topbar__inner">
+        <div class="topbar__logo">
+          <a href="index.html">HYANG</a>
+        </div>
+        <nav class="topbar__nav" aria-label="주요 메뉴">
+          <a class="topbar__link" href="index.html" data-nav="home">홈</a>
+          <a class="topbar__link" href="select.html" data-nav="select">취향 선택</a>
+          <a class="topbar__link" href="result.html" data-nav="result">추천 결과</a>
+          <a class="topbar__link" href="mypage.html" data-nav="mypage">마이 페이지</a>
+        </nav>
+        <div class="topbar__user" id="topbarUser">
+          <span class="topbar__status-dot"></span>
+          <span id="topbarUserName">Guest</span>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="layout">
+        <section class="form-card">
+          <header>
+            <h1 class="section__title">어떤 향기를 좋아하나요?</h1>
+            <p class="form-card__description">
+              아래에서 마음에 드는 향기 키워드를 선택해주세요. 선택한 정보는 브라우저에 저장되며, 이후 추천 결과에 활용됩니다.
+            </p>
+          </header>
+          <form class="preference-form" id="preferenceForm">
+            <div class="preference-form__group">
+              <label class="preference-form__option">
+                <span class="preference-form__label">시트러스</span>
+                <span class="preference-form__checkbox">
+                  <input type="checkbox" name="preferences" value="citrus" aria-label="시트러스 선택">
+                </span>
+              </label>
+              <label class="preference-form__option">
+                <span class="preference-form__label">달달</span>
+                <span class="preference-form__checkbox">
+                  <input type="checkbox" name="preferences" value="sweet" aria-label="달달 선택">
+                </span>
+              </label>
+              <label class="preference-form__option">
+                <span class="preference-form__label">우디</span>
+                <span class="preference-form__checkbox">
+                  <input type="checkbox" name="preferences" value="woody" aria-label="우디 선택">
+                </span>
+              </label>
+              <label class="preference-form__option">
+                <span class="preference-form__label">플로럴</span>
+                <span class="preference-form__checkbox">
+                  <input type="checkbox" name="preferences" value="floral" aria-label="플로럴 선택">
+                </span>
+              </label>
+              <label class="preference-form__option">
+                <span class="preference-form__label">아쿠아</span>
+                <span class="preference-form__checkbox">
+                  <input type="checkbox" name="preferences" value="aqua" aria-label="아쿠아 선택">
+                </span>
+              </label>
+            </div>
+            <button class="button" type="submit">향수 추천 받기</button>
+          </form>
+        </section>
+      </div>
+    </main>
+    <footer class="footer">
+      © 2024 HYANG. 취향을 기록하고 향기를 발견하세요.
+    </footer>
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+# .gitignore 파일 생성
+cat > .gitignore <<'EOF'
+node_modules/
+dist/
+build/
+.vite/
+.cache/
+.env
+.env.local
+.DS_Store
+.vscode/
+.idea/
+EOF

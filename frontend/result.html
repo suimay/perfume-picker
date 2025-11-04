@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HYANG | 추천 결과</title>
+    <link rel="stylesheet" href="style/reset.css">
+    <link rel="stylesheet" href="style/style.css">
+  </head>
+  <body data-page="result">
+    <header class="topbar">
+      <div class="topbar__inner">
+        <div class="topbar__logo">
+          <a href="index.html">HYANG</a>
+        </div>
+        <nav class="topbar__nav" aria-label="주요 메뉴">
+          <a class="topbar__link" href="index.html" data-nav="home">홈</a>
+          <a class="topbar__link" href="select.html" data-nav="select">취향 선택</a>
+          <a class="topbar__link" href="result.html" data-nav="result">추천 결과</a>
+          <a class="topbar__link" href="mypage.html" data-nav="mypage">마이 페이지</a>
+        </nav>
+        <div class="topbar__user" id="topbarUser">
+          <span class="topbar__status-dot"></span>
+          <span id="topbarUserName">Guest</span>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="layout">
+        <section class="section">
+          <header>
+            <h1 class="section__title">취향 기반 추천 결과</h1>
+            <p class="form-card__description" id="resultSummary">
+              선택한 취향에 맞는 향수를 준비하고 있어요.
+            </p>
+          </header>
+          <div id="resultList" class="results-grid" aria-live="polite"></div>
+          <div id="resultEmptyState" class="empty-state" hidden>
+            <h2>아직 선택한 취향이 없어요</h2>
+            <p>
+              취향을 설정하면 맞춤형 향수를 추천해드릴게요. 아래 버튼을 눌러 취향을 선택해보세요.
+            </p>
+            <a class="button" href="select.html">취향 선택하러 가기</a>
+          </div>
+        </section>
+      </div>
+    </main>
+    <footer class="footer">
+      © 2024 HYANG. 새로운 향기와 함께하는 하루.
+    </footer>
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>
