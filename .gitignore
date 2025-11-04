@@ -1,0 +1,24 @@
+# Node
+backend/node_modules/
+frontend/node_modules/
+**/node_modules/
+
+# Env
+*.env
+backend/.env
+frontend/.env
+
+# Builds/캐시
+dist/
+build/
+.vite/
+.cache/
+
+# Editor/OS
+.DS_Store
+.vscode/
+.idea/
+
+
+.env
+.env.*.local
