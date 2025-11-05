@@ -1,3 +1,4 @@
+// 파일: backend/routes/auth.js
 import express from "express";
 import bcrypt from "bcrypt";
 
@@ -5,12 +6,7 @@ import { pool } from "../db.js";
 
 const router = express.Router();
 
-const serializeUser = (row) => ({
-  id: row.id,
-  email: row.email,
-  nickname: row.nickname,
-});
-
+// 회원가입 엔드포인트
 router.post("/register", async (req, res) => {
   const { email, password, nickname } = req.body ?? {};
 
@@ -34,27 +30,21 @@ router.post("/register", async (req, res) => {
 
     const passwordHash = await bcrypt.hash(password, 10);
 
-    const [result] = await pool.execute(
+    await pool.execute(
       "INSERT INTO users (email, password_hash, nickname) VALUES (?, ?, ?)",
       [email, passwordHash, nickname]
     );
 
-    return res.status(201).json({
-      success: true,
-      user: {
-        id: result.insertId,
-        email,
-        nickname,
-      },
-    });
+    return res.status(201).json({ success: true });
   } catch (error) {
-    console.error("POST /api/register error:", error);
+    console.error("[auth] register error:", error);
     return res
       .status(500)
       .json({ success: false, message: "회원가입 처리 중 오류가 발생했습니다." });
   }
 });
 
+// 로그인 엔드포인트
 router.post("/login", async (req, res) => {
   const { email, password } = req.body ?? {};
 
@@ -87,10 +77,14 @@ router.post("/login", async (req, res) => {
 
     return res.json({
       success: true,
-      user: serializeUser(userRow),
+      user: {
+        id: userRow.id,
+        email: userRow.email,
+        nickname: userRow.nickname,
+      },
     });
   } catch (error) {
-    console.error("POST /api/login error:", error);
+    console.error("[auth] login error:", error);
     return res
       .status(500)
       .json({ success: false, message: "로그인 처리 중 오류가 발생했습니다." });

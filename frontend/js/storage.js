@@ -1,4 +1,4 @@
-const PREFERENCE_KEY = "hyang.preferences";
+const PREFERENCE_KEY = "prefs";
 const BOOKMARK_KEY = "hyang.bookmarks";
 
 const safeParse = (raw, fallback) => {
@@ -11,7 +11,19 @@ const safeParse = (raw, fallback) => {
 };
 
 export const loadPreferences = () => {
-  return safeParse(localStorage.getItem(PREFERENCE_KEY), []);
+  const data = safeParse(localStorage.getItem(PREFERENCE_KEY), {
+    notes: [],
+    exclude: [],
+    context: [],
+  });
+  if (Array.isArray(data)) {
+    return { notes: data, exclude: [], context: [] };
+  }
+  return {
+    notes: Array.isArray(data.notes) ? data.notes : [],
+    exclude: Array.isArray(data.exclude) ? data.exclude : [],
+    context: Array.isArray(data.context) ? data.context : [],
+  };
 };
 
 export const savePreferences = (preferences) => {
@@ -27,11 +39,12 @@ export const saveBookmarks = (bookmarkIds) => {
 };
 
 export const toggleBookmark = (perfumeId) => {
+  const key = String(perfumeId);
   const current = new Set(loadBookmarks());
-  if (current.has(perfumeId)) {
-    current.delete(perfumeId);
+  if (current.has(key)) {
+    current.delete(key);
   } else {
-    current.add(perfumeId);
+    current.add(key);
   }
   const result = Array.from(current);
   saveBookmarks(result);
@@ -39,5 +52,6 @@ export const toggleBookmark = (perfumeId) => {
 };
 
 export const isBookmarked = (perfumeId) => {
-  return loadBookmarks().includes(perfumeId);
+  const key = String(perfumeId);
+  return loadBookmarks().includes(key);
 };

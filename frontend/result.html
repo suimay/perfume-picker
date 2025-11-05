@@ -6,47 +6,81 @@
     <title>HYANG | 추천 결과</title>
     <link rel="stylesheet" href="style/reset.css">
     <link rel="stylesheet" href="style/style.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+    >
   </head>
   <body data-page="result">
     <header class="topbar">
       <div class="topbar__inner">
-        <div class="topbar__logo">
-          <a href="index.html">HYANG</a>
-        </div>
+        <a class="topbar__brand" href="index.html" aria-label="향 홈">
+          <i class="ri-flower-line" aria-hidden="true"></i>
+          <span>향(香)</span>
+        </a>
         <nav class="topbar__nav" aria-label="주요 메뉴">
-          <a class="topbar__link" href="index.html" data-nav="home">홈</a>
-          <a class="topbar__link" href="select.html" data-nav="select">취향 선택</a>
-          <a class="topbar__link" href="result.html" data-nav="result">추천 결과</a>
-          <a class="topbar__link" href="mypage.html" data-nav="mypage">마이 페이지</a>
+          <ul class="topbar__menu">
+            <li>
+              <a class="topbar__link" href="select.html" data-nav="select">
+                <i class="ri-settings-3-line" aria-hidden="true"></i>
+                <span>취향 선택</span>
+              </a>
+            </li>
+            <li>
+              <a class="topbar__link" href="result.html" data-nav="result">
+                <i class="ri-task-line" aria-hidden="true"></i>
+                <span>추천 결과</span>
+              </a>
+            </li>
+            <li>
+              <a class="topbar__link" href="mypage.html" data-nav="mypage">
+                <i class="ri-information-line" aria-hidden="true"></i>
+                <span>향수 목록</span>
+              </a>
+            </li>
+          </ul>
         </nav>
-        <div class="topbar__user" id="topbarUser">
-          <span class="topbar__status-dot"></span>
-          <span id="topbarUserName">Guest</span>
-        </div>
+        <a class="login-btn" href="login.html">
+          <i class="ri-arrow-right-line" aria-hidden="true"></i>
+          <span>로그인</span>
+        </a>
       </div>
     </header>
-    <main>
-      <div class="layout">
-        <section class="section">
-          <header>
-            <h1 class="section__title">취향 기반 추천 결과</h1>
-            <p class="form-card__description" id="resultSummary">
-              선택한 취향에 맞는 향수를 준비하고 있어요.
-            </p>
-          </header>
-          <div id="resultList" class="results-grid" aria-live="polite"></div>
-          <div id="resultEmptyState" class="empty-state" hidden>
-            <h2>아직 선택한 취향이 없어요</h2>
-            <p>
-              취향을 설정하면 맞춤형 향수를 추천해드릴게요. 아래 버튼을 눌러 취향을 선택해보세요.
-            </p>
-            <a class="button" href="select.html">취향 선택하러 가기</a>
-          </div>
-        </section>
-      </div>
+    <main class="result-main">
+      <section class="result-hero" aria-labelledby="resultTitle">
+        <h1 id="resultTitle" class="result-hero__title">추천 결과</h1>
+        <p id="resultWeather" class="result-hero__meta">날씨 정보를 불러오는 중...</p>
+        <p id="resultSummary" class="result-hero__desc">선택한 취향과 날씨를 바탕으로 향수를 골라봤어요.</p>
+      </section>
+
+      <section class="recommend-section" aria-label="추천 카드">
+        <div id="recommendBoard" class="recommend-board" aria-live="polite"></div>
+      </section>
     </main>
-    <footer class="footer">
-      © 2024 HYANG. 새로운 향기와 함께하는 하루.
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <div class="site-footer__left">
+          <span class="site-footer__copy">© 2025 KSNU 2500131 SUIN. 향(香)</span>
+          <nav class="site-footer__links" aria-label="법적 고지">
+            <a href="#" class="site-footer__link" data-footer-link="terms">이용약관</a>
+            <a href="#" class="site-footer__link" data-footer-link="privacy">개인정보처리방침</a>
+          </nav>
+        </div>
+        <div class="site-footer__right" aria-label="소셜 링크">
+          <a class="site-footer__icon" href="mailto:atomsyndrome@gmail.com" aria-label="메일">
+            <i class="ri-mail-line" aria-hidden="true"></i>
+          </a>
+          <a class="site-footer__icon" href="https://www.instagram.com/ooinlees?igsh=MWw4eGRkamEweDd0cQ%3D%3D&utm_source=qr" target="_blank" rel="noopener" aria-label="인스타그램">
+            <i class="ri-instagram-line" aria-hidden="true"></i>
+          </a>
+          <a class="site-footer__icon" href="https://www.notion.so/amilab/26f763f6955a802e8e48e466b95da239?source=copy_link" target="_blank" rel="noopener" aria-label="노션">
+            <i class="ri-file-list-line" aria-hidden="true"></i>
+          </a>
+          <a class="site-footer__icon" href="https://github.com/suimay/perfume-picker" target="_blank" rel="noopener" aria-label="깃허브">
+            <i class="ri-github-line" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
     </footer>
     <script type="module" src="js/main.js"></script>
   </body>

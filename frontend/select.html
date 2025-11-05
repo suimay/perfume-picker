@@ -6,74 +6,192 @@
     <title>HYANG | 취향 선택</title>
     <link rel="stylesheet" href="style/reset.css">
     <link rel="stylesheet" href="style/style.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+    >
   </head>
   <body data-page="select">
     <header class="topbar">
       <div class="topbar__inner">
-        <div class="topbar__logo">
-          <a href="index.html">HYANG</a>
-        </div>
+        <a class="topbar__brand" href="index.html" aria-label="향 홈">
+          <i class="ri-flower-line" aria-hidden="true"></i>
+          <span>향(香)</span>
+        </a>
         <nav class="topbar__nav" aria-label="주요 메뉴">
-          <a class="topbar__link" href="index.html" data-nav="home">홈</a>
-          <a class="topbar__link" href="select.html" data-nav="select">취향 선택</a>
-          <a class="topbar__link" href="result.html" data-nav="result">추천 결과</a>
-          <a class="topbar__link" href="mypage.html" data-nav="mypage">마이 페이지</a>
+          <ul class="topbar__menu">
+            <li>
+              <a class="topbar__link" href="select.html" data-nav="select">
+                <i class="ri-settings-3-line" aria-hidden="true"></i>
+                <span>취향 선택</span>
+              </a>
+            </li>
+            <li>
+              <a class="topbar__link" href="result.html" data-nav="result">
+                <i class="ri-task-line" aria-hidden="true"></i>
+                <span>추천 결과</span>
+              </a>
+            </li>
+            <li>
+              <a class="topbar__link" href="mypage.html" data-nav="mypage">
+                <i class="ri-information-line" aria-hidden="true"></i>
+                <span>향수 목록</span>
+              </a>
+            </li>
+          </ul>
         </nav>
-        <div class="topbar__user" id="topbarUser">
-          <span class="topbar__status-dot"></span>
-          <span id="topbarUserName">Guest</span>
-        </div>
+        <a class="login-btn" href="login.html">
+          <i class="ri-arrow-right-line" aria-hidden="true"></i>
+          <span>로그인</span>
+        </a>
       </div>
     </header>
-    <main>
-      <div class="layout">
-        <section class="form-card">
-          <header>
-            <h1 class="section__title">어떤 향기를 좋아하나요?</h1>
-            <p class="form-card__description">
-              아래에서 마음에 드는 향기 키워드를 선택해주세요. 선택한 정보는 브라우저에 저장되며, 이후 추천 결과에 활용됩니다.
-            </p>
-          </header>
-          <form class="preference-form" id="preferenceForm">
-            <div class="preference-form__group">
-              <label class="preference-form__option">
-                <span class="preference-form__label">시트러스</span>
-                <span class="preference-form__checkbox">
-                  <input type="checkbox" name="preferences" value="citrus" aria-label="시트러스 선택">
-                </span>
+    <main class="select-main">
+      <header class="select-header">
+        <h1 class="select-title">당신의 감각을 선택하세요</h1>
+        <p class="select-subtitle">원하는 향의 색과 느낌을 기준으로 모두 선택해주세요.</p>
+      </header>
+
+      <form id="preferenceForm" class="select-form">
+        <section class="select-section" aria-labelledby="noteHeading">
+          <fieldset>
+            <legend id="noteHeading">노트 / 감각 선택</legend>
+            <div class="fieldset-body">
+              <div class="sense-grid note-grid">
+                <label class="sense-card">
+                  <input type="checkbox" name="notes" value="citrus" aria-label="상큼함 선택">
+                  <div class="sense-card__face">
+                    <span class="emoji" aria-hidden="true">🍋</span>
+                    <strong>상큼함</strong>
+                  <span>시트러스 · 레몬 · 오렌지</span>
+                  <span class="badge" aria-hidden="true">✅</span>
+                </div>
               </label>
-              <label class="preference-form__option">
-                <span class="preference-form__label">달달</span>
-                <span class="preference-form__checkbox">
-                  <input type="checkbox" name="preferences" value="sweet" aria-label="달달 선택">
-                </span>
+
+              <label class="sense-card">
+                <input type="checkbox" name="notes" value="sweet" aria-label="달달한 선택">
+                <div class="sense-card__face">
+                  <span class="emoji" aria-hidden="true">🍯</span>
+                  <strong>달달한</strong>
+                  <span>바닐라 · 꿀 · 과일</span>
+                  <span class="badge" aria-hidden="true">✅</span>
+                </div>
               </label>
-              <label class="preference-form__option">
-                <span class="preference-form__label">우디</span>
-                <span class="preference-form__checkbox">
-                  <input type="checkbox" name="preferences" value="woody" aria-label="우디 선택">
-                </span>
+
+              <label class="sense-card">
+                <input type="checkbox" name="notes" value="cozy" aria-label="포근한 선택">
+                <div class="sense-card__face">
+                  <span class="emoji" aria-hidden="true">☁️</span>
+                  <strong>포근한</strong>
+                  <span>머스크 · 코튼 · 파우더리</span>
+                  <span class="badge" aria-hidden="true">✅</span>
+                </div>
               </label>
-              <label class="preference-form__option">
-                <span class="preference-form__label">플로럴</span>
-                <span class="preference-form__checkbox">
-                  <input type="checkbox" name="preferences" value="floral" aria-label="플로럴 선택">
-                </span>
+
+              <label class="sense-card">
+                <input type="checkbox" name="notes" value="cool" aria-label="차가운 선택">
+                <div class="sense-card__face">
+                  <span class="emoji" aria-hidden="true">❄️</span>
+                  <strong>차가운</strong>
+                  <span>아쿠아 · 민트</span>
+                  <span class="badge" aria-hidden="true">✅</span>
+                </div>
               </label>
-              <label class="preference-form__option">
-                <span class="preference-form__label">아쿠아</span>
-                <span class="preference-form__checkbox">
-                  <input type="checkbox" name="preferences" value="aqua" aria-label="아쿠아 선택">
-                </span>
-              </label>
+
+              <label class="sense-card">
+                <input type="checkbox" name="notes" value="calm" aria-label="차분한 선택">
+                <div class="sense-card__face">
+                  <span class="emoji" aria-hidden="true">🌿</span>
+                  <strong>차분한</strong>
+                  <span>우디 · 스파이시 · 허벌</span>
+                  <span class="badge" aria-hidden="true">✅</span>
+                </div>
+                </label>
+              </div>
             </div>
-            <button class="button" type="submit">향수 추천 받기</button>
-          </form>
+          </fieldset>
         </section>
-      </div>
+
+        <section class="select-section" aria-labelledby="excludeHeading">
+          <fieldset>
+            <legend id="excludeHeading">제외 옵션 (싫어하는 향)</legend>
+            <div class="fieldset-body">
+              <div class="sense-grid">
+                <label class="sense-card">
+                  <input type="checkbox" name="exclude" value="vanilla" aria-label="바닐라 제외">
+                  <div class="sense-card__face">
+                    <span class="emoji" aria-hidden="true">🍨</span>
+                    <strong>바닐라 제외</strong>
+                    <span>달콤한 향은 피하고 싶어요</span>
+                  <span class="badge" aria-hidden="true">✅</span>
+                  </div>
+                </label>
+
+                <label class="sense-card">
+                  <input type="checkbox" name="exclude" value="citrus" aria-label="시트러스 제외">
+                  <div class="sense-card__face">
+                    <span class="emoji" aria-hidden="true">🍊</span>
+                    <strong>시트러스 제외</strong>
+                    <span>산뜻한 과일향은 싫어요</span>
+                  <span class="badge" aria-hidden="true">✅</span>
+                  </div>
+                </label>
+
+                <label class="sense-card">
+                  <input type="checkbox" name="exclude" value="powder" aria-label="파우더리 제외">
+                  <div class="sense-card__face">
+                    <span class="emoji" aria-hidden="true">🫧</span>
+                    <strong>파우더리 제외</strong>
+                    <span>파우더리한 향은 부담돼요</span>
+                  <span class="badge" aria-hidden="true">✅</span>
+                  </div>
+                </label>
+
+                <label class="sense-card">
+                  <input type="checkbox" name="exclude" value="musk" aria-label="머스크 제외">
+                  <div class="sense-card__face">
+                    <span class="emoji" aria-hidden="true">🧴</span>
+                    <strong>머스크 제외</strong>
+                    <span>머스크 계열은 피해주세요</span>
+                  <span class="badge" aria-hidden="true">✅</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </fieldset>
+        </section>
+
+        <div class="select__submit">
+          <button type="submit" class="select__submit__button">
+            추천받기
+          </button>
+        </div>
+      </form>
     </main>
-    <footer class="footer">
-      © 2024 HYANG. 취향을 기록하고 향기를 발견하세요.
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <div class="site-footer__left">
+          <span class="site-footer__copy">© 2025 KSNU 2500131 SUIN. 향(香)</span>
+          <nav class="site-footer__links" aria-label="법적 고지">
+            <a href="#" class="site-footer__link" data-footer-link="terms">이용약관</a>
+            <a href="#" class="site-footer__link" data-footer-link="privacy">개인정보처리방침</a>
+          </nav>
+        </div>
+        <div class="site-footer__right" aria-label="소셜 링크">
+          <a class="site-footer__icon" href="mailto:atomsyndrome@gmail.com" aria-label="메일">
+            <i class="ri-mail-line" aria-hidden="true"></i>
+          </a>
+          <a class="site-footer__icon" href="https://www.instagram.com/ooinlees?igsh=MWw4eGRkamEweDd0cQ%3D%3D&utm_source=qr" target="_blank" rel="noopener" aria-label="인스타그램">
+            <i class="ri-instagram-line" aria-hidden="true"></i>
+          </a>
+          <a class="site-footer__icon" href="https://www.notion.so/amilab/26f763f6955a802e8e48e466b95da239?source=copy_link" target="_blank" rel="noopener" aria-label="노션">
+            <i class="ri-file-list-line" aria-hidden="true"></i>
+          </a>
+          <a class="site-footer__icon" href="https://github.com/suimay/perfume-picker" target="_blank" rel="noopener" aria-label="깃허브">
+            <i class="ri-github-line" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
     </footer>
     <script type="module" src="js/main.js"></script>
   </body>

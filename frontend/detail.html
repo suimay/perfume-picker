@@ -1,69 +1,276 @@
 <!DOCTYPE html>
 <html lang="ko">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HYANG | 향수 상세보기</title>
-    <link rel="stylesheet" href="style/reset.css">
-    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/reset.css" />
+    <link rel="stylesheet" href="style/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+    />
   </head>
   <body data-page="detail">
     <header class="topbar">
       <div class="topbar__inner">
-        <div class="topbar__logo">
-          <a href="index.html">HYANG</a>
-        </div>
+        <a class="topbar__brand" href="index.html" aria-label="향 홈">
+          <i class="ri-flower-line" aria-hidden="true"></i>
+          <span>향(香)</span>
+        </a>
         <nav class="topbar__nav" aria-label="주요 메뉴">
-          <a class="topbar__link" href="index.html" data-nav="home">홈</a>
-          <a class="topbar__link" href="select.html" data-nav="select">취향 선택</a>
-          <a class="topbar__link" href="result.html" data-nav="result">추천 결과</a>
-          <a class="topbar__link" href="mypage.html" data-nav="mypage">마이 페이지</a>
+          <ul class="topbar__menu">
+            <li>
+              <a class="topbar__link" href="select.html" data-nav="select">
+                <i class="ri-settings-3-line" aria-hidden="true"></i>
+                <span>취향 선택</span>
+              </a>
+            </li>
+            <li>
+              <a class="topbar__link" href="result.html" data-nav="result">
+                <i class="ri-task-line" aria-hidden="true"></i>
+                <span>추천 결과</span>
+              </a>
+            </li>
+            <li>
+              <a class="topbar__link" href="mypage.html" data-nav="mypage">
+                <i class="ri-information-line" aria-hidden="true"></i>
+                <span>향수 목록</span>
+              </a>
+            </li>
+          </ul>
         </nav>
-        <div class="topbar__user" id="topbarUser">
-          <span class="topbar__status-dot"></span>
-          <span id="topbarUserName">Guest</span>
-        </div>
+        <a class="login-btn" href="login.html">
+          <i class="ri-arrow-right-line" aria-hidden="true"></i>
+          <span>로그인</span>
+        </a>
       </div>
     </header>
-    <main>
-      <div class="layout" id="detailContainer">
-        <section class="detail-hero" id="detailContent" hidden>
-          <div class="detail-hero__visual" aria-hidden="true"></div>
-          <div class="detail-hero__content">
-            <span class="tag" id="detailBrand">BRAND</span>
-            <h1 class="hero__title" id="detailTitle">향수 이름</h1>
-            <p id="detailDescription">
-              향수 설명이 여기에 표시됩니다. 쿼리스트링으로 전달된 id에 기반해 데이터가 로드됩니다.
-            </p>
-            <div class="hero__actions">
-              <button class="bookmark-button" id="detailBookmarkButton" type="button">북마크</button>
-              <a class="card__link" href="result.html">추천 목록으로 돌아가기</a>
+    <nav class="breadcrumb" aria-label="경로">
+      <ol class="breadcrumb__list">
+        <li class="breadcrumb__item"><a href="index.html">홈</a></li>
+        <li class="breadcrumb__item"><a href="mypage.html">향수 목록</a></li>
+        <li
+          class="breadcrumb__item"
+          aria-current="page"
+          id="detailBreadcrumbCurrent"
+        >
+          상세 정보
+        </li>
+      </ol>
+    </nav>
+    <main class="detail-main">
+      <div class="detail-wrapper container" id="detailContainer">
+        <header class="detail-heading">
+          <h1>향수 상세</h1>
+          <p>해당 향수의 자세한 정보를 살펴보세요.</p>
+        </header>
+
+        <section id="detailShell" class="detail-shell" hidden>
+          <section class="detail-overview">
+            <div class="detail-overview__media is-placeholder" id="detailMedia">
+              <img id="detailImage" alt="" />
             </div>
-            <div class="detail-hero__notes">
-              <div class="note-card">
-                <strong>탑 노트</strong>
-                <p id="detailTopNotes"></p>
-              </div>
-              <div class="note-card">
-                <strong>미들 노트</strong>
-                <p id="detailMiddleNotes"></p>
-              </div>
-              <div class="note-card">
-                <strong>베이스 노트</strong>
-                <p id="detailBaseNotes"></p>
+            <div class="detail-overview__info">
+              <span class="detail-overview__brand" id="detailBrand"
+                >HYANG LAB</span
+              >
+              <h2 class="detail-overview__title" id="detailTitle">향수 이름</h2>
+              <p class="detail-overview__description" id="detailDescription">
+                향수 설명이 여기에 표시됩니다. 취향과 날씨를 기반으로 고른 추천
+                향수입니다.
+              </p>
+              <div
+                class="detail-overview__tags"
+                id="detailTagList"
+                aria-label="향수 태그"
+              ></div>
+              <div class="detail-overview__actions">
+                <button
+                  class="detail-action detail-action--bookmark"
+                  id="detailBookmarkButton"
+                  type="button"
+                >
+                  <i class="ri-bookmark-line" aria-hidden="true"></i>
+                  <span data-label>북마크</span>
+                </button>
+                <a
+                  class="detail-action detail-action--link"
+                  id="detailOfficialLink"
+                  href="#"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <i class="ri-external-link-line" aria-hidden="true"></i>
+                  <span>사이트로 이동</span>
+                </a>
               </div>
             </div>
-          </div>
+          </section>
+
+          <section
+            class="detail-panel detail-panel--notes"
+            id="detailNotesPanel"
+            hidden
+          >
+            <div class="detail-panel__header">
+              <h3>노트 구조 (향조 시각화)</h3>
+              <p>각 노트 위에 마우스를 올리면 피라미드가 강조돼요.</p>
+            </div>
+            <div class="detail-notes__grid">
+              <div
+                class="detail-notes__visual"
+                id="detailNotesVisual"
+                data-hover=""
+              >
+                <div class="detail-notes__placeholder">
+                  노트 정보를 불러오는 중...
+                </div>
+              </div>
+              <div
+                class="detail-notes__list"
+                id="detailNotesList"
+                data-hover=""
+              >
+                <article class="note-block" data-note="top">
+                  <h4>Top Notes (처음)</h4>
+                  <div class="note-block__tags" id="detailTopNotes"></div>
+                </article>
+                <article class="note-block" data-note="middle">
+                  <h4>Heart Notes (중심)</h4>
+                  <div class="note-block__tags" id="detailHeartNotes"></div>
+                </article>
+                <article class="note-block" data-note="base">
+                  <h4>Base Notes (잔향)</h4>
+                  <div class="note-block__tags" id="detailBaseNotes"></div>
+                </article>
+              </div>
+            </div>
+          </section>
+
+          <section
+            class="detail-panel detail-panel--metrics"
+            id="detailMetricsPanel"
+            hidden
+          >
+            <div class="detail-panel__header">
+              <h3>향수 특성 및 추천 감각</h3>
+              <p>
+                지속력, 확산력 그리고 어울리는 계절·시간대를 한눈에 확인하세요.
+              </p>
+            </div>
+            <div class="metric-list">
+              <div class="metric" data-metric="longevity">
+                <div class="metric__header">
+                  <span>지속력</span>
+                  <span class="metric__value" id="detailLongevityValue"
+                    >0/10</span
+                  >
+                </div>
+                <div class="metric__bar">
+                  <span class="metric__fill" id="detailLongevityBar"></span>
+                </div>
+              </div>
+              <div class="metric" data-metric="sillage">
+                <div class="metric__header">
+                  <span>확산력</span>
+                  <span class="metric__value" id="detailSillageValue"
+                    >0/10</span
+                  >
+                </div>
+                <div class="metric__bar">
+                  <span class="metric__fill" id="detailSillageBar"></span>
+                </div>
+              </div>
+            </div>
+            <div class="metric-scales">
+              <div class="metric-scale" data-scale="season">
+                <div class="metric-scale__header">
+                  <span>추천 계절</span>
+                  <span
+                    class="metric-scale__badge"
+                    id="detailSeasonBadge"
+                  ></span>
+                </div>
+                <div class="metric-scale__track" id="detailSeasonScale"></div>
+              </div>
+              <div class="metric-scale" data-scale="time">
+                <div class="metric-scale__header">
+                  <span>추천 시간대</span>
+                  <span class="metric-scale__badge" id="detailTimeBadge"></span>
+                </div>
+                <div class="metric-scale__track" id="detailTimeScale"></div>
+              </div>
+            </div>
+          </section>
+
+          <section
+            class="detail-panel detail-panel--similar"
+            id="detailSimilarPanel"
+            hidden
+          >
+            <div class="detail-panel__header">
+              <h3>비슷한 향수</h3>
+              <p>감각이 통하는 다른 향수도 함께 살펴보세요.</p>
+            </div>
+            <div class="similar-grid" id="detailSimilarGrid"></div>
+          </section>
         </section>
-        <section class="empty-state" id="detailEmptyState">
-          <h2>향수를 찾을 수 없어요</h2>
-          <p>잘못된 링크이거나 아직 준비되지 않은 향수입니다. 추천 목록에서 다른 향수를 살펴보세요.</p>
-          <a class="button" href="result.html">추천 목록 보러가기</a>
-        </section>
+
       </div>
     </main>
-    <footer class="footer">
-      © 2024 HYANG. 향기로 연결되는 순간들.
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <div class="site-footer__left">
+          <span class="site-footer__copy"
+            >© 2025 KSNU 2500131 SUIN. 향(香)</span
+          >
+          <nav class="site-footer__links" aria-label="법적 고지">
+            <a href="#" class="site-footer__link" data-footer-link="terms"
+              >이용약관</a
+            >
+            <a href="#" class="site-footer__link" data-footer-link="privacy"
+              >개인정보처리방침</a
+            >
+          </nav>
+        </div>
+        <div class="site-footer__right" aria-label="소셜 링크">
+          <a
+            class="site-footer__icon"
+            href="mailto:atomsyndrome@gmail.com"
+            aria-label="메일"
+          >
+            <i class="ri-mail-line" aria-hidden="true"></i>
+          </a>
+          <a
+            class="site-footer__icon"
+            href="https://www.instagram.com/ooinlees?igsh=MWw4eGRkamEweDd0cQ%3D%3D&utm_source=qr"
+            target="_blank"
+            rel="noopener"
+            aria-label="인스타그램"
+          >
+            <i class="ri-instagram-line" aria-hidden="true"></i>
+          </a>
+          <a
+            class="site-footer__icon"
+            href="https://www.notion.so/amilab/26f763f6955a802e8e48e466b95da239?source=copy_link"
+            target="_blank"
+            rel="noopener"
+            aria-label="노션"
+          >
+            <i class="ri-file-list-line" aria-hidden="true"></i>
+          </a>
+          <a
+            class="site-footer__icon"
+            href="https://github.com/suimay/perfume-picker"
+            target="_blank"
+            rel="noopener"
+            aria-label="깃허브"
+          >
+            <i class="ri-github-line" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
     </footer>
     <script type="module" src="js/main.js"></script>
   </body>

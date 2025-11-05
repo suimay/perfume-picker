@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HYANG | 오늘의 향기 추천</title>
+    <title>HYANG | 로그인</title>
     <link rel="stylesheet" href="style/reset.css" />
     <link rel="stylesheet" href="style/style.css" />
     <link
@@ -11,7 +11,7 @@
       href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
     />
   </head>
-  <body data-page="home">
+  <body data-page="login">
     <header class="topbar">
       <div class="topbar__inner">
         <a class="topbar__brand" href="index.html" aria-label="향 홈">
@@ -40,76 +40,48 @@
             </li>
           </ul>
         </nav>
-        <a class="login-btn" href="login.html">
-          <i class="ri-arrow-right-line" aria-hidden="true"></i>
-          <span>로그인</span>
+        <a class="login-btn" href="signup.html">
+          <i class="ri-user-add-line" aria-hidden="true"></i>
+          <span>회원가입</span>
         </a>
       </div>
     </header>
 
-    <main class="home-main">
-      <section class="home-identity" aria-labelledby="identityTitle">
-        <div class="home-identity__text">
-          <h1 id="identityTitle">보이지 않는 향을, 느껴지는 감각으로</h1>
-          <p>날씨의 체감과 색의 경험을 더해, 향을 감각으로 전하다.</p>
-        </div>
-        <img
-          src="../hyangtypo.png"
-          alt="보이지 않는 향을, 느껴지는 감각으로"
-          class="home-identity__typo"
-        />
-      </section>
-
-      <section class="home-flip" aria-label="날씨 기반 즉시 추천 카드">
-        <div class="home-flip__wrapper">
-          <div
-            class="home-flip__card"
-            id="instantWeatherCard"
-            role="button"
-            tabindex="0"
-            aria-pressed="false"
-            aria-live="polite"
-          >
-            <div class="home-flip__face home-flip__face--front">
-              <header class="home-flip__header">
-                <i id="instantWeatherIcon" class="ri-sun-line" aria-hidden="true"></i>
-                <div>
-                  <p class="home-flip__label">오늘의 날씨</p>
-                  <p id="instantWeatherStatus" class="home-flip__value--large">맑음</p>
-                </div>
-              </header>
-              <div class="home-flip__metrics">
-                <span>기온<strong id="instantWeatherTemp">22℃</strong></span>
-                <span>습도<strong id="instantWeatherHumidity">45%</strong></span>
-              </div>
-              <footer class="home-flip__hint">
-                <span class="home-flip__chip">
-                  <i class="ri-magic-line" aria-hidden="true"></i>
-                  터치해 바로 추천 보기
-                </span>
-              </footer>
-            </div>
-            <div class="home-flip__face home-flip__face--back">
-              <p class="home-flip__badge">오늘의 추천 향수</p>
-              <h2 id="instantRecommendName" class="home-flip__name">Amber Night</h2>
-              <p id="instantRecommendBrand" class="home-flip__brand">Nocturne Atelier</p>
-              <p id="instantRecommendDesc" class="home-flip__desc">
-                따뜻한 앰버와 우디 노트가 밤 공기와 어울리는 향.
-              </p>
-              <a
-                id="instantRecommendLink"
-                class="home-flip__cta"
-                href="detail.html"
-              >
-                상세 페이지로 이동
-                <i class="ri-arrow-right-up-line" aria-hidden="true"></i>
-              </a>
-              <p class="home-flip__hint home-flip__hint--back">
-                다시 터치하면 날씨 정보가 보여요.
-              </p>
-            </div>
+    <main class="auth-page">
+      <section class="auth-card">
+        <h1 class="auth-card__title">로그인</h1>
+        <p class="auth-card__lead">
+          HYANG 계정으로 로그인하고 개인 취향에 맞춘 추천을 저장하세요.
+        </p>
+        <p class="form__helper" id="loginHelper" hidden></p>
+        <form id="loginForm" class="auth-panel" autocomplete="on">
+          <div class="form-field">
+            <label for="loginEmail">이메일</label>
+            <input
+              type="email"
+              id="loginEmail"
+              name="email"
+              placeholder="example@email.com"
+              required
+            />
           </div>
-        </div>
+          <div class="form-field">
+            <label for="loginPassword">비밀번호</label>
+            <input
+              type="password"
+              id="loginPassword"
+              name="password"
+              placeholder="비밀번호를 입력하세요"
+              required
+            />
+          </div>
+          <p class="form__error" id="loginError"></p>
+          <button class="auth-submit" type="submit">로그인</button>
+        </form>
+        <p class="auth-card__footer">
+          계정이 없으신가요?
+          <a href="signup.html">회원가입 페이지로 이동</a>
+        </p>
       </section>
     </main>
 
