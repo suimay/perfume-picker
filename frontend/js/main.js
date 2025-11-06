@@ -110,12 +110,15 @@ const TAG_SEASON_HINT = {
 
 const hexToRgb = (hex) => {
   const normalized = hex.replace("#", "");
-  const bigint = parseInt(normalized.length === 3
-    ? normalized
-        .split("")
-        .map((char) => char + char)
-        .join("")
-    : normalized, 16);
+  const bigint = parseInt(
+    normalized.length === 3
+      ? normalized
+          .split("")
+          .map((char) => char + char)
+          .join("")
+      : normalized,
+    16
+  );
   const r = (bigint >> 16) & 255;
   const g = (bigint >> 8) & 255;
   const b = bigint & 255;
@@ -132,8 +135,7 @@ const clamp01 = (value) => Math.min(1, Math.max(0, value));
 const mixWithWhite = (hex, weight = 0.5) => {
   const { r, g, b } = hexToRgb(hex);
   const ratio = clamp01(weight);
-  const mix = (channel) =>
-    Math.round(channel + (255 - channel) * ratio);
+  const mix = (channel) => Math.round(channel + (255 - channel) * ratio);
   return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
 };
 
@@ -203,7 +205,11 @@ const renderNoteChips = (element, notes) => {
 };
 
 const deriveMetricValue = (perfume, key, fallback) => {
-  if (perfume && typeof perfume[key] === "number" && !Number.isNaN(perfume[key])) {
+  if (
+    perfume &&
+    typeof perfume[key] === "number" &&
+    !Number.isNaN(perfume[key])
+  ) {
     return Math.max(0, Math.min(10, perfume[key]));
   }
   const tagKeys = (perfume?.tags ?? []).map(toKey);
@@ -242,7 +248,9 @@ const computeTimeSuggestion = (perfume) => {
   const description = (perfume?.description ?? "").toLowerCase();
   const tagKeys = (perfume?.tags ?? []).map(toKey);
   const weatherKeys = (perfume?.weather ?? []).map(toKey);
-  const contexts = safeJsonArray(perfume?.contexts ?? perfume?.context_json).map(toKey);
+  const contexts = safeJsonArray(
+    perfume?.contexts ?? perfume?.context_json
+  ).map(toKey);
   const combined = [...tagKeys, ...weatherKeys, ...contexts];
   const matches = (keywords) =>
     keywords.some(
@@ -281,7 +289,9 @@ const buildScaleTrack = (container, labels, activeIndex, accent) => {
     .map((label, index) => {
       const position = (index / denominator) * 100;
       const activeClass =
-        index === safeIndex ? "metric-scale__label is-active" : "metric-scale__label";
+        index === safeIndex
+          ? "metric-scale__label is-active"
+          : "metric-scale__label";
       return `<span class="${activeClass}" style="left:${position}%">${label}</span>`;
     })
     .join("");
@@ -304,9 +314,7 @@ const findSimilarPerfumes = (currentPerfume) => {
   const targetTags = new Set((currentPerfume.tags ?? []).map(toKey));
   const normalizedList = perfumeList
     .map(normalizePerfumeForUi)
-    .filter(
-      (item) => item && item.id && item.id !== currentPerfume.id
-    );
+    .filter((item) => item && item.id && item.id !== currentPerfume.id);
   const scored = normalizedList
     .map((item) => {
       const itemTags = (item.tags ?? []).map(toKey);
@@ -439,8 +447,25 @@ const CONTEXT_ICON_MAP = {
 const CONTEXT_KEYWORDS = {
   night: ["night", "evening", "midnight", "amber", "noir", "after dark"],
   day: ["day", "daytime", "sunny", "light", "bright", "fresh"],
-  indoor: ["indoor", "cozy", "cocoon", "gourmand", "vanilla", "sweet", "comfort"],
-  outdoor: ["outdoor", "marine", "sea", "ocean", "nature", "green", "forest", "field"],
+  indoor: [
+    "indoor",
+    "cozy",
+    "cocoon",
+    "gourmand",
+    "vanilla",
+    "sweet",
+    "comfort",
+  ],
+  outdoor: [
+    "outdoor",
+    "marine",
+    "sea",
+    "ocean",
+    "nature",
+    "green",
+    "forest",
+    "field",
+  ],
   office: ["office", "work", "meeting", "professional", "clean"],
   casual: ["casual", "weekend", "relax", "soft", "cotton", "powdery"],
   daily: ["daily", "everyday", "routine", "signature"],
@@ -505,7 +530,10 @@ const extractPerfumeArray = (payload) => {
   return [];
 };
 
-const toKey = (value) => String(value ?? "").trim().toLowerCase();
+const toKey = (value) =>
+  String(value ?? "")
+    .trim()
+    .toLowerCase();
 
 const buildChip = (icon, label, modifier) => {
   if (!label) {
@@ -703,7 +731,10 @@ const getPrimaryTagKey = (perfume) => {
 
 const renderPerfumeNotes = (perfume) => {
   const { notes } = perfume;
-  if (!notes || (!notes.top.length && !notes.middle.length && !notes.base.length)) {
+  if (
+    !notes ||
+    (!notes.top.length && !notes.middle.length && !notes.base.length)
+  ) {
     return `<p class="recommend-card__note">노트 정보는 준비 중이에요.</p>`;
   }
 
@@ -775,10 +806,7 @@ const updateResultWeather = (weather) => {
 };
 
 const ensureResultLoadingEl = () => {
-  if (
-    resultView.loadingEl &&
-    resultView.loadingEl.ownerDocument === document
-  ) {
+  if (resultView.loadingEl && resultView.loadingEl.ownerDocument === document) {
     return resultView.loadingEl;
   }
   const indicator = document.createElement("div");
@@ -871,10 +899,7 @@ const updateUserBadge = (profile) => {
     return;
   }
   const displayName =
-    profile?.nickname ??
-    profile?.name ??
-    profile?.email ??
-    dummyUser.name;
+    profile?.nickname ?? profile?.name ?? profile?.email ?? dummyUser.name;
   userNameTarget.textContent = displayName;
 };
 
@@ -1079,10 +1104,7 @@ const createPrimaryRecommendationCard = (perfume) => {
   inner.setAttribute("tabindex", "0");
   inner.setAttribute("role", "button");
   inner.setAttribute("aria-pressed", "false");
-  inner.setAttribute(
-    "aria-label",
-    `${perfume.name} 향수 카드 뒤집기`
-  );
+  inner.setAttribute("aria-label", `${perfume.name} 향수 카드 뒤집기`);
   applyAccentToElement(inner, accent);
   inner.dataset.accent = accent;
   if (theme.gradient) {
@@ -1123,7 +1145,9 @@ const createPrimaryRecommendationCard = (perfume) => {
       }">
         <span data-label>상세보기</span>
       </button>
-      <a class="recommend-card__link" href="${buildOfficialLink(perfume)}" target="_blank" rel="noopener">
+      <a class="recommend-card__link" href="${buildOfficialLink(
+        perfume
+      )}" target="_blank" rel="noopener">
         <span>사이트 이동</span>
       </a>
     </div>
@@ -1312,7 +1336,10 @@ const renderRecommendationBoard = (items, { source } = {}) => {
   }
 
   if (!prepared.length) {
-    showEmptyState("추천할 향수가 없어요", "취향을 조금만 더 업데이트하면 새로운 향수를 소개해드릴 수 있어요.");
+    showEmptyState(
+      "추천할 향수가 없어요",
+      "취향을 조금만 더 업데이트하면 새로운 향수를 소개해드릴 수 있어요."
+    );
     return;
   }
 
@@ -1368,8 +1395,12 @@ const renderCardHtml = (item) => {
     <div>${tags}</div>
     <p>${item.description ?? ""}</p>
     <div class="card__actions" style="margin-top:10px; display:flex; gap:8px;">
-      <button class="card__link" data-id="${item.id}" data-action="detail" type="button">상세보기</button>
-      <button class="bookmark-button" data-id="${item.id}" data-action="bookmark" type="button">북마크</button>
+      <button class="card__link" data-id="${
+        item.id
+      }" data-action="detail" type="button">상세보기</button>
+      <button class="bookmark-button" data-id="${
+        item.id
+      }" data-action="bookmark" type="button">북마크</button>
     </div>
   `;
 };
@@ -1433,7 +1464,10 @@ const renderCardsFromApi = (payload) => {
   }
   const items = extractPerfumeArray(payload).slice(0, 8);
   if (!items.length) {
-    showEmptyState("추천할 향수가 없어요", "선호하는 취향을 조금 더 넓혀보면 어떨까요?");
+    showEmptyState(
+      "추천할 향수가 없어요",
+      "선호하는 취향을 조금 더 넓혀보면 어떨까요?"
+    );
     return;
   }
 
@@ -1458,7 +1492,10 @@ const renderCardsFromDummy = () => {
         );
 
   if (!matches.length) {
-    showEmptyState("추천할 향수가 없어요", "다른 취향을 선택하면 새로운 향수를 소개해드릴게요.");
+    showEmptyState(
+      "추천할 향수가 없어요",
+      "다른 취향을 선택하면 새로운 향수를 소개해드릴게요."
+    );
     return;
   }
 
@@ -1775,7 +1812,6 @@ const initHomePage = () => {
   };
 
   loadTodayWeather();
-
 };
 
 const initSelectPage = () => {
@@ -1847,7 +1883,10 @@ const initResultPage = async () => {
   }
 
   if (!preferences.notes.length) {
-    showEmptyState("취향이 없어요", "취향을 먼저 등록하면 추천을 받을 수 있어요.");
+    showEmptyState(
+      "취향이 없어요",
+      "취향을 먼저 등록하면 추천을 받을 수 있어요."
+    );
     return;
   }
 
@@ -1943,9 +1982,12 @@ const initDetailPage = async () => {
       titleEl.textContent = perfume.name ?? "향수 정보";
     }
     if (descriptionEl) {
-      descriptionEl.textContent = perfume.description ?? "향수 설명이 준비 중입니다.";
+      descriptionEl.textContent =
+        perfume.description ?? "향수 설명이 준비 중입니다.";
     }
-    const breadcrumbCurrent = document.getElementById("detailBreadcrumbCurrent");
+    const breadcrumbCurrent = document.getElementById(
+      "detailBreadcrumbCurrent"
+    );
     if (breadcrumbCurrent) {
       breadcrumbCurrent.textContent = perfume.name ?? "향수 상세";
     }
@@ -2042,7 +2084,12 @@ const initDetailPage = async () => {
       if (timeBadge) {
         timeBadge.textContent = timeSuggestion.badge;
       }
-      buildScaleTrack(seasonScale, SEASON_LABELS_KR, seasonSuggestion.index, accent);
+      buildScaleTrack(
+        seasonScale,
+        SEASON_LABELS_KR,
+        seasonSuggestion.index,
+        accent
+      );
       buildScaleTrack(timeScale, TIME_LABELS_KR, timeSuggestion.index, accent);
     }
 
@@ -2075,7 +2122,9 @@ const initDetailPage = async () => {
           }
           const targetId = targetCard.dataset.id;
           if (targetId) {
-            window.location.href = `detail.html?id=${encodeURIComponent(targetId)}`;
+            window.location.href = `detail.html?id=${encodeURIComponent(
+              targetId
+            )}`;
           }
         });
         similarGrid.dataset.bound = "true";
@@ -2148,7 +2197,10 @@ const initMyPage = async () => {
   };
 
   const applyCatalogFilters = () => {
-    if (!Array.isArray(catalogView.baseItems) || !catalogView.baseItems.length) {
+    if (
+      !Array.isArray(catalogView.baseItems) ||
+      !catalogView.baseItems.length
+    ) {
       listEl.innerHTML = "";
       if (emptyStateEl) {
         emptyStateEl.hidden = false;
@@ -2223,9 +2275,7 @@ const initMyPage = async () => {
 
   try {
     const perfumes = await fetchPerfumesFromApi();
-    catalogView.baseItems = perfumes
-      .map(normalizePerfumeForUi)
-      .filter(Boolean);
+    catalogView.baseItems = perfumes.map(normalizePerfumeForUi).filter(Boolean);
     applyCatalogFilters();
   } catch (error) {
     console.warn("[mypage] API error, using fallback");

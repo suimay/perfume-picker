@@ -755,7 +755,7 @@ button {
   display: grid;
   gap: 0.75rem;
   color: var(--color-text);
-  max-width: min(340px, 46%);
+  max-width: min(350px, 46%);
   z-index: 2;
   text-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
 }
