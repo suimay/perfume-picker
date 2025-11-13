@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="ko">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HYANG | 마이 페이지</title>
-    <link rel="stylesheet" href="style/reset.css">
-    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/reset.css" />
+    <link rel="stylesheet" href="style/base.css" />
+    <link rel="stylesheet" href="style/mypage.css" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
-    >
+    />
   </head>
   <body data-page="mypage">
     <header class="topbar">
@@ -33,91 +34,142 @@
               </a>
             </li>
             <li>
-              <a class="topbar__link" href="mypage.html" data-nav="mypage">
+              <a class="topbar__link" href="catalog.html" data-nav="catalog">
                 <i class="ri-information-line" aria-hidden="true"></i>
                 <span>향수 목록</span>
               </a>
             </li>
           </ul>
         </nav>
-        <a class="login-btn" href="login.html">
+        <a class="login-btn" id="topbarAuthButton" href="login.html">
           <i class="ri-arrow-right-line" aria-hidden="true"></i>
-          <span>로그인</span>
+          <span data-label>로그인</span>
         </a>
       </div>
     </header>
     <nav class="breadcrumb" aria-label="경로">
       <ol class="breadcrumb__list">
         <li class="breadcrumb__item"><a href="index.html">홈</a></li>
-        <li class="breadcrumb__item" aria-current="page">향수 목록</li>
+        <li class="breadcrumb__item" aria-current="page">마이페이지</li>
       </ol>
     </nav>
-    <main class="catalog-main">
-      <section class="catalog-hero">
-        <h1 class="catalog-hero__title">향수 목록</h1>
-        <p class="catalog-hero__desc">취향과 계절로 빠르게 찾아보세요.</p>
+    <main class="mypage-main">
+      <section class="mypage-hero">
+        <h1 class="mypage-hero__title">나의 향기 아카이브</h1>
+        <p class="mypage-hero__desc">
+          원하는 향의 색과 느낌을 다시 떠올릴 수 있도록, 북마크와 사용자 정보를
+          한눈에 정리했어요.
+        </p>
       </section>
 
-      <section class="catalog-toolbar" aria-label="검색 및 필터">
-        <div class="catalog-search">
-          <i class="ri-search-line" aria-hidden="true"></i>
-          <input
-            id="catalogSearchInput"
-            type="search"
-            placeholder="이름 / 브랜드 / 노트 / 감각 태그 검색"
-            aria-label="향수 검색"
-          >
-        </div>
-        <div class="catalog-filters">
-          <label class="catalog-select">
-            <span class="catalog-select__label">계절</span>
-            <select id="catalogSeasonFilter" aria-label="계절 필터">
-              <option value="all">모든 계절</option>
-              <option value="spring">봄</option>
-              <option value="summer">여름</option>
-              <option value="autumn">가을</option>
-              <option value="winter">겨울</option>
-            </select>
-          </label>
-          <label class="catalog-select">
-            <span class="catalog-select__label">정렬</span>
-            <select id="catalogSortSelect" aria-label="정렬 순서">
-              <option value="name-asc">이름 오름차순</option>
-              <option value="name-desc">이름 내림차순</option>
-              <option value="brand-asc">브랜드 오름차순</option>
-            </select>
-          </label>
-        </div>
-        <div class="catalog-meta">
-          <span id="catalogResultCount">0개의 향수</span>
+      <section class="mypage-profile" aria-label="사용자 정보">
+        <div class="mypage-profile__info">
+          <div class="mypage-avatar" id="mypageAvatar" aria-hidden="true">
+            <span id="mypageAvatarInitial">🙂</span>
+          </div>
+          <div class="mypage-profile__body">
+            <div class="mypage-profile__account">
+              <p class="mypage-profile__eyebrow">사용자 정보</p>
+              <h2 class="mypage-profile__name" id="mypageNickname">게스트</h2>
+              <p class="mypage-profile__email" id="mypageEmail">
+                로그인하고 나만의 향수를 모아보세요.
+              </p>
+            </div>
+            <div class="mypage-stats">
+              <dl class="mypage-stat-card">
+                <dt>북마크</dt>
+                <dd>
+                  <span id="mypageBookmarkCount" class="mypage-stat-number"
+                    >0</span
+                  >
+                  <span class="mypage-stat-meta">개의 향수</span>
+                </dd>
+              </dl>
+              <div class="mypage-pref-card" aria-live="polite">
+                <div class="mypage-pref-card__head">
+                  <span>선호 태그</span>
+                  <a class="mypage-pref-button" href="select.html">
+                    <span>취향 다시 선택하기</span>
+                    <i class="ri-arrow-right-up-line" aria-hidden="true"></i>
+                  </a>
+                </div>
+                <div id="mypagePreferenceHint" class="mypage-pref-tags">
+                  취향 정보 준비 중
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section class="catalog-grid-section" aria-label="향수 카드 목록">
-        <div id="catalogList" class="catalog-grid" aria-live="polite"></div>
-        <p id="catalogEmptyState" class="catalog-empty" hidden>조건에 맞는 향수가 없어요. 검색어나 필터를 조정해 다른 향수를 탐색해보세요.</p>
+      <section class="mypage-bookmarks" aria-label="북마크 리스트">
+        <div class="mypage-section-head">
+          <div>
+            <p class="mypage-section-eyebrow">북마크 리스트</p>
+            <h2 class="mypage-section-title">북마크 향수</h2>
+            <p class="mypage-section-desc" id="mypageBookmarkMeta">
+              마음에 드는 향수를 저장하면 이곳에 카드로 정리돼요.
+            </p>
+          </div>
+        </div>
+        <div
+          id="mypageBookmarkGrid"
+          class="mypage-bookmark-grid"
+          aria-live="polite"
+        ></div>
+        <p id="mypageBookmarkEmpty" class="mypage-empty" hidden>
+          아직 북마크가 없어요. 추천 결과에서 마음에 드는 향수를 저장해 보세요.
+        </p>
       </section>
     </main>
     <footer class="site-footer">
       <div class="site-footer__inner">
         <div class="site-footer__left">
-          <span class="site-footer__copy">© 2025 KSNU 2500131 SUIN. 향(香)</span>
+          <span class="site-footer__copy"
+            >© 2025 KSNU 2500131 SUIN. 향(香)</span
+          >
           <nav class="site-footer__links" aria-label="법적 고지">
-            <a href="#" class="site-footer__link" data-footer-link="terms">이용약관</a>
-            <a href="#" class="site-footer__link" data-footer-link="privacy">개인정보처리방침</a>
+            <a href="#" class="site-footer__link" data-footer-link="terms"
+              >이용약관</a
+            >
+            <a href="#" class="site-footer__link" data-footer-link="privacy"
+              >개인정보처리방침</a
+            >
           </nav>
         </div>
         <div class="site-footer__right" aria-label="소셜 링크">
-          <a class="site-footer__icon" href="mailto:atomsyndrome@gmail.com" aria-label="메일">
+          <a
+            class="site-footer__icon"
+            href="mailto:atomsyndrome@gmail.com"
+            aria-label="메일"
+          >
             <i class="ri-mail-line" aria-hidden="true"></i>
           </a>
-          <a class="site-footer__icon" href="https://www.instagram.com/ooinlees?igsh=MWw4eGRkamEweDd0cQ%3D%3D&utm_source=qr" target="_blank" rel="noopener" aria-label="인스타그램">
+          <a
+            class="site-footer__icon"
+            href="https://www.instagram.com/ooinlees?igsh=MWw4eGRkamEweDd0cQ%3D%3D&utm_source=qr"
+            target="_blank"
+            rel="noopener"
+            aria-label="인스타그램"
+          >
             <i class="ri-instagram-line" aria-hidden="true"></i>
           </a>
-          <a class="site-footer__icon" href="https://www.notion.so/amilab/26f763f6955a802e8e48e466b95da239?source=copy_link" target="_blank" rel="noopener" aria-label="노션">
+          <a
+            class="site-footer__icon"
+            href="https://www.notion.so/amilab/26f763f6955a802e8e48e466b95da239?source=copy_link"
+            target="_blank"
+            rel="noopener"
+            aria-label="노션"
+          >
             <i class="ri-file-list-line" aria-hidden="true"></i>
           </a>
-          <a class="site-footer__icon" href="https://github.com/suimay/perfume-picker" target="_blank" rel="noopener" aria-label="깃허브">
+          <a
+            class="site-footer__icon"
+            href="https://github.com/suimay/perfume-picker"
+            target="_blank"
+            rel="noopener"
+            aria-label="깃허브"
+          >
             <i class="ri-github-line" aria-hidden="true"></i>
           </a>
         </div>

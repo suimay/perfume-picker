@@ -1,0 +1,240 @@
+/* Select page ------------------------------------------------------------- */
+.select-main {
+  display: grid;
+  gap: 2.4rem;
+  padding: 3.2rem 0 4rem;
+}
+
+.select-header {
+  text-align: center;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.select-title {
+  margin: 0;
+  font-size: clamp(2rem, 4.2vw, 2.6rem);
+  font-weight: 700;
+}
+
+.select-subtitle {
+  margin: 0 auto;
+  max-width: 48ch;
+  color: var(--color-muted);
+  line-height: 1.6;
+}
+
+.select-form {
+  display: grid;
+  gap: 2rem;
+}
+
+.select-section {
+  border-radius: calc(var(--radius-large) + 6px);
+  background: rgba(255, 255, 255, 0.98);
+  /*
+  linear-gradient(
+    165deg,
+    rgba(255, 255, 255, 0.98) 0%,
+    rgba(245, 247, 254, 0.92) 100%
+  )*/
+  border: 1px solid rgba(31, 36, 48, 0.05);
+  box-shadow: 0 28px 48px rgba(30, 41, 59, 0.12);
+  padding: clamp(2rem, 4vw, 2.6rem);
+  display: grid;
+  gap: 1.8rem;
+}
+
+.select-section fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: grid;
+  gap: 1.4rem;
+}
+
+.select-section legend {
+  margin: 1em;
+  font-size: clamp(1.3rem, 3vw, 1.5rem);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.select-section .fieldset-body {
+  display: grid;
+  gap: 1.6rem;
+}
+
+.sense-grid {
+  display: grid;
+  gap: clamp(1.2rem, 3vw, 1.8rem);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+.sense-card {
+  position: relative;
+  border-radius: 26px;
+  border: 1.5px solid rgba(109, 125, 168, 0.16);
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    rgba(255, 255, 255, 0.98) 100%
+  );
+  box-shadow: 0 20px 30px rgba(31, 36, 48, 0.12);
+  transition: transform var(--transition), box-shadow var(--transition),
+    border-color var(--transition), background var(--transition);
+  min-height: 192px;
+  overflow: hidden; /* ⬅️ 내부 그림자/배경이 라운드에 맞게 잘림 */
+}
+
+.sense-card input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* ⬇️ face도 둥글게(상속) — 내부 효과가 각지지 않도록 */
+.sense-card__face {
+  border-radius: inherit;
+  padding: clamp(1.6rem, 3.4vw, 2rem) clamp(1.2rem, 3vw, 1.7rem);
+  display: grid;
+  gap: 0.45rem;
+  text-align: center;
+  align-content: start;
+}
+
+.sense-card__face strong {
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.sense-card__face .emoji {
+  font-size: clamp(2.1rem, 4vw, 2.6rem);
+  color: inherit;
+}
+
+.sense-card__face span:not(.badge):not(.emoji) {
+  color: rgba(31, 36, 48, 0.58);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.sense-card__face .badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 0.4rem;
+  /*background: rgba(86, 96, 255, 0.12);*/
+  color: rgba(31, 36, 48, 0.7);
+  font-size: 1.3rem;
+  margin: 0.6rem auto 0;
+  visibility: hidden;
+}
+
+.sense-card:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(180deg, #ffffff 0%, #f1f3f7 100%);
+  border-color: rgba(31, 36, 48, 0.22);
+  box-shadow: 0 26px 42px rgba(31, 36, 48, 0.18);
+}
+
+/* ✅ 체크 상태 효과는 컨테이너에 — 둥근 테두리/그림자 유지 */
+.sense-card:has(input:checked) {
+  /*background: rgb(214, 240, 255);*/
+  border-color: rgb(146, 179, 255);
+  box-shadow: 0 20px 38px rgba(31, 36, 48, 0.18), 0 0 0 0px rgba(31, 36, 48, 0); /* 링 제거(네모 방지) */
+}
+
+/* 체크 시 배지 노출 */
+.sense-card:has(input:checked) .sense-card__face .badge {
+  visibility: visible;
+  background: rgba(86, 96, 255, 0.18);
+  color: rgba(31, 36, 48, 0.9);
+}
+
+/* ✅ 포커스 링도 컨테이너로 이동(둥글게 표시) */
+.sense-card:has(input:focus-visible) {
+  box-shadow: 0 0 0 3px rgba(86, 96, 255, 0.3),
+    0 26px 42px rgba(31, 36, 48, 0.18);
+}
+
+/* ▼ (구) 규칙: face에 준 체크/포커스 효과는 비활성화
+   네모 테두리 원인이었던 링(box-shadow spread)을 제거 */
+.sense-card input:checked + .sense-card__face {
+  background: transparent; /* 배경은 컨테이너에서 처리 */
+  box-shadow: none; /* 링 제거 */
+}
+.sense-card input:focus-visible + .sense-card__face {
+  outline: 0;
+  box-shadow: none; /* 링 제거 */
+}
+
+.select__submit {
+  margin: clamp(2rem, 4vw, 3rem) auto 0;
+  max-width: 420px;
+  padding: 1.2rem 1.5rem;
+  border-radius: 32px;
+
+  /* 🔹배경과 그림자 제거 */
+  background: none;
+  border: none;
+  box-shadow: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* 선택적으로 — 글자만 깔끔하게 유지 */
+  font-weight: 700;
+  color: var(--color-text, #1f2430);
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/* 🔹호버 시 살짝 올라오게 (선택사항) */
+.select__submit:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+.select__submit__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-width: 200px;
+  padding: 0.95rem 2.6rem;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.98);
+  color: var(--color-text);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  box-shadow: 0 18px 32px rgba(37, 56, 88, 0.22);
+  transition: transform var(--transition), box-shadow var(--transition),
+    filter var(--transition);
+}
+
+.select__submit__button:hover,
+.select__submit__button:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 24px 40px rgba(37, 56, 88, 0.26);
+  filter: brightness(1.03);
+  outline: 0;
+}
+
+.select__submit__button:active {
+  transform: translateY(0);
+  box-shadow: 0 18px 32px rgba(37, 56, 88, 0.18);
+}
+
+@media (max-width: 640px) {
+  .select__submit__button {
+    width: 100%;
+  }
+}

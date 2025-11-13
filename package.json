@@ -1,0 +1,11 @@
+{
+  "name": "hyang-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "npm run start:backend",
+    "start:backend": "npm --prefix backend start",
+    "dev": "npm --prefix backend run dev",
+    "install:backend": "npm --prefix backend install"
+  }
+}

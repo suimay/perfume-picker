@@ -32,6 +32,19 @@ const catalogView = {
   baseItems: [],
 };
 
+const mypageView = {
+  nicknameEl: null,
+  emailEl: null,
+  avatarInitialEl: null,
+  preferenceEl: null,
+  bookmarkCountEl: null,
+  bookmarkMetaEl: null,
+  bookmarkGrid: null,
+  bookmarkEmptyEl: null,
+  logoutButton: null,
+  bookmarks: [],
+};
+
 const safeJsonArray = (value) => {
   if (Array.isArray(value)) {
     return value;
@@ -389,6 +402,24 @@ const formatTagLabel = (tag) => {
   return key;
 };
 
+const normalizePreferenceToken = (token) => {
+  if (!token) {
+    return "";
+  }
+  return String(token)
+    .trim()
+    .replace(/[_\s]+/g, " ")
+    .toLowerCase();
+};
+
+const formatHashtagLabel = (token) => {
+  const normalized = normalizePreferenceToken(token);
+  if (!normalized) {
+    return "";
+  }
+  return `#${normalized.replace(/\s+/g, "-")}`;
+};
+
 const TAG_ICON_MAP = {
   citrus: "🍋",
   sweet: "🍯",
@@ -426,6 +457,33 @@ const WEATHER_EMOJI_MAP = {
   dry: "🌤️ 건조",
   windy: "🌬️ 바람",
   night: "🌙 밤",
+};
+
+const AVATAR_WEATHER_EMOJIS = [
+  "☀️",
+  "🌤️",
+  "⛅",
+  "🌧️",
+  "⛈️",
+  "🌦️",
+  "❄️",
+  "🌫️",
+  "🌪️",
+  "💨",
+  "🌈",
+  "⭐",
+];
+
+const pickWeatherAvatarEmoji = (seedValue) => {
+  if (seedValue && typeof seedValue === "string" && seedValue.length > 0) {
+    const total = Array.from(seedValue).reduce(
+      (sum, char) => sum + char.charCodeAt(0),
+      0
+    );
+    return AVATAR_WEATHER_EMOJIS[total % AVATAR_WEATHER_EMOJIS.length];
+  }
+  const randomIndex = Math.floor(Math.random() * AVATAR_WEATHER_EMOJIS.length);
+  return AVATAR_WEATHER_EMOJIS[randomIndex];
 };
 
 const CONTEXT_ICON_MAP = {
@@ -716,6 +774,105 @@ const buildWeatherEmojiString = (weathers) => {
     .join(" ");
 };
 
+const TIME_EMOJI_MAP = {
+  night: "🌙",
+  evening: "🌆",
+  day: "🌞",
+  morning: "🌅",
+};
+
+const pickSeasonEmojiForCatalog = (perfume) => {
+  const tokens = extractSeasonTokens(perfume);
+  for (const token of tokens) {
+    const emoji = seasonToEmoji(token);
+    if (emoji) {
+      return emoji;
+    }
+  }
+  return "";
+};
+
+const pickTimeEmojiForCatalog = (perfume) => {
+  const tokens = deriveContextTokens(perfume)
+    .map(toKey)
+    .filter(Boolean);
+  const preferenceOrder = ["night", "evening", "day", "morning"];
+  for (const key of preferenceOrder) {
+    if (tokens.includes(key) && TIME_EMOJI_MAP[key]) {
+      return TIME_EMOJI_MAP[key];
+    }
+  }
+  const hintEmoji = detectTimeHintFromText(perfume);
+  if (hintEmoji) {
+    return hintEmoji;
+  }
+  return TIME_EMOJI_MAP.day;
+};
+
+const TIME_KEYWORD_HINTS = {
+  night: ["night", "midnight", "moon", "nocturne", "evening walk", "야상", "밤", "달빛"],
+  evening: ["evening", "sunset", "dusk", "twilight", "황혼", "석양"],
+  morning: ["morning", "dawn", "sunrise", "아침"],
+  day: ["day", "noon", "sunny", "낮", "정오"],
+};
+
+const detectTimeHintFromText = (perfume) => {
+  const sources = [
+    perfume.name,
+    perfume.description,
+    ...(Array.isArray(perfume.tags) ? perfume.tags : []),
+    ...(Array.isArray(perfume.accords) ? perfume.accords : []),
+  ]
+    .filter(Boolean)
+    .map((text) => text.toString().toLowerCase());
+
+  const findMatch = (key) =>
+    TIME_KEYWORD_HINTS[key].some((keyword) =>
+      sources.some((source) => source.includes(keyword))
+    );
+
+  const preferenceOrder = ["night", "evening", "morning", "day"];
+  for (const key of preferenceOrder) {
+    if (findMatch(key)) {
+      return TIME_EMOJI_MAP[key];
+    }
+  }
+  return "";
+};
+
+const buildCatalogIconRow = (perfume) => {
+  const items = [];
+  const seasonEmoji = pickSeasonEmojiForCatalog(perfume);
+  if (seasonEmoji) {
+    items.push({
+      className: "ri-leaf-line",
+      label: "추천 계절",
+      emoji: seasonEmoji,
+    });
+  }
+  const timeEmoji = pickTimeEmojiForCatalog(perfume);
+  if (timeEmoji) {
+    items.push({
+      className: "ri-time-line",
+      label: "추천 시간대",
+      emoji: timeEmoji,
+    });
+  }
+  if (!items.length) {
+    return null;
+  }
+  const row = document.createElement("div");
+  row.className = "catalog-card__iconrow";
+  items.forEach(({ className, label, emoji }) => {
+    const span = document.createElement("span");
+    span.className = "catalog-card__icon";
+    span.setAttribute("aria-label", label);
+    span.innerHTML = `<i class="${className}" aria-hidden="true"></i><span class="catalog-card__icon-emoji">${emoji}</span>`;
+    row.appendChild(span);
+  });
+  return row;
+};
+
 const getPrimaryTagKey = (perfume) => {
   if (perfume.primary_tag) {
     return perfume.primary_tag;
@@ -893,19 +1050,154 @@ const saveUser = (user) => {
   }
 };
 
-const updateUserBadge = (profile) => {
-  const userNameTarget = document.getElementById("topbarUserName");
-  if (!userNameTarget) {
+const clearUser = () => {
+  try {
+    localStorage.removeItem(USER_STORAGE_KEY);
+  } catch (error) {
+    console.warn("[user] failed to clear user:", error);
+  }
+};
+
+const updateTopbarAuthButton = (profile) => {
+  const authButton = document.getElementById("topbarAuthButton");
+  if (!authButton) {
     return;
   }
-  const displayName =
-    profile?.nickname ?? profile?.name ?? profile?.email ?? dummyUser.name;
-  userNameTarget.textContent = displayName;
+  const labelTarget =
+    authButton.querySelector("[data-label]") || authButton.querySelector("span");
+  const icon = authButton.querySelector("i");
+  const isMyPage = document.body.dataset.page === "mypage";
+  if (profile?.email && isMyPage) {
+    authButton.href = "javascript:void(0)";
+    authButton.setAttribute("aria-label", "로그아웃");
+    authButton.dataset.action = "logout";
+    if (labelTarget) {
+      labelTarget.textContent = "로그아웃";
+    }
+    if (icon) {
+      icon.className = "ri-logout-box-r-line";
+    }
+  } else if (profile?.email) {
+    authButton.href = "mypage.html";
+    authButton.removeAttribute("data-action");
+    authButton.setAttribute("aria-label", "마이페이지로 이동");
+    if (labelTarget) {
+      labelTarget.textContent = "마이페이지";
+    }
+    if (icon) {
+      icon.className = "ri-user-heart-line";
+    }
+  } else {
+    authButton.href = "login.html";
+    authButton.removeAttribute("data-action");
+    authButton.setAttribute("aria-label", "로그인 페이지로 이동");
+    if (labelTarget) {
+      labelTarget.textContent = "로그인";
+    }
+    if (icon) {
+      icon.className = "ri-arrow-right-line";
+    }
+  }
+};
+
+const updateUserBadge = (profile) => {
+  const userNameTarget = document.getElementById("topbarUserName");
+  if (userNameTarget) {
+    const displayName =
+      profile?.nickname ?? profile?.name ?? profile?.email ?? dummyUser.name;
+    userNameTarget.textContent = displayName;
+  }
+  updateTopbarAuthButton(profile);
 };
 
 const hydrateUserBadge = () => {
   const stored = loadStoredUser();
   updateUserBadge(stored ?? dummyUser);
+};
+
+const applyMyPageProfile = (profile) => {
+  const nickname =
+    profile?.nickname ??
+    profile?.name ??
+    profile?.email ??
+    dummyUser.name;
+  const emailText =
+    profile?.email ?? "로그인하고 나만의 향수를 모아보세요.";
+  if (mypageView.nicknameEl) {
+    mypageView.nicknameEl.textContent = nickname;
+  }
+  if (mypageView.emailEl) {
+    mypageView.emailEl.textContent = emailText;
+  }
+  if (mypageView.avatarInitialEl) {
+    const seed = profile?.email ?? profile?.nickname ?? profile?.name ?? "";
+    const avatarEmoji = pickWeatherAvatarEmoji(seed);
+    mypageView.avatarInitialEl.textContent = avatarEmoji;
+    mypageView.avatarInitialEl.setAttribute(
+      "aria-label",
+      `사용자 기분 아이콘 ${avatarEmoji}`
+    );
+  }
+  if (mypageView.logoutButton) {
+    const labelTarget =
+      mypageView.logoutButton.querySelector("[data-label]") ??
+      mypageView.logoutButton;
+    const icon = mypageView.logoutButton.querySelector("i");
+    if (profile?.email) {
+      mypageView.logoutButton.dataset.mode = "logout";
+      if (labelTarget) {
+        labelTarget.textContent = "로그아웃";
+      }
+      if (icon) {
+        icon.className = "ri-logout-box-r-line";
+      }
+    } else {
+      mypageView.logoutButton.dataset.mode = "login";
+      if (labelTarget) {
+        labelTarget.textContent = "로그인하기";
+      }
+      if (icon) {
+        icon.className = "ri-login-circle-line";
+      }
+    }
+  }
+};
+
+const applyMyPagePreferenceSummary = () => {
+  if (!mypageView.preferenceEl) {
+    return;
+  }
+  const preferences = loadPreferences();
+  const candidateTokens = [
+    ...(Array.isArray(preferences.notes) ? preferences.notes : []),
+    ...(Array.isArray(preferences.context) ? preferences.context : []),
+  ]
+    .map((token) => normalizePreferenceToken(token))
+    .filter(Boolean);
+  const unique = Array.from(new Set(candidateTokens));
+  mypageView.preferenceEl.innerHTML = "";
+  if (!unique.length) {
+    mypageView.preferenceEl.textContent = "취향 정보 준비 중";
+    return;
+  }
+  unique.slice(0, 6).forEach((label) => {
+    const chip = document.createElement("span");
+    chip.className = "mypage-pref-tag";
+    chip.textContent = label;
+    mypageView.preferenceEl.appendChild(chip);
+  });
+};
+
+const applyBookmarkStats = (count) => {
+  if (mypageView.bookmarkCountEl) {
+    mypageView.bookmarkCountEl.textContent = String(count);
+  }
+  if (mypageView.bookmarkMetaEl) {
+    mypageView.bookmarkMetaEl.textContent =
+      count > 0
+        ? `총 ${count}개의 향수를 북마크했어요. 카드에서 바로 상세보기나 북마크 해제가 가능해요.`
+        : "마음에 드는 향수를 저장하면 이곳에 카드로 정리돼요.";
+  }
 };
 
 const initCommonUI = () => {
@@ -947,7 +1239,7 @@ const initCommonUI = () => {
   }
 
   const fadeTargets = document.querySelectorAll(
-    ".container, .hero, .card-grid, .select-main, .catalog-main"
+    ".container, .hero, .card-grid, .select-main, .catalog-main, .mypage-main"
   );
   fadeTargets.forEach((target) => {
     if (target.dataset.fadeReady === "true") {
@@ -989,6 +1281,24 @@ const setBookmarkButtonState = (button, active) => {
     labelTarget.textContent = text;
   } else {
     button.textContent = text;
+  }
+  const accent = button.dataset.accent;
+  if (active && accent) {
+    try {
+      const highlight = mixWithWhite(accent, 0.2);
+      const border = withAlpha(accent, 0.35);
+      button.style.background = highlight;
+      button.style.borderColor = border;
+      button.style.color = "#fff";
+    } catch (_error) {
+      button.style.background = "";
+      button.style.borderColor = "";
+      button.style.color = "";
+    }
+  } else {
+    button.style.background = "";
+    button.style.borderColor = "";
+    button.style.color = "";
   }
 };
 
@@ -1032,6 +1342,133 @@ const bindCardActions = (container, { onBookmarkChange } = {}) => {
   });
 
   container.dataset.actionsBound = "true";
+};
+
+const buildMypageBookmarkCard = (perfume) => {
+  if (!perfume || !perfume.id) {
+    return null;
+  }
+  const article = document.createElement("article");
+  article.className = "mypage-bookmark-card";
+  article.dataset.perfumeId = perfume.id;
+  const accent = perfume.accent ?? pickAccentColor(perfume);
+  article.style.setProperty("--mypage-card-accent", accent);
+
+  const badge = document.createElement("span");
+  badge.className = "mypage-bookmark-card__badge";
+  badge.textContent = perfume.brand ?? "HYANG LAB";
+  article.appendChild(badge);
+
+  const title = document.createElement("h3");
+  title.className = "mypage-bookmark-card__title";
+  title.textContent = perfume.name ?? "향수";
+  article.appendChild(title);
+
+  const desc = document.createElement("p");
+  desc.className = "mypage-bookmark-card__desc";
+  desc.textContent =
+    perfume.description ?? "차분하게 감성을 담은 향수예요.";
+  article.appendChild(desc);
+
+  const tagsWrapper = document.createElement("div");
+  tagsWrapper.className = "mypage-bookmark-card__tags";
+  const tags = Array.isArray(perfume.tags) ? perfume.tags : [];
+  if (tags.length) {
+    tags.slice(0, 3).forEach((tag) => {
+      const chip = document.createElement("span");
+      chip.className = "mypage-tag";
+      const label = formatHashtagLabel(tag) || "#note";
+      chip.textContent = label;
+      tagsWrapper.appendChild(chip);
+    });
+  } else {
+    const chip = document.createElement("span");
+    chip.className = "mypage-tag";
+    chip.textContent = "#ready";
+    tagsWrapper.appendChild(chip);
+  }
+  article.appendChild(tagsWrapper);
+
+  const actions = document.createElement("div");
+  actions.className = "mypage-bookmark-card__actions";
+
+  const detailButton = document.createElement("button");
+  detailButton.type = "button";
+  detailButton.className = "mypage-detail-button";
+  detailButton.dataset.action = "detail";
+  detailButton.dataset.id = perfume.id;
+  detailButton.innerHTML =
+    '<span>상세보기</span><i class="ri-arrow-right-line" aria-hidden="true"></i>';
+  actions.appendChild(detailButton);
+
+  const bookmarkButton = document.createElement("button");
+  bookmarkButton.type = "button";
+  bookmarkButton.className = "bookmark-button";
+  bookmarkButton.dataset.action = "bookmark";
+  bookmarkButton.dataset.id = perfume.id;
+  bookmarkButton.innerHTML = '<span data-label>북마크 해제</span>';
+  bookmarkButton.dataset.accent = accent;
+  setBookmarkButtonState(bookmarkButton, isBookmarked(perfume.id));
+  actions.appendChild(bookmarkButton);
+
+  article.appendChild(actions);
+  return article;
+};
+
+const renderMypageBookmarks = () => {
+  const { bookmarkGrid, bookmarkEmptyEl } = mypageView;
+  if (!bookmarkGrid || !bookmarkEmptyEl) {
+    return;
+  }
+  bookmarkGrid.innerHTML = "";
+  const items = Array.isArray(mypageView.bookmarks)
+    ? mypageView.bookmarks
+    : [];
+  if (!items.length) {
+    bookmarkGrid.hidden = true;
+    bookmarkEmptyEl.hidden = false;
+    return;
+  }
+  bookmarkGrid.hidden = false;
+  bookmarkEmptyEl.hidden = true;
+  const fragment = document.createDocumentFragment();
+  items.forEach((perfume) => {
+    const card = buildMypageBookmarkCard(perfume);
+    if (card) {
+      fragment.appendChild(card);
+    }
+  });
+  bookmarkGrid.appendChild(fragment);
+};
+
+const fetchBookmarkPerfumes = async () => {
+  const bookmarkIds = loadBookmarks().map((id) => String(id));
+  if (!bookmarkIds.length) {
+    return [];
+  }
+  let perfumes = [];
+  try {
+    perfumes = await fetchPerfumesFromApi();
+  } catch (error) {
+    console.warn("[mypage] perfume fetch failed, using fallback:", error);
+  }
+  if (!Array.isArray(perfumes) || !perfumes.length) {
+    perfumes = perfumeList.map(normalizePerfumeForUi).filter(Boolean);
+  }
+  const lookup = new Map();
+  perfumes.forEach((perfume) => {
+    if (perfume && perfume.id) {
+      lookup.set(String(perfume.id), perfume);
+    }
+  });
+  const ordered = [];
+  bookmarkIds.forEach((id) => {
+    const match = lookup.get(id);
+    if (match) {
+      ordered.push(match);
+    }
+  });
+  return ordered;
 };
 
 const buildOfficialLink = (perfume) => {
@@ -1097,28 +1534,10 @@ const createPrimaryRecommendationCard = (perfume) => {
   article.className = "recommend-card recommend-card--primary";
   article.dataset.perfumeId = perfume.id;
   applyAccentToElement(article, accent);
-  const theme = buildPrimaryCardTheme(accent);
-
   const inner = document.createElement("div");
   inner.className = "recommend-card__inner";
-  inner.setAttribute("tabindex", "0");
-  inner.setAttribute("role", "button");
-  inner.setAttribute("aria-pressed", "false");
-  inner.setAttribute("aria-label", `${perfume.name} 향수 카드 뒤집기`);
   applyAccentToElement(inner, accent);
-  inner.dataset.accent = accent;
-  if (theme.gradient) {
-    inner.style.setProperty("--primary-card-gradient", theme.gradient);
-  }
-  if (theme.border) {
-    inner.style.setProperty("--primary-card-border", theme.border);
-  }
-  if (theme.shadow) {
-    inner.style.setProperty("--primary-card-shadow", theme.shadow);
-  }
 
-  const front = document.createElement("div");
-  front.className = "recommend-card__face";
   const tagChips = renderTagChips(perfume);
   const seasonChips = renderSeasonChips(perfume);
   const contextChips = renderContextChips(perfume);
@@ -1127,7 +1546,7 @@ const createPrimaryRecommendationCard = (perfume) => {
       ? `${seasonChips}${contextChips}`
       : buildChip("🔍", "분위기 탐색", "context");
   const imageStyle = buildImageStyle(perfume);
-  front.innerHTML = `
+  inner.innerHTML = `
     <span class="recommend-card__accent" aria-hidden="true"></span>
     <p class="recommend-card__brand">${perfume.brand ?? "HYANG LAB"}</p>
     <h2 class="recommend-card__name">${perfume.name}</h2>
@@ -1145,29 +1564,22 @@ const createPrimaryRecommendationCard = (perfume) => {
       }">
         <span data-label>상세보기</span>
       </button>
-      <a class="recommend-card__link" href="${buildOfficialLink(
-        perfume
-      )}" target="_blank" rel="noopener">
-        <span>사이트 이동</span>
-      </a>
+      <button class="recommend-card__link bookmark-button" type="button" data-action="bookmark" data-id="${
+        perfume.id
+      }">
+        <span data-label>북마크</span>
+      </button>
     </div>
   `;
 
-  const back = document.createElement("div");
-  back.className = "recommend-card__face recommend-card__face--back";
-  const notesHtml = renderPerfumeNotes(perfume);
-  back.innerHTML = `
-    <span class="recommend-card__accent" aria-hidden="true"></span>
-    <div class="recommend-card__badge recommend-card__badge--ghost">향조 노트</div>
-    <h3 class="recommend-card__name">${perfume.name}</h3>
-    ${notesHtml}
-    <p class="recommend-card__hint">다시 눌러 앞면으로 돌아갈 수 있어요.</p>
-  `;
-
-  inner.append(front, back);
-  bindRecommendationFlip(inner);
-
   article.appendChild(inner);
+  const primaryBookmarkBtn = article.querySelector(
+    `[data-action="bookmark"][data-id="${perfume.id}"]`
+  );
+  if (primaryBookmarkBtn) {
+    primaryBookmarkBtn.dataset.accent = accent;
+    setBookmarkButtonState(primaryBookmarkBtn, isBookmarked(perfume.id));
+  }
   return article;
 };
 
@@ -1218,12 +1630,21 @@ const createSecondaryRecommendationCard = (perfume, position = "left") => {
       }">
         <span data-label>상세보기</span>
       </button>
-      <a class="recommend-card__link" href="${officialUrl}" target="_blank" rel="noopener">
-        <span>사이트 이동</span>
-      </a>
+      <button class="recommend-card__link bookmark-button" type="button" data-action="bookmark" data-id="${
+        perfume.id
+      }">
+        <span data-label>북마크</span>
+      </button>
     </div>
   `;
 
+  const secondaryBookmarkBtn = article.querySelector(
+    `[data-action="bookmark"][data-id="${perfume.id}"]`
+  );
+  if (secondaryBookmarkBtn) {
+    secondaryBookmarkBtn.dataset.accent = accent;
+    setBookmarkButtonState(secondaryBookmarkBtn, isBookmarked(perfume.id));
+  }
   return article;
 };
 
@@ -1233,8 +1654,6 @@ const createCatalogCard = (perfume) => {
   }
 
   const accent = perfume.accent ?? pickAccentColor(perfume);
-  const seasonIcons = buildSeasonEmojiString(perfume.seasonality);
-  const weatherIcons = buildWeatherEmojiString(perfume.weather);
   const primaryTagKey = getPrimaryTagKey(perfume);
 
   const card = document.createElement("article");
@@ -1270,22 +1689,20 @@ const createCatalogCard = (perfume) => {
   top.append(brand, title);
   body.append(top);
 
-  const emojiLine = [seasonIcons, weatherIcons].filter(Boolean).join(" ");
-  if (emojiLine || primaryTagKey) {
-    const lineWrapper = document.createElement("div");
-    lineWrapper.className = "catalog-card__emojis";
-    if (emojiLine) {
-      const emojiSpan = document.createElement("span");
-      emojiSpan.textContent = emojiLine;
-      lineWrapper.append(emojiSpan);
+  const iconRow = buildCatalogIconRow(perfume);
+  if (iconRow || primaryTagKey) {
+    const metaRow = document.createElement("div");
+    metaRow.className = "catalog-card__meta-row";
+    if (iconRow) {
+      metaRow.append(iconRow);
     }
     if (primaryTagKey) {
-      const tagSpan = document.createElement("span");
-      tagSpan.className = "catalog-card__tag-text";
-      tagSpan.textContent = primaryTagKey.toLowerCase();
-      lineWrapper.append(tagSpan);
+      const tagBadge = document.createElement("span");
+      tagBadge.className = "catalog-card__tag-text";
+      tagBadge.textContent = primaryTagKey.toLowerCase();
+      metaRow.append(tagBadge);
     }
-    body.append(lineWrapper);
+    body.append(metaRow);
   }
 
   card.append(figure, divider, body);
@@ -1348,16 +1765,16 @@ const renderRecommendationBoard = (items, { source } = {}) => {
   const left = rest[0] ?? null;
   const right = rest[1] ?? null;
 
-  const primaryCard = createPrimaryRecommendationCard(primary);
-  if (primaryCard) {
-    fragment.appendChild(primaryCard);
-  }
-
   if (left) {
     const leftCard = createSecondaryRecommendationCard(left, "left");
     if (leftCard) {
       fragment.appendChild(leftCard);
     }
+  }
+
+  const primaryCard = createPrimaryRecommendationCard(primary);
+  if (primaryCard) {
+    fragment.appendChild(primaryCard);
   }
 
   if (right) {
@@ -1411,6 +1828,7 @@ const createCardElement = (item) => {
     return null;
   }
 
+  const accent = normalized.accent ?? pickAccentColor(normalized);
   const article = document.createElement("article");
   article.className = "card";
   article.dataset.perfumeId = normalized.id;
@@ -1423,7 +1841,10 @@ const createCardElement = (item) => {
   `;
 
   const bookmarkButton = article.querySelector('[data-action="bookmark"]');
-  setBookmarkButtonState(bookmarkButton, isBookmarked(normalized.id));
+  if (bookmarkButton) {
+    bookmarkButton.dataset.accent = accent;
+    setBookmarkButtonState(bookmarkButton, isBookmarked(normalized.id));
+  }
   return article;
 };
 
@@ -2011,6 +2432,7 @@ const initDetailPage = async () => {
     renderNoteChips(baseEl, perfume.notes.base);
 
     if (bookmarkButton) {
+      bookmarkButton.dataset.accent = accent;
       setBookmarkButtonState(bookmarkButton, isBookmarked(perfume.id));
       if (bookmarkButton.dataset.bound !== "true") {
         bookmarkButton.addEventListener("click", () => {
@@ -2150,39 +2572,37 @@ const initDetailPage = async () => {
   applyPerfumeDetails(fallback);
 };
 
-const initMyPage = async () => {
-  console.info("[mypage] init");
-  initCommonUI();
+const initCatalogPage = async () => {
+  console.info("[catalog] init");
   catalogView.listEl = document.getElementById("catalogList");
   catalogView.emptyStateEl = document.getElementById("catalogEmptyState");
   catalogView.countEl = document.getElementById("catalogResultCount");
   catalogView.searchInput = document.getElementById("catalogSearchInput");
   catalogView.seasonSelect = document.getElementById("catalogSeasonFilter");
   catalogView.sortSelect = document.getElementById("catalogSortSelect");
+  catalogView.baseItems = [];
 
   const { listEl, emptyStateEl } = catalogView;
-
   if (!listEl || !emptyStateEl) {
     return;
   }
 
+  bindCardActions(listEl);
+
   const renderCatalog = (items) => {
     listEl.innerHTML = "";
     if (!items.length) {
-      if (emptyStateEl) {
-        emptyStateEl.hidden = false;
-        emptyStateEl.classList.add("is-visible");
-      }
+      emptyStateEl.hidden = false;
+      emptyStateEl.classList.add("is-visible");
       if (catalogView.countEl) {
         catalogView.countEl.textContent = "0개의 향수";
       }
       return;
     }
 
-    if (emptyStateEl) {
-      emptyStateEl.hidden = true;
-      emptyStateEl.classList.remove("is-visible");
-    }
+    emptyStateEl.hidden = true;
+    emptyStateEl.classList.remove("is-visible");
+
     const fragment = document.createDocumentFragment();
     items.forEach((item) => {
       const card = createCatalogCard(item);
@@ -2197,15 +2617,10 @@ const initMyPage = async () => {
   };
 
   const applyCatalogFilters = () => {
-    if (
-      !Array.isArray(catalogView.baseItems) ||
-      !catalogView.baseItems.length
-    ) {
+    if (!Array.isArray(catalogView.baseItems) || !catalogView.baseItems.length) {
       listEl.innerHTML = "";
-      if (emptyStateEl) {
-        emptyStateEl.hidden = false;
-        emptyStateEl.classList.add("is-visible");
-      }
+      emptyStateEl.hidden = false;
+      emptyStateEl.classList.add("is-visible");
       if (catalogView.countEl) {
         catalogView.countEl.textContent = "0개의 향수";
       }
@@ -2213,7 +2628,6 @@ const initMyPage = async () => {
     }
 
     let items = catalogView.baseItems.slice();
-
     const query = (catalogView.searchInput?.value ?? "").trim().toLowerCase();
     if (query) {
       items = items.filter((perfume) => {
@@ -2276,14 +2690,78 @@ const initMyPage = async () => {
   try {
     const perfumes = await fetchPerfumesFromApi();
     catalogView.baseItems = perfumes.map(normalizePerfumeForUi).filter(Boolean);
-    applyCatalogFilters();
   } catch (error) {
-    console.warn("[mypage] API error, using fallback");
-    catalogView.baseItems = perfumeList
-      .map(normalizePerfumeForUi)
-      .filter(Boolean);
-    applyCatalogFilters();
+    console.warn("[catalog] API error, using fallback");
+    catalogView.baseItems = perfumeList.map(normalizePerfumeForUi).filter(Boolean);
   }
+  applyCatalogFilters();
+};
+
+const initMyPage = async () => {
+  console.info("[mypage] init");
+  mypageView.nicknameEl = document.getElementById("mypageNickname");
+  mypageView.emailEl = document.getElementById("mypageEmail");
+  mypageView.avatarInitialEl = document.getElementById("mypageAvatarInitial");
+  mypageView.preferenceEl = document.getElementById("mypagePreferenceHint");
+  mypageView.bookmarkCountEl = document.getElementById("mypageBookmarkCount");
+  mypageView.bookmarkMetaEl = document.getElementById("mypageBookmarkMeta");
+  mypageView.bookmarkGrid = document.getElementById("mypageBookmarkGrid");
+  mypageView.bookmarkEmptyEl = document.getElementById("mypageBookmarkEmpty");
+  mypageView.logoutButton = document.getElementById("mypageLogoutButton");
+  mypageView.bookmarks = [];
+
+  applyMyPageProfile(loadStoredUser());
+  applyMyPagePreferenceSummary();
+  applyBookmarkStats(0);
+
+  const wireLogoutButton = (button) => {
+    if (!button || button.dataset.bound === "true") {
+      return;
+    }
+    button.addEventListener("click", (event) => {
+      const action = button.dataset.action;
+      if (action === "logout") {
+        clearUser();
+        updateUserBadge(dummyUser);
+        applyMyPageProfile(null);
+        applyBookmarkStats(mypageView.bookmarks.length);
+        return;
+      }
+      if (button.dataset.mode === "login") {
+        window.location.href = "login.html";
+        return;
+      }
+    });
+    button.dataset.bound = "true";
+  };
+
+  wireLogoutButton(mypageView.logoutButton);
+  wireLogoutButton(document.getElementById("topbarAuthButton"));
+
+  if (mypageView.bookmarkGrid) {
+    bindCardActions(mypageView.bookmarkGrid, {
+      onBookmarkChange: (_id, updatedIds, isActive) => {
+        applyBookmarkStats(updatedIds.length);
+        if (!isActive) {
+          const remaining = new Set(updatedIds.map((value) => String(value)));
+          mypageView.bookmarks = (mypageView.bookmarks ?? []).filter((item) =>
+            remaining.has(String(item.id))
+          );
+          renderMypageBookmarks();
+        }
+      },
+    });
+  }
+
+  try {
+    const bookmarks = await fetchBookmarkPerfumes();
+    mypageView.bookmarks = bookmarks;
+  } catch (error) {
+    console.warn("[mypage] bookmark load fallback:", error);
+    mypageView.bookmarks = [];
+  }
+  applyBookmarkStats(mypageView.bookmarks.length);
+  renderMypageBookmarks();
 };
 
 const pageInitializers = {
@@ -2291,6 +2769,7 @@ const pageInitializers = {
   select: initSelectPage,
   result: initResultPage,
   detail: initDetailPage,
+  catalog: initCatalogPage,
   mypage: initMyPage,
 };
 
