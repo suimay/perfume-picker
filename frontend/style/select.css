@@ -73,13 +73,13 @@
 .sense-card {
   position: relative;
   border-radius: 26px;
-  border: 1.5px solid rgba(109, 125, 168, 0.16);
+  border: 2.5px solid rgba(109, 125, 168, 0.16);
   background: linear-gradient(
     180deg,
     #ffffff 0%,
     rgba(255, 255, 255, 0.98) 100%
   );
-  box-shadow: 0 20px 30px rgba(31, 36, 48, 0.12);
+  /*box-shadow: 0 20px 30px rgba(31, 36, 48, 0.12);*/
   transition: transform var(--transition), box-shadow var(--transition),
     border-color var(--transition), background var(--transition);
   min-height: 192px;
@@ -136,7 +136,7 @@
 
 .sense-card:hover {
   transform: translateY(-2px);
-  background: linear-gradient(180deg, #ffffff 0%, #f1f3f7 100%);
+  /*background: linear-gradient(180deg, #ffffff 0%, #f1f3f7 100%);*/
   border-color: rgba(31, 36, 48, 0.22);
   box-shadow: 0 26px 42px rgba(31, 36, 48, 0.18);
 }
@@ -145,6 +145,7 @@
 .sense-card:has(input:checked) {
   /*background: rgb(214, 240, 255);*/
   border-color: rgb(146, 179, 255);
+  /*border: 2px; */
   box-shadow: 0 20px 38px rgba(31, 36, 48, 0.18), 0 0 0 0px rgba(31, 36, 48, 0); /* 링 제거(네모 방지) */
 }
 
