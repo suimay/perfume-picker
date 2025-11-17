@@ -13,6 +13,7 @@ export const preferenceLabels = {
   fruity: "프루티",
   musk: "머스크",
   green: "그린",
+  herbal: "허벌",
 };
 
 export const perfumeList = [

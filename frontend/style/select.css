@@ -68,7 +68,10 @@
 .sense-grid {
   display: grid;
   gap: clamp(1.2rem, 3vw, 1.8rem);
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(200px, 1fr)
+  ); /*grid 랑 fr 값이 반복되기 때문에 repeat*/
 }
 .sense-card {
   position: relative;

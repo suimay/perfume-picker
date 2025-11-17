@@ -1559,11 +1559,6 @@ const createPrimaryRecommendationCard = (perfume) => {
       perfume.description ?? "어울리는 순간을 위해 준비했어요."
     }</p>
     <div class="recommend-card__cta">
-      <button class="recommend-card__btn" type="button" data-action="detail" data-id="${
-        perfume.id
-      }">
-        <span data-label>상세보기</span>
-      </button>
       <button class="recommend-card__link bookmark-button" type="button" data-action="bookmark" data-id="${
         perfume.id
       }">
@@ -1573,6 +1568,9 @@ const createPrimaryRecommendationCard = (perfume) => {
   `;
 
   article.appendChild(inner);
+  article.addEventListener("click", () => {
+    window.location.href = `detail.html?id=${encodeURIComponent(perfume.id)}`;
+  });
   const primaryBookmarkBtn = article.querySelector(
     `[data-action="bookmark"][data-id="${perfume.id}"]`
   );
@@ -1625,11 +1623,6 @@ const createSecondaryRecommendationCard = (perfume, position = "left") => {
       }</p>
     </div>
     <div class="recommend-card__cta">
-      <button class="recommend-card__btn" type="button" data-action="detail" data-id="${
-        perfume.id
-      }">
-        <span data-label>상세보기</span>
-      </button>
       <button class="recommend-card__link bookmark-button" type="button" data-action="bookmark" data-id="${
         perfume.id
       }">
@@ -1638,6 +1631,9 @@ const createSecondaryRecommendationCard = (perfume, position = "left") => {
     </div>
   `;
 
+  article.addEventListener("click", () => {
+    window.location.href = `detail.html?id=${encodeURIComponent(perfume.id)}`;
+  });
   const secondaryBookmarkBtn = article.querySelector(
     `[data-action="bookmark"][data-id="${perfume.id}"]`
   );
