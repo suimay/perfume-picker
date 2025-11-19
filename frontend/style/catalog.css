@@ -27,16 +27,38 @@
 .catalog-toolbar {
   display: grid;
   gap: 1rem;
-  border-radius: var(--radius-large);
-  border: 1.5px solid rgba(31, 36, 48, 0.08);
-  background: rgba(255, 255, 255, 0.98)
-    /*linear-gradient(
-    160deg,
-    rgba(255, 255, 255, 0.96),
-    rgba(241, 243, 248, 0.92)
-  )*/;
-  box-shadow: var(--shadow-soft);
+  border-radius: calc(var(--radius-large) + 6px);
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  border-right-color: rgba(255, 255, 255, 0.28);
+  border-bottom-color: rgba(255, 255, 255, 0.2);
+  background: linear-gradient(
+    130deg,
+    rgba(255, 255, 255, 0.22),
+    rgba(255, 255, 255, 0.08)
+  );
+  box-shadow: 0 12px 34px rgba(17, 25, 40, 0.2);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
   padding: 1.45rem;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* .catalog-toolbar::before {
+  content: "";
+  position: absolute;
+  inset: 12%;
+  background: radial-gradient(circle at 25% 20%, rgba(249, 104, 88, 0.25), transparent 55%),
+    radial-gradient(circle at 80% 40%, rgba(214, 235, 255, 0.35), transparent 60%);
+  opacity: 0.45;
+  mix-blend-mode: screen;
+  z-index: 0;
+} */
+
+.catalog-toolbar > * {
+  position: relative;
+  z-index: 1;
 }
 
 .catalog-search {
@@ -45,8 +67,10 @@
   gap: 0.75rem;
   padding: 0.85rem 1rem;
   border-radius: 16px;
-  border: 1.5px solid rgba(31, 36, 48, 0.12);
-  background: rgba(255, 255, 255, 0.96);
+  border: 2px solid rgba(255, 255, 255, 0.551);
+  border-right-color: rgba(255, 255, 255, 0.28);
+  border-bottom-color: rgba(255, 255, 255, 0.2);
+  background: rgb(255 255 255 / 42%);
 }
 
 .catalog-search i {
@@ -87,8 +111,10 @@
 
 .catalog-select select {
   border-radius: 14px;
-  border: 1.5px solid rgba(31, 36, 48, 0.12);
-  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid rgba(255, 255, 255, 0.551);
+  border-right-color: rgba(255, 255, 255, 0.28);
+  border-bottom-color: rgba(255, 255, 255, 0.2);
+  background: rgb(255 255 255 / 42%);
   padding: 0.75rem 1rem;
   font-size: 0.95rem;
   color: rgba(31, 36, 48, 0.75);
@@ -96,7 +122,7 @@
 
 .catalog-select select:focus-visible {
   outline: 0;
-  box-shadow: 0 0 0 3px rgba(86, 96, 255, 0.18);
+  box-shadow: 0 0 0 2px rgba(218, 223, 223, 0.202);
 }
 
 .catalog-meta {
@@ -120,22 +146,46 @@
 .catalog-card {
   position: relative;
   border-radius: var(--radius-large);
-  border: 1.5px solid rgba(31, 36, 48, 0.08);
-  background: rgba(255, 255, 255, 0.98);
+  border: 2px solid rgba(255, 255, 255, 0.562);
+  background: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.184),
+    rgba(255, 255, 255, 0.077)
+  );
   padding: 1.2rem 1.35rem 1.4rem;
-  /*   box-shadow: var(--shadow-soft);   */
+  box-shadow: 0 12px 34px rgba(17, 25, 40, 0.2);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
   display: grid;
   gap: 1rem;
   grid-template-rows: auto 1fr;
   cursor: pointer;
-  transition: transform var(--transition), border-color var(--transition);
+  transition: transform var(--transition), border-color var(--transition),
+    box-shadow var(--transition), background var(--transition);
 }
 
 .catalog-card:hover,
 .catalog-card:focus-visible {
-  transform: translateY(-2px);
-  border-color: var(--catalog-accent, rgba(86, 96, 255, 0.32));
+  transform: translateY(-4px);
+  border-color: var(--catalog-accent, rgba(214, 235, 255, 0.75));
+  background: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.715),
+    rgba(255, 255, 255, 0.523)
+  );
+  box-shadow: 0 28px 48px rgba(17, 25, 40, 0.22);
   outline: none;
+}
+
+.catalog-card.is-active,
+.catalog-card.is-selected {
+  border-color: var(--catalog-accent, rgba(146, 179, 255, 0.9));
+  box-shadow: 0 32px 54px rgba(17, 25, 40, 0.26);
+  background: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.98),
+    rgba(214, 235, 255, 0.82)
+  );
 }
 
 .catalog-card__figure {
@@ -229,7 +279,7 @@
 }
 
 .catalog-card__icon-emoji {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   line-height: 1;
   padding: 0.3em;
 }
@@ -239,7 +289,7 @@
   font-weight: 600;
   padding: 0.32rem 0.7rem;
   border-radius: 999px;
-  background: rgba(31, 36, 48, 0.045);
+  background: rgba(255, 255, 255, 0.556);
   color: rgba(31, 36, 48, 0.68);
   text-transform: lowercase;
   letter-spacing: 0.06em;

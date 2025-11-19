@@ -37,13 +37,95 @@ body {
   padding: 0;
   font-family: var(--font-base);
   color: var(--color-text);
-  background: var(--color-background);
   min-height: 100vh;
 }
 
 body {
   display: flex;
   flex-direction: column;
+  background: radial-gradient(
+      circle at 12% 20%,
+      rgba(249, 104, 88, 0.42),
+      transparent 38%
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(157, 255, 235, 0.493),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 82% 25%,
+      rgba(255, 172, 56, 0.38),
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 28% 85%,
+      rgba(169, 216, 255, 0.42),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(179, 157, 255, 0.35),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 72% 78%,
+      rgba(230, 242, 200, 0.36),
+      transparent 42%
+    );
+  background-size: 240% 240%;
+  background-color: #f9f7f3;
+  background-attachment: fixed;
+  animation: flow 14s ease-in-out infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    animation: none;
+  }
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: url("/assets/noise.png");
+  opacity: 0.03;
+  mix-blend-mode: overlay;
+}
+
+@media (max-width: 599px) {
+  body {
+    background-size: 270% 270%;
+    background-color: #f6f0ea;
+  }
+
+  body::after {
+    opacity: 0.04;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 1023px) {
+  body {
+    background-size: 235% 235%;
+    background-color: #f9f6f1;
+  }
+
+  body::after {
+    opacity: 0.032;
+  }
+}
+
+@media (min-width: 1024px) {
+  body {
+    background-size: 200% 200%;
+    background-color: #fdfbf7;
+  }
+
+  body::after {
+    opacity: 0.025;
+  }
 }
 
 img {
@@ -76,9 +158,18 @@ button {
   position: sticky;
   top: 0;
   z-index: 40;
-  backdrop-filter: blur(12px);
-  background: rgba(255, 255, 255, 0.854);
-  border-bottom: 1px solid rgba(31, 36, 48, 0.08);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.38)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-right-color: rgba(255, 255, 255, 0.35);
+  border-bottom-color: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 2px 14px rgba(20, 27, 41, 0.044);
+  border-radius: 0 0 var(--radius-medium) var(--radius-medium);
 }
 
 .topbar__inner {
@@ -285,8 +376,17 @@ button {
 /* Footer ------------------------------------------------------------------ */
 .site-footer {
   margin-top: auto;
-  border-top: 1px solid rgba(31, 36, 48, 0.08);
-  background: rgb(255, 255, 255);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-right-color: rgba(255, 255, 255, 0.35);
+  border-top-color: rgba(255, 255, 255, 0.24);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.25),
+    rgba(255, 255, 255, 0.42)
+  );
+  backdrop-filter: blur(10px) saturate(150%);
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
+  box-shadow: 0 -2px 14px rgba(20, 27, 41, 0.06);
 }
 
 .site-footer__inner {
@@ -459,5 +559,20 @@ button {
   .home-identity__typo {
     width: min(100%, 420px);
     align-self: flex-end;
+  }
+}
+
+@keyframes flow {
+  0% {
+    background-position: 0% 50%;
+    background-size: 240% 240%;
+  }
+  50% {
+    background-position: 100% 60%;
+    background-size: 260% 260%;
+  }
+  100% {
+    background-position: 0% 50%;
+    background-size: 240% 240%;
   }
 }

@@ -34,9 +34,22 @@
   align-items: center;
   gap: 1.8rem;
   padding: clamp(1.8rem, 3.5vw, 2.4rem);
-  border-radius: var(--radius-large);
-  background: rgba(255, 255, 255, 0.98);
-  box-shadow: var(--shadow-soft);
+  border-radius: calc(var(--radius-large) + 6px);
+  background: linear-gradient(
+    140deg,
+    rgba(255, 255, 255, 0.24),
+    rgba(255, 255, 255, 0.08)
+  );
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  border-right-color: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 12px 34px rgba(17, 25, 40, 0.2);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  isolation: isolate;
+  position: relative;
+  overflow: hidden;
+  transition: border-color var(--transition), box-shadow var(--transition),
+    transform var(--transition);
 }
 
 .mypage-profile__info {
@@ -61,7 +74,7 @@
   place-items: center;
   font-size: clamp(1.8rem, 3.4vw, 2.4rem);
   font-weight: 700;
-  color: var(--color-primary);
+  /*  color: var(--color-primary); */
 }
 
 .mypage-profile__body {
@@ -100,9 +113,18 @@
   margin: 0;
   padding: 1rem 1.3rem;
   border-radius: 18px;
-  border: 1px solid rgba(31, 36, 48, 0.08);
-  background: rgba(255, 255, 255, 0.98);
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  background: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.92),
+    rgba(255, 255, 255, 0.78)
+  );
   flex: 1 1 220px;
+  box-shadow: 0 18px 34px rgba(17, 25, 40, 0.18);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: border-color var(--transition), box-shadow var(--transition),
+    transform var(--transition), background var(--transition);
 }
 
 .mypage-stat-card dt {
@@ -133,12 +155,21 @@
 
 .mypage-pref-card {
   border-radius: 18px;
-  border: 1px solid rgba(31, 36, 48, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.35);
   padding: 1rem 1.3rem 1.2rem;
-  background: rgba(255, 255, 255, 0.92);
+  background: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.92),
+    rgba(255, 255, 255, 0.78)
+  );
   display: grid;
   gap: 0.75rem;
   flex: 1 1 260px;
+  box-shadow: 0 18px 32px rgba(17, 25, 40, 0.18);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: border-color var(--transition), box-shadow var(--transition),
+    transform var(--transition), background var(--transition);
 }
 
 .mypage-pref-card__head {
@@ -149,6 +180,25 @@
   flex-wrap: wrap;
   font-size: 0.9rem;
   color: rgba(31, 36, 48, 0.65);
+}
+
+.mypage-stat-card:hover,
+.mypage-pref-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(214, 235, 255, 0.78);
+  box-shadow: 0 26px 48px rgba(17, 25, 40, 0.24);
+  background: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.98),
+    rgba(214, 235, 255, 0.82)
+  );
+}
+
+.mypage-bookmarks:hover,
+.mypage-profile:hover {
+  border-color: rgba(214, 235, 255, 0.75);
+  box-shadow: 0 20px 40px rgba(17, 25, 40, 0.26);
+  transform: translateY(-3px);
 }
 
 .mypage-pref-button {
@@ -192,12 +242,21 @@
 }
 
 .mypage-bookmarks {
-  border-radius: var(--radius-large);
-  background: rgba(255, 255, 255, 0.98);
+  border-radius: calc(var(--radius-large) + 4px);
+  background: linear-gradient(
+    140deg,
+    rgba(255, 255, 255, 0.24),
+    rgba(255, 255, 255, 0.1)
+  );
   padding: clamp(1.8rem, 3.5vw, 2.6rem);
-  box-shadow: var(--shadow-soft);
+  box-shadow: 0 12px 34px rgba(17, 25, 40, 0.2);
   display: grid;
   gap: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  transition: border-color var(--transition), box-shadow var(--transition),
+    transform var(--transition);
 }
 
 .mypage-section-head {
@@ -238,19 +297,32 @@
   position: relative;
   padding: 1.35rem;
   border-radius: 24px;
-  border: 1.5px solid rgba(31, 36, 48, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.35);
   border-top: 4px solid var(--mypage-card-accent, rgba(86, 96, 255, 0.35));
-  background: rgba(255, 255, 255, 0.98);
-  box-shadow: var(--shadow-faint);
+  background: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.94),
+    rgba(255, 255, 255, 0.82)
+  );
+  box-shadow: 0 20px 40px rgba(17, 25, 40, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   display: grid;
   gap: 0.65rem;
-  transition: transform var(--transition), box-shadow var(--transition);
+  transition: border-color var(--transition), box-shadow var(--transition),
+    transform var(--transition), background var(--transition);
 }
 
 .mypage-bookmark-card:hover,
 .mypage-bookmark-card:focus-within {
-  transform: translateY(-3px);
-  box-shadow: 0 16px 34px rgba(31, 36, 48, 0.16);
+  transform: translateY(-4px);
+  box-shadow: 0 24px 46px rgba(17, 25, 40, 0.24);
+  border-color: rgba(214, 235, 255, 0.78);
+  background: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.98),
+    rgba(214, 235, 255, 0.82)
+  );
 }
 
 .mypage-bookmark-card__badge {

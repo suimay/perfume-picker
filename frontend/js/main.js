@@ -180,6 +180,18 @@ const TIME_KEYWORDS = {
   morning: ["morning", "dawn", "sunrise", "daybreak"],
   day: ["day", "daily", "fresh", "citrus", "aqua", "marine", "bright"],
 };
+const syncBackgroundAnimation = () => {
+  const prefersReduce =
+    typeof window !== "undefined" &&
+    window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (prefersReduce) return;
+  const durationMs = 14000;
+  const offset = Date.now() % durationMs;
+  if (document && document.body) {
+    document.body.style.animationDelay = `-${offset}ms`;
+  }
+};
 
 const renderTagPills = (element, tags) => {
   if (!element) {
@@ -2770,6 +2782,7 @@ const pageInitializers = {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
+  syncBackgroundAnimation();
   initCommonUI();
   hydrateUserBadge();
   setupAuthForms();

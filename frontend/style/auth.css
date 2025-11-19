@@ -42,12 +42,46 @@
 }
 
 .auth-card {
-  background: var(--color-surface);
-  border-radius: var(--radius-large);
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    140deg,
+    rgba(255, 255, 255, 0.25),
+    rgba(255, 255, 255, 0.08)
+  );
+  border-radius: calc(var(--radius-large) + 4px);
   padding: clamp(2.4rem, 4vw, 2.8rem);
-  box-shadow: var(--shadow-soft);
+  box-shadow: 0 12px 34px rgba(17, 25, 40, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
   display: grid;
   gap: 1.4rem;
+  isolation: isolate;
+  transition: border-color var(--transition), box-shadow var(--transition),
+    transform var(--transition);
+}
+
+/* .auth-card::before {
+  content: "";
+  position: absolute;
+  inset: 12%;
+  background: radial-gradient(circle at 20% 20%, rgba(255, 172, 56, 0.3), transparent 55%),
+    radial-gradient(circle at 75% 70%, rgba(214, 235, 255, 0.3), transparent 60%);
+  opacity: 0.45;
+  mix-blend-mode: screen;
+  z-index: 0;
+} */
+
+.auth-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.auth-card:hover {
+  border-color: rgba(214, 235, 255, 0.72);
+  box-shadow: 0 20px 48px rgba(17, 25, 40, 0.26);
+  transform: translateY(-4px);
 }
 
 .auth-card__title {
