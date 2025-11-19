@@ -90,41 +90,66 @@ body::after {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background: url("/assets/noise.png");
-  opacity: 0.03;
-  mix-blend-mode: overlay;
+  background-image: url("../asset/noise.png");
+  background-size: 220px;
+  background-repeat: repeat;
+  opacity: 0.14; /* 0.12 ~ 0.18 사이에서 취향대로 */
+  mix-blend-mode: soft-light; /* overlay 보다 훨씬 부드러움 */
 }
 
 @media (max-width: 599px) {
   body {
     background-size: 270% 270%;
-    background-color: #f6f0ea;
+    background-color: #f2e8dd;
   }
 
   body::after {
-    opacity: 0.04;
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("../asset/noise.png");
+    background-size: 220px;
+    background-repeat: repeat;
+    opacity: 0.08; /* 0.12 ~ 0.18 사이에서 취향대로 */
+    mix-blend-mode: soft-light; /* overlay 보다 훨씬 부드러움 */
   }
 }
 
 @media (min-width: 600px) and (max-width: 1023px) {
   body {
     background-size: 235% 235%;
-    background-color: #f9f6f1;
+    background-color: #f4f1ea;
   }
 
   body::after {
-    opacity: 0.032;
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("../asset/noise.png");
+    background-size: 220px;
+    background-repeat: repeat;
+    opacity: 0.14; /* 0.12 ~ 0.18 사이에서 취향대로 */
+    mix-blend-mode: soft-light; /* overlay 보다 훨씬 부드러움 */
   }
 }
 
 @media (min-width: 1024px) {
   body {
     background-size: 200% 200%;
-    background-color: #fdfbf7;
+    background-color: #ffffff;
   }
-
   body::after {
-    opacity: 0.025;
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("../asset/noise.png");
+    background-size: 220px;
+    background-repeat: repeat;
+    opacity: 0.14; /* 0.12 ~ 0.18 사이에서 취향대로 */
+    mix-blend-mode: soft-light; /* overlay 보다 훨씬 부드러움 */
   }
 }
 

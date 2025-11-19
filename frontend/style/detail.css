@@ -74,13 +74,13 @@
   position: relative;
   z-index: 1;
 }
-
+/*
 .detail-overview:hover {
   border-color: rgba(214, 235, 255, 0.78);
   box-shadow: 0 38px 70px rgba(17, 25, 40, 0.28);
   transform: translateY(-4px);
 }
-
+*/
 .detail-overview__media {
   position: relative;
   border-radius: 32px;
@@ -124,7 +124,10 @@
   display: inline-flex;
   padding: 0.35rem 0.9rem;
   border-radius: 999px;
-  background: rgba(31, 36, 48, 0.06);
+  border: 2px solid rgba(255, 255, 255, 0.751);
+  border-right-color: rgba(255, 255, 255, 0.25);
+  border-bottom-color: rgba(255, 255, 255, 0.2);
+  background: rgba(163, 163, 164, 0.207);
   font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -156,8 +159,10 @@
   align-items: center;
   padding: 0.35rem 0.85rem;
   border-radius: 999px;
-  background: rgba(241, 243, 248, 0.9);
-  border: 1px solid rgba(31, 36, 48, 0.08);
+  background: rgba(249, 250, 254, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.585);
+  border-right-color: rgba(255, 255, 255, 0.25);
+  border-bottom-color: rgba(255, 255, 255, 0.2);
   font-size: 0.82rem;
   color: rgba(31, 36, 48, 0.7);
 }
@@ -187,8 +192,14 @@
 }
 
 .detail-action--bookmark {
-  border-color: rgba(31, 36, 48, 0.18);
-  background: rgba(255, 255, 255, 0.96);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-right-color: rgba(255, 255, 255, 0.25);
+  border-bottom-color: rgba(255, 255, 255, 0.2);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.368),
+    rgba(255, 255, 255, 0.242)
+  );
   color: var(--color-text);
   box-shadow: var(--shadow-faint);
 }
@@ -196,7 +207,7 @@
 .detail-action--bookmark:hover,
 .detail-action--bookmark:focus-visible {
   transform: translateY(-1px);
-  box-shadow: 0 16px 32px rgba(31, 36, 48, 0.18);
+  box-shadow: 0 8px 16px rgba(31, 36, 48, 0.18);
 }
 
 .detail-action--bookmark.bookmark-button--active {
@@ -207,15 +218,18 @@
 }
 
 .detail-action--link {
-  background: #1f2430;
-  color: #fff;
-  box-shadow: 0 20px 32px rgba(31, 36, 48, 0.28);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-right-color: rgba(255, 255, 255, 0.25);
+  border-bottom-color: rgba(255, 255, 255, 0.2);
+  background: var(--detail-accent);
+  color: rgba(255, 255, 255, 0.826);
+  box-shadow: var(--shadow-faint);
 }
 
 .detail-action--link:hover,
 .detail-action--link:focus-visible {
   transform: translateY(-2px);
-  box-shadow: 0 24px 40px rgba(31, 36, 48, 0.3);
+  box-shadow: 0 8px 16px rgba(31, 36, 48, 0.3);
 }
 
 .detail-panel {
@@ -254,13 +268,13 @@
   position: relative;
   z-index: 1;
 }
-
+/* 패널에 호버가 왜 필요한데~~!~!
 .detail-panel:hover {
   border-color: rgba(214, 235, 255, 0.75);
   box-shadow: 0 36px 64px rgba(17, 25, 40, 0.28);
   transform: translateY(-3px);
 }
-
+*/
 .detail-panel__header h3 {
   margin: 0;
   font-size: clamp(1.45rem, 3vw, 1.75rem);
@@ -335,18 +349,21 @@
 
 .note-block {
   border-radius: 18px;
-  border: 2px solid rgba(255, 255, 255, 0.35);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-right-color: rgba(255, 255, 255, 0.25);
+  border-bottom-color: rgba(255, 255, 255, 0.2);
+  /* 없는 게 더 유리같음
   background: linear-gradient(
-    150deg,
-    rgba(255, 255, 255, 0.92),
-    rgba(255, 255, 255, 0.82)
-  );
+    135deg,
+    rgba(255, 255, 255, 0.24),
+    rgba(255, 255, 255, 0.08)
+  );*/
   padding: 1.2rem;
   display: grid;
   gap: 0.8rem;
   box-shadow: 0 16px 32px rgba(17, 25, 40, 0.18);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px) saturate(140%);
+  /*-webkit-backdrop-filter: blur(18px) saturate(140%);*/
   transition: transform 0.25s ease, border-color 0.25s ease,
     box-shadow 0.25s ease, background 0.25s ease, opacity 0.25s ease;
 }
@@ -389,7 +406,11 @@
 .detail-notes__list[data-hover="middle"] .note-block[data-note="middle"],
 .detail-notes__list[data-hover="base"] .note-block[data-note="base"] {
   border-color: var(--detail-accent);
-  background: rgba(255, 255, 255, 0.96);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.45),
+    rgba(255, 255, 255, 0.26)
+  );
   box-shadow: 0 22px 36px rgba(31, 36, 48, 0.16);
   transform: translateY(-2px);
 }
@@ -397,7 +418,7 @@
 .detail-notes__list[data-hover="top"] .note-block:not([data-note="top"]),
 .detail-notes__list[data-hover="middle"] .note-block:not([data-note="middle"]),
 .detail-notes__list[data-hover="base"] .note-block:not([data-note="base"]) {
-  opacity: 0.55;
+  opacity: 0.7;
 }
 
 .metric-list {

@@ -45,9 +45,9 @@
   overflow: hidden;
   border-radius: calc(var(--radius-large) + 6px);
   background: linear-gradient(
-    140deg,
-    rgba(255, 255, 255, 0.24),
-    rgba(255, 255, 255, 0.08)
+    150deg,
+    rgba(255, 255, 255, 0.184),
+    rgba(255, 255, 255, 0.077)
   );
   border: 2px solid rgba(255, 255, 255, 0.45);
   border-right-color: rgba(255, 255, 255, 0.28);
@@ -122,17 +122,6 @@
   height: 3px;
   border-radius: 999px;
   background: var(--card-accent, rgba(86, 96, 255, 0.35));
-}
-
-.recommend-card--secondary .recommend-card__inner:hover,
-.recommend-card--secondary .recommend-card__inner:focus-within {
-  border-color: var(--card-accent, rgba(86, 96, 255, 0.35));
-  transform: translateY(-4px);
-}
-
-.recommend-card--secondary:hover,
-.recommend-card--secondary:focus-visible {
-  border-color: transparent;
 }
 
 /* Keep inner text styles unchanged… */
@@ -248,6 +237,11 @@
 .recommend-card:hover,
 .recommend-card:focus-within {
   transform: translateY(-4px);
+  background: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.484),
+    rgba(255, 255, 255, 0.342)
+  );
 }
 
 .recommend-card:hover .recommend-card__inner,

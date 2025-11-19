@@ -180,7 +180,7 @@
 
 /* ✅ 체크 상태 효과는 컨테이너에 — 둥근 테두리/그림자 유지 */
 .sense-card:has(input:checked) {
-  background: rgba(250, 252, 255, 0.527);
+  background: rgba(250, 252, 255, 0.375);
   /*border-color: rgb(172, 197, 255);*/
   /*border: 2px; 이건 상위 코드..? 있어서 필요 없음*/
   box-shadow: 0 20px 38px rgba(31, 36, 48, 0.18), 0 0 0 0px rgba(31, 36, 48, 0); /* 링 제거(네모 방지) */
