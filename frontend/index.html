@@ -49,77 +49,142 @@
     </header>
 
     <main class="home-main">
-      <section class="home-identity" aria-labelledby="identityTitle">
-        <div class="home-identity__text">
+      <section class="hero" aria-labelledby="identityTitle">
+        <div class="hero__content">
+          <div class="glass-chip">HYANG POSTER EXPERIENCE</div>
           <h1 id="identityTitle">보이지 않는 향을, 느껴지는 감각으로</h1>
-          <p>날씨의 체감과 색의 경험을 더해, 향을 감각으로 전하다.</p>
+          <p>
+            날씨의 체감과 색의 흐름이 만나 향을 고르는 새로운 전시를 엽니다.
+            미세한 공기의 결까지 읽어 오늘의 향을 제안해요.
+          </p>
+          <!-- type="button" 추가 + data-scroll-target 유지 -->
+          <button class="hero__cta" type="button" data-scroll-target="about">
+            아래로 — 감각 여정을 따라가기
+            <i class="ri-arrow-down-line" aria-hidden="true"></i>
+          </button>
         </div>
-        <img
-          src="asset/hyangtypo.png"
-          alt="보이지 않는 향을, 느껴지는 감각으로"
-          class="home-identity__typo"
-        />
+        <div class="hero__logo" aria-hidden="true">
+          <img src="asset/hyangtypo.png" alt="" loading="lazy" />
+        </div>
       </section>
 
-      <section class="home-flip" aria-label="날씨 기반 즉시 추천 카드">
-        <div class="home-flip__wrapper">
-          <div
-            class="home-flip__card"
-            id="instantWeatherCard"
-            role="button"
-            tabindex="0"
-            aria-pressed="false"
-            aria-live="polite"
-          >
-            <div class="home-flip__face home-flip__face--front">
-              <header class="home-flip__header">
-                <i
-                  id="instantWeatherIcon"
-                  class="ri-sun-line"
-                  aria-hidden="true"
-                ></i>
-                <div>
-                  <p class="home-flip__label">오늘의 날씨</p>
-                  <p id="instantWeatherStatus" class="home-flip__value--large">
-                    맑음
-                  </p>
+      <section class="about" id="about" aria-label="HYANG 소개">
+        <h2>감각을 기록하는 HYANG</h2>
+        <div class="about__grid">
+          <article class="about-card">
+            <h3>날씨와 향</h3>
+            <p>
+              기온과 습도, 구름의 농도를 분석해 향수의 온도감과 무게를
+              조율합니다.
+            </p>
+          </article>
+          <article class="about-card">
+            <h3>감각 경험</h3>
+            <p>
+              색, 텍스처, 기류 등 시각적 단서를 섞어 향을 감각적으로 묘사합니다.
+            </p>
+          </article>
+          <article class="about-card">
+            <h3>입문자 맞춤</h3>
+            <p>
+              초보자도 쉽게 취향을 발견할 수 있도록 친절한 레이어를 제공합니다.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="flow" aria-label="추천 과정">
+        <div class="flow__header">
+          <div class="glass-chip">Three Steps</div>
+          <h2>어떻게 향을 추천하나요?</h2>
+        </div>
+        <div class="flow__grid">
+          <article class="flow-step" data-step="1">
+            <span class="flow-step__index">01</span>
+            <h3>선호 감각 선택</h3>
+            <p>노트 / 감정 태그를 선택해 감각의 스펙트럼을 설정합니다.</p>
+          </article>
+          <article class="flow-step" data-step="2">
+            <span class="flow-step__index">02</span>
+            <h3>오늘의 공기 읽기</h3>
+            <p>실시간 날씨 데이터를 받아 기온, 습도, 기류를 분석합니다.</p>
+          </article>
+          <article class="flow-step" data-step="3">
+            <span class="flow-step__index">03</span>
+            <h3>향수 추천 완성</h3>
+            <p>공기와 취향을 겹쳐 가장 어울리는 향수를 제안합니다.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="today" aria-label="오늘의 추천">
+        <div class="today__header">
+          <div class="glass-chip">오늘의 공기</div>
+          <h2>즉시 추천을 만나보세요</h2>
+        </div>
+        <div class="home-flip" aria-label="날씨 기반 즉시 추천 카드">
+          <div class="home-flip__wrapper">
+            <div
+              class="home-flip__card"
+              id="instantWeatherCard"
+              role="button"
+              tabindex="0"
+              aria-pressed="false"
+              aria-live="polite"
+            >
+              <div class="home-flip__face home-flip__face--front">
+                <header class="home-flip__header">
+                  <i
+                    id="instantWeatherIcon"
+                    class="ri-sun-line"
+                    aria-hidden="true"
+                  ></i>
+                  <div>
+                    <p class="home-flip__label">오늘의 날씨</p>
+                    <p
+                      id="instantWeatherStatus"
+                      class="home-flip__value--large"
+                    >
+                      맑음
+                    </p>
+                  </div>
+                </header>
+                <div class="home-flip__metrics">
+                  <span>기온<strong id="instantWeatherTemp">22℃</strong></span>
+                  <span
+                    >습도<strong id="instantWeatherHumidity">45%</strong></span
+                  >
                 </div>
-              </header>
-              <div class="home-flip__metrics">
-                <span>기온<strong id="instantWeatherTemp">22℃</strong></span>
-                <span
-                  >습도<strong id="instantWeatherHumidity">45%</strong></span
-                >
+                <footer class="home-flip__hint">
+                  <span class="home-flip__chip">
+                    <i class="ri-magic-line" aria-hidden="true"></i>
+                    터치해 바로 추천 보기
+                  </span>
+                </footer>
               </div>
-              <footer class="home-flip__hint">
-                <span class="home-flip__chip">
-                  <i class="ri-magic-line" aria-hidden="true"></i>
-                  터치해 바로 추천 보기
-                </span>
-              </footer>
-            </div>
-            <div class="home-flip__face home-flip__face--back">
-              <p class="home-flip__badge">오늘의 추천 향수</p>
-              <h2 id="instantRecommendName" class="home-flip__name">
-                Amber Night
-              </h2>
-              <p id="instantRecommendBrand" class="home-flip__brand">
-                Nocturne Atelier
-              </p>
-              <p id="instantRecommendDesc" class="home-flip__desc">
-                따뜻한 앰버와 우디 노트가 밤 공기와 어울리는 향.
-              </p>
-              <a
-                id="instantRecommendLink"
-                class="home-flip__cta"
-                href="detail.html"
-              >
-                상세 페이지로 이동
-                <i class="ri-arrow-right-up-line" aria-hidden="true"></i>
-              </a>
-              <p class="home-flip__hint home-flip__hint--back">
-                다시 터치하면 날씨 정보가 보여요.
-              </p>
+              <div class="home-flip__face home-flip__face--back">
+                <p class="home-flip__badge">오늘의 추천 향수</p>
+                <h2 id="instantRecommendName" class="home-flip__name">
+                  Amber Night
+                </h2>
+                <p id="instantRecommendBrand" class="home-flip__brand">
+                  Nocturne Atelier
+                </p>
+                <p id="instantRecommendDesc" class="home-flip__desc">
+                  따뜻한 앰버와 우디 노트가 밤 공기와 어울리는 향.
+                </p>
+                <a
+                  id="instantRecommendLink"
+                  class="home-flip__cta"
+                  href="detail.html"
+                >
+                  상세 페이지로 이동
+                  <i class="ri-arrow-right-up-line" aria-hidden="true"></i>
+                </a>
+                <p class="home-flip__hint home-flip__hint--back">
+                  다시 터치하면 날씨 정보가 보여요.
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -179,6 +244,7 @@
         </div>
       </div>
     </footer>
+
     <script type="module" src="js/main.js"></script>
   </body>
 </html>

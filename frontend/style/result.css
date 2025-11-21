@@ -214,11 +214,11 @@
   border-color: var(--card-accent, rgba(214, 235, 255, 0.9));
   box-shadow: 0 32px 54px rgba(17, 25, 40, 0.26);
   transform: translateY(-4px);
-  background: linear-gradient(
+  /*background: linear-gradient(
     145deg,
     rgba(255, 255, 255, 0.98),
     rgba(214, 235, 255, 0.82)
-  );
+  );*/
 }
 
 .recommend-card__inner.is-active {

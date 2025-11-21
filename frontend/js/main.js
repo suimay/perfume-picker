@@ -180,16 +180,43 @@ const TIME_KEYWORDS = {
   morning: ["morning", "dawn", "sunrise", "daybreak"],
   day: ["day", "daily", "fresh", "citrus", "aqua", "marine", "bright"],
 };
+const prefersReducedMotion = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const matchMediaQuery = (query) =>
+  typeof window !== "undefined" && window.matchMedia
+    ? window.matchMedia(query)
+    : undefined;
+
+const addMediaChangeListener = (mediaQueryList, handler) => {
+  if (!mediaQueryList || typeof handler !== "function") {
+    return () => {};
+  }
+  if (typeof mediaQueryList.addEventListener === "function") {
+    mediaQueryList.addEventListener("change", handler);
+    return () => mediaQueryList.removeEventListener("change", handler);
+  }
+  if (typeof mediaQueryList.addListener === "function") {
+    mediaQueryList.addListener(handler);
+    return () => mediaQueryList.removeListener(handler);
+  }
+  return () => {};
+};
+
 const syncBackgroundAnimation = () => {
-  const prefersReduce =
-    typeof window !== "undefined" &&
-    window.matchMedia &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (prefersReduce) return;
-  const durationMs = 14000;
+  if (prefersReducedMotion()) return;
+  const durationMs = 16000;
   const offset = Date.now() % durationMs;
   if (document && document.body) {
     document.body.style.animationDelay = `-${offset}ms`;
+  }
+  if (document && document.documentElement) {
+    document.documentElement.style.setProperty(
+      "--bg-shift-offset",
+      `-${offset}ms`
+    );
   }
 };
 
@@ -368,7 +395,7 @@ const findSimilarPerfumes = (currentPerfume) => {
 
 const buildNotePyramidSvg = () => `
   <svg class="note-pyramid" viewBox="0 0 200 200" role="presentation" aria-hidden="true">
-    <g fill="none" stroke="rgba(31, 36, 48, 0.35)" stroke-width="2" stroke-linecap="round">
+    <g fill="none" stroke="rgba(31, 36, 48, 0.18)" stroke-width="2" stroke-linecap="round">
       <path d="M 10 190 L 100 10 L 190 190 Z" />
       <line x1="10" y1="130" x2="190" y2="130" />
       <line x1="10" y1="70" x2="190" y2="70" />
@@ -805,9 +832,7 @@ const pickSeasonEmojiForCatalog = (perfume) => {
 };
 
 const pickTimeEmojiForCatalog = (perfume) => {
-  const tokens = deriveContextTokens(perfume)
-    .map(toKey)
-    .filter(Boolean);
+  const tokens = deriveContextTokens(perfume).map(toKey).filter(Boolean);
   const preferenceOrder = ["night", "evening", "day", "morning"];
   for (const key of preferenceOrder) {
     if (tokens.includes(key) && TIME_EMOJI_MAP[key]) {
@@ -822,7 +847,16 @@ const pickTimeEmojiForCatalog = (perfume) => {
 };
 
 const TIME_KEYWORD_HINTS = {
-  night: ["night", "midnight", "moon", "nocturne", "evening walk", "야상", "밤", "달빛"],
+  night: [
+    "night",
+    "midnight",
+    "moon",
+    "nocturne",
+    "evening walk",
+    "야상",
+    "밤",
+    "달빛",
+  ],
   evening: ["evening", "sunset", "dusk", "twilight", "황혼", "석양"],
   morning: ["morning", "dawn", "sunrise", "아침"],
   day: ["day", "noon", "sunny", "낮", "정오"],
@@ -1076,7 +1110,8 @@ const updateTopbarAuthButton = (profile) => {
     return;
   }
   const labelTarget =
-    authButton.querySelector("[data-label]") || authButton.querySelector("span");
+    authButton.querySelector("[data-label]") ||
+    authButton.querySelector("span");
   const icon = authButton.querySelector("i");
   const isMyPage = document.body.dataset.page === "mypage";
   if (profile?.email && isMyPage) {
@@ -1129,12 +1164,8 @@ const hydrateUserBadge = () => {
 
 const applyMyPageProfile = (profile) => {
   const nickname =
-    profile?.nickname ??
-    profile?.name ??
-    profile?.email ??
-    dummyUser.name;
-  const emailText =
-    profile?.email ?? "로그인하고 나만의 향수를 모아보세요.";
+    profile?.nickname ?? profile?.name ?? profile?.email ?? dummyUser.name;
+  const emailText = profile?.email ?? "로그인하고 나만의 향수를 모아보세요.";
   if (mypageView.nicknameEl) {
     mypageView.nicknameEl.textContent = nickname;
   }
@@ -1378,8 +1409,7 @@ const buildMypageBookmarkCard = (perfume) => {
 
   const desc = document.createElement("p");
   desc.className = "mypage-bookmark-card__desc";
-  desc.textContent =
-    perfume.description ?? "차분하게 감성을 담은 향수예요.";
+  desc.textContent = perfume.description ?? "차분하게 감성을 담은 향수예요.";
   article.appendChild(desc);
 
   const tagsWrapper = document.createElement("div");
@@ -1418,7 +1448,7 @@ const buildMypageBookmarkCard = (perfume) => {
   bookmarkButton.className = "bookmark-button";
   bookmarkButton.dataset.action = "bookmark";
   bookmarkButton.dataset.id = perfume.id;
-  bookmarkButton.innerHTML = '<span data-label>북마크 해제</span>';
+  bookmarkButton.innerHTML = "<span data-label>북마크 해제</span>";
   bookmarkButton.dataset.accent = accent;
   setBookmarkButtonState(bookmarkButton, isBookmarked(perfume.id));
   actions.appendChild(bookmarkButton);
@@ -1433,9 +1463,7 @@ const renderMypageBookmarks = () => {
     return;
   }
   bookmarkGrid.innerHTML = "";
-  const items = Array.isArray(mypageView.bookmarks)
-    ? mypageView.bookmarks
-    : [];
+  const items = Array.isArray(mypageView.bookmarks) ? mypageView.bookmarks : [];
   if (!items.length) {
     bookmarkGrid.hidden = true;
     bookmarkEmptyEl.hidden = false;
@@ -2060,24 +2088,247 @@ const applyWeatherCard = (weatherInfo) => {
   }
 };
 
+const setupHeroInteractions = () => {
+  const heroSection = document.querySelector(".hero");
+  const heroLogo = document.querySelector(".hero__logo");
+  const ctaButton = document.querySelector(".hero__cta");
+  const aboutSection = document.getElementById("about");
+
+  if (ctaButton && aboutSection && ctaButton.dataset.bound !== "true") {
+    ctaButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      aboutSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    ctaButton.dataset.bound = "true";
+  }
+
+  if (!heroSection || !heroLogo) {
+    return;
+  }
+
+  const desktopQuery = matchMediaQuery("(min-width: 720px)");
+  const motionQuery = matchMediaQuery("(prefers-reduced-motion: reduce)");
+  const maxOffset = 16;
+  let rafId = null;
+  let parallaxEnabled = false;
+
+  const applyParallax = (event) => {
+    if (!parallaxEnabled) {
+      return;
+    }
+    if (event.pointerType && event.pointerType !== "mouse") {
+      return;
+    }
+    const rect = heroSection.getBoundingClientRect();
+    if (!rect.width || !rect.height) {
+      return;
+    }
+    const relativeX = (event.clientX - rect.left) / rect.width - 0.5;
+    const relativeY = (event.clientY - rect.top) / rect.height - 0.5;
+    const offsetX = Math.max(-1, Math.min(1, relativeX * 2)) * maxOffset;
+    const offsetY = Math.max(-1, Math.min(1, relativeY * 2)) * maxOffset;
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+    }
+    rafId = requestAnimationFrame(() => {
+      heroLogo.style.transform = `translate3d(${offsetX}px, ${offsetY}px, 0)`;
+      rafId = null;
+    });
+  };
+
+  const resetLogo = () => {
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+    }
+    rafId = requestAnimationFrame(() => {
+      heroLogo.style.transform = "translate3d(0, 0, 0)";
+      rafId = null;
+    });
+  };
+
+  const enableParallax = () => {
+    if (parallaxEnabled) {
+      return;
+    }
+    heroSection.addEventListener("pointermove", applyParallax);
+    heroSection.addEventListener("pointerleave", resetLogo);
+    parallaxEnabled = true;
+  };
+
+  const disableParallax = () => {
+    if (!parallaxEnabled) {
+      return;
+    }
+    heroSection.removeEventListener("pointermove", applyParallax);
+    heroSection.removeEventListener("pointerleave", resetLogo);
+    parallaxEnabled = false;
+    resetLogo();
+  };
+
+  const evaluateParallax = () => {
+    const matchesDesktop = desktopQuery
+      ? desktopQuery.matches
+      : window.innerWidth >= 720;
+    if (!prefersReducedMotion() && matchesDesktop) {
+      enableParallax();
+    } else {
+      disableParallax();
+    }
+  };
+
+  evaluateParallax();
+  addMediaChangeListener(desktopQuery, evaluateParallax);
+  addMediaChangeListener(motionQuery, evaluateParallax);
+  if (!desktopQuery && typeof window !== "undefined") {
+    window.addEventListener("resize", evaluateParallax);
+  }
+};
+
+const setupHomeScrollReveals = () => {
+  const buildObserver = (selector, { threshold, delayStep }) => {
+    const targets = document.querySelectorAll(selector);
+    if (!targets.length) {
+      return;
+    }
+    if (prefersReducedMotion()) {
+      targets.forEach((target) => target.classList.add("is-visible"));
+      return;
+    }
+    if (typeof IntersectionObserver !== "function") {
+      targets.forEach((target) => target.classList.add("is-visible"));
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold }
+    );
+    targets.forEach((target, index) => {
+      target.style.transitionDelay = `${index * (delayStep ?? 0)}s`;
+      observer.observe(target);
+    });
+  };
+
+  buildObserver(".about-card", { threshold: 0.25, delayStep: 0.08 });
+  buildObserver(".flow-step", { threshold: 0.4, delayStep: 0.12 });
+};
+
 const setupInstantFlipCard = () => {
   const card = document.getElementById("instantWeatherCard");
   if (!card || card.dataset.bound === "true") {
     return;
   }
 
+  const tiltQuery = matchMediaQuery("(min-width: 720px)");
+  const motionQuery = matchMediaQuery("(prefers-reduced-motion: reduce)");
+  let tiltEnabled = false;
+  let rafId = null;
+  const tiltState = { x: 0, y: 0 };
+
+  const applyTiltTransform = () => {
+    if (!tiltEnabled) {
+      card.style.transform = "";
+      return;
+    }
+    const baseRotation = card.classList.contains("is-flipped") ? 180 : 0;
+    card.style.transform = `perspective(1000px) rotateX(${tiltState.x}deg) rotateY(${baseRotation + tiltState.y}deg)`;
+  };
+
+  const resetTilt = () => {
+    tiltState.x = 0;
+    tiltState.y = 0;
+    applyTiltTransform();
+  };
+
+  const handlePointerMove = (event) => {
+    if (!tiltEnabled) {
+      return;
+    }
+    if (event.pointerType && event.pointerType !== "mouse") {
+      return;
+    }
+    const rect = card.getBoundingClientRect();
+    if (!rect.width || !rect.height) {
+      return;
+    }
+    const relativeX = (event.clientX - rect.left) / rect.width - 0.5;
+    const relativeY = (event.clientY - rect.top) / rect.height - 0.5;
+    const targetY = Math.max(-1, Math.min(1, relativeX * 2)) * 6;
+    const targetX = Math.max(-1, Math.min(1, relativeY * -2)) * 6;
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+    }
+    rafId = requestAnimationFrame(() => {
+      tiltState.x = Number(targetX.toFixed(3));
+      tiltState.y = Number(targetY.toFixed(3));
+      applyTiltTransform();
+      rafId = null;
+    });
+  };
+
+  const enableTilt = () => {
+    if (tiltEnabled) {
+      return;
+    }
+    card.addEventListener("pointermove", handlePointerMove);
+    card.addEventListener("pointerleave", resetTilt);
+    tiltEnabled = true;
+    applyTiltTransform();
+  };
+
+  const disableTilt = () => {
+    if (!tiltEnabled) {
+      return;
+    }
+    card.removeEventListener("pointermove", handlePointerMove);
+    card.removeEventListener("pointerleave", resetTilt);
+    tiltEnabled = false;
+    card.style.transform = "";
+  };
+
+  const evaluateTilt = () => {
+    const matchesDesktop = tiltQuery
+      ? tiltQuery.matches
+      : window.innerWidth >= 720;
+    if (!prefersReducedMotion() && matchesDesktop) {
+      enableTilt();
+    } else {
+      disableTilt();
+    }
+  };
+
   const toggle = () => {
     const flipped = card.classList.toggle("is-flipped");
     card.setAttribute("aria-pressed", String(flipped));
+    if (tiltEnabled) {
+      applyTiltTransform();
+    }
   };
 
   card.addEventListener("click", toggle);
   card.addEventListener("keydown", (event) => {
-    if (event.key === "Enter" || event.key === " ") {
+    if (
+      event.key === "Enter" ||
+      event.key === " " ||
+      event.code === "Space"
+    ) {
       event.preventDefault();
       toggle();
     }
   });
+
+  evaluateTilt();
+  addMediaChangeListener(tiltQuery, evaluateTilt);
+  addMediaChangeListener(motionQuery, evaluateTilt);
+  if (!tiltQuery && typeof window !== "undefined") {
+    window.addEventListener("resize", evaluateTilt);
+  }
 
   card.dataset.bound = "true";
 };
@@ -2216,6 +2467,8 @@ const initHomePage = () => {
   initCommonUI();
 
   setupInstantFlipCard();
+  setupHeroInteractions();
+  setupHomeScrollReveals();
 
   const fallbackWeather = { condition: "맑음", temp: 22, humidity: 45 };
 
@@ -2625,7 +2878,10 @@ const initCatalogPage = async () => {
   };
 
   const applyCatalogFilters = () => {
-    if (!Array.isArray(catalogView.baseItems) || !catalogView.baseItems.length) {
+    if (
+      !Array.isArray(catalogView.baseItems) ||
+      !catalogView.baseItems.length
+    ) {
       listEl.innerHTML = "";
       emptyStateEl.hidden = false;
       emptyStateEl.classList.add("is-visible");
@@ -2700,7 +2956,9 @@ const initCatalogPage = async () => {
     catalogView.baseItems = perfumes.map(normalizePerfumeForUi).filter(Boolean);
   } catch (error) {
     console.warn("[catalog] API error, using fallback");
-    catalogView.baseItems = perfumeList.map(normalizePerfumeForUi).filter(Boolean);
+    catalogView.baseItems = perfumeList
+      .map(normalizePerfumeForUi)
+      .filter(Boolean);
   }
   applyCatalogFilters();
 };
