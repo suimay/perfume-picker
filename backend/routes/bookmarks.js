@@ -5,15 +5,11 @@ import { pool } from "../db.js";
 
 const router = express.Router();
 
-// 북마크 조회 (향수 정보 포함)
-router.get("/bookmarks", async (req, res) => {
-  const { userId } = req.query ?? {};
+import { requireLogin } from "../middleware/auth.js";
 
-  if (!userId) {
-    return res
-      .status(400)
-      .json({ success: false, message: "userId가 필요합니다." });
-  }
+// 북마크 조회 (향수 정보 포함)
+router.get("/bookmarks", requireLogin, async (req, res) => {
+  const userId = req.session.userId;
 
   try {
     const [rows] = await pool.execute(
@@ -44,13 +40,14 @@ router.get("/bookmarks", async (req, res) => {
 });
 
 // 북마크 추가
-router.post("/bookmarks", async (req, res) => {
-  const { userId, perfumeId } = req.body ?? {};
+router.post("/bookmarks", requireLogin, async (req, res) => {
+  const userId = req.session.userId;
+  const { perfumeId } = req.body ?? {};
 
-  if (!userId || !perfumeId) {
+  if (!perfumeId) {
     return res
       .status(400)
-      .json({ success: false, message: "userId와 perfumeId가 필요합니다." });
+      .json({ success: false, message: "perfumeId가 필요합니다." });
   }
 
   try {
@@ -72,13 +69,14 @@ router.post("/bookmarks", async (req, res) => {
 });
 
 // 북마크 삭제
-router.delete("/bookmarks", async (req, res) => {
-  const { userId, perfumeId } = req.body ?? {};
+router.delete("/bookmarks", requireLogin, async (req, res) => {
+  const userId = req.session.userId;
+  const { perfumeId } = req.body ?? {};
 
-  if (!userId || !perfumeId) {
+  if (!perfumeId) {
     return res
       .status(400)
-      .json({ success: false, message: "userId와 perfumeId가 필요합니다." });
+      .json({ success: false, message: "perfumeId가 필요합니다." });
   }
 
   try {

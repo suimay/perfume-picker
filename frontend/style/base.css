@@ -119,13 +119,23 @@ body::after {
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1024px) and (max-width: 1439px) {
   body {
     background-size: 220% 220%;
     background-color: #fbf4ef;
   }
   body::after {
     opacity: 0.05;
+  }
+}
+
+@media (min-width: 1440px) {
+  body {
+    background-size: 200% 200%;
+    background-color: #fcf7f3;
+  }
+  body::after {
+    opacity: 0.04;
   }
 }
 
@@ -499,7 +509,7 @@ button {
 }
 
 /* Responsive -------------------------------------------------------------- */
-@media (max-width: 900px) {
+@media (min-width: 600px) and (max-width: 1023px) {
   .topbar__inner {
     flex-wrap: wrap;
   }
@@ -541,7 +551,7 @@ button {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 599px) {
   .home-identity {
     flex-direction: column;
     align-items: flex-start;

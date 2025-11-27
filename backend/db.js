@@ -1,7 +1,13 @@
 import mysql from "mysql2/promise";
 import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// backend/.env를 확실히 불러오도록 경로 고정
+dotenv.config({ path: path.resolve(__dirname, ".env") });
 
 const {
   DB_HOST,

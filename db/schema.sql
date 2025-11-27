@@ -25,10 +25,40 @@ CREATE TABLE IF NOT EXISTS `perfumes` (
   `brand` VARCHAR(255) DEFAULT NULL,
   `tags_json` JSON DEFAULT NULL,
   `seasonality_json` JSON DEFAULT NULL,
+  `weather_json` JSON DEFAULT NULL,
   `image_url` VARCHAR(500) DEFAULT NULL,
   `description` TEXT,
+  `source_type` ENUM('STATIC_DB','OPENAI_GENERATED') DEFAULT 'STATIC_DB',
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `idx_perfumes_tags_json` ((CAST(`tags_json` AS CHAR(255))))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 노트 테이블 (선호/비선호 대상)
+CREATE TABLE IF NOT EXISTS `notes` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL,
+  `category` VARCHAR(100) DEFAULT NULL,
+  `description` TEXT DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_notes_name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 사용자 선호/비선호 노트 매핑
+CREATE TABLE IF NOT EXISTS `user_preferences` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` INT UNSIGNED NOT NULL,
+  `note_id` INT UNSIGNED NOT NULL,
+  `type` ENUM('LIKE','DISLIKE') NOT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_user_note_type` (`user_id`,`note_id`,`type`),
+  CONSTRAINT `fk_pref_user`
+    FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_pref_note`
+    FOREIGN KEY (`note_id`) REFERENCES `notes` (`id`)
+    ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- 북마크 테이블 (사용자 ↔ 향수)

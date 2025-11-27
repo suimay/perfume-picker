@@ -30,12 +30,15 @@ router.post("/register", async (req, res) => {
 
     const passwordHash = await bcrypt.hash(password, 10);
 
-    await pool.execute(
+    const [result] = await pool.execute(
       "INSERT INTO users (email, password_hash, nickname) VALUES (?, ?, ?)",
       [email, passwordHash, nickname]
     );
 
-    return res.status(201).json({ success: true });
+    req.session.userId = result.insertId;
+    return res
+      .status(201)
+      .json({ success: true, user: { id: result.insertId, email, nickname } });
   } catch (error) {
     console.error("[auth] register error:", error);
     return res
@@ -75,6 +78,7 @@ router.post("/login", async (req, res) => {
         .json({ success: false, message: "이메일 또는 비밀번호가 올바르지 않습니다." });
     }
 
+    req.session.userId = userRow.id;
     return res.json({
       success: true,
       user: {
@@ -89,6 +93,13 @@ router.post("/login", async (req, res) => {
       .status(500)
       .json({ success: false, message: "로그인 처리 중 오류가 발생했습니다." });
   }
+});
+
+// 로그아웃 엔드포인트
+router.post("/logout", (req, res) => {
+  req.session.destroy(() => {
+    res.json({ success: true });
+  });
 });
 
 export default router;
