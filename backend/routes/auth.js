@@ -47,51 +47,44 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// 로그인 엔드포인트
+// 로그인 엔드포인트 (평문 비밀번호 비교 버전)
 router.post("/login", async (req, res) => {
   const { email, password } = req.body ?? {};
 
   if (!email || !password) {
     return res
       .status(400)
-      .json({ success: false, message: "이메일과 비밀번호를 입력해주세요." });
+      .json({ error: "이메일과 비밀번호를 입력해주세요." });
   }
 
   try {
-    const [rows] = await pool.execute(
-      "SELECT id, email, nickname, password_hash FROM users WHERE email = ? LIMIT 1",
+    const [rows] = await pool.query(
+      "SELECT id, email, password_hash, nickname FROM users WHERE email = ? LIMIT 1",
       [email]
     );
 
     if (rows.length === 0) {
       return res
         .status(401)
-        .json({ success: false, message: "이메일 또는 비밀번호가 올바르지 않습니다." });
+        .json({ error: "이메일 또는 비밀번호가 올바르지 않습니다." });
     }
 
-    const userRow = rows[0];
-    const isMatch = await bcrypt.compare(password, userRow.password_hash);
-
-    if (!isMatch) {
+    const user = rows[0];
+    // 현재는 해시가 아닌 평문이라고 가정하고 문자열 비교
+    if (password !== user.password_hash) {
       return res
         .status(401)
-        .json({ success: false, message: "이메일 또는 비밀번호가 올바르지 않습니다." });
+        .json({ error: "이메일 또는 비밀번호가 올바르지 않습니다." });
     }
 
-    req.session.userId = userRow.id;
+    req.session.userId = user.id;
     return res.json({
       success: true,
-      user: {
-        id: userRow.id,
-        email: userRow.email,
-        nickname: userRow.nickname,
-      },
+      user: { id: user.id, email: user.email, nickname: user.nickname },
     });
   } catch (error) {
     console.error("[auth] login error:", error);
-    return res
-      .status(500)
-      .json({ success: false, message: "로그인 처리 중 오류가 발생했습니다." });
+    return res.status(500).json({ error: "서버 오류" });
   }
 });
 

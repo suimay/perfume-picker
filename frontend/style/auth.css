@@ -78,11 +78,13 @@
   z-index: 1;
 }
 
+/*
 .auth-card:hover {
   border-color: rgba(214, 235, 255, 0.72);
   box-shadow: 0 20px 48px rgba(17, 25, 40, 0.26);
   transform: translateY(-4px);
 }
+*/
 
 .auth-card__title {
   margin: 0;
