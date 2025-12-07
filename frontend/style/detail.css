@@ -526,15 +526,28 @@
 
 .metric-scale__labels {
   position: relative;
-  display: flex;
-  justify-content: space-between;
+  height: 20px;
   font-size: 0.8rem;
   color: rgba(31, 36, 48, 0.55);
 }
 
 .metric-scale__label {
-  position: relative;
+  position: absolute;
   transform: translateX(-50%);
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.metric-scale__label--start {
+  left: 0;
+  transform: translateX(0);
+  text-align: left;
+}
+
+.metric-scale__label--end {
+  left: 100%;
+  transform: translateX(-100%);
+  text-align: right;
 }
 
 .metric-scale__label.is-active {

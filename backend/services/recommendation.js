@@ -38,11 +38,32 @@ export const buildRecommendations = async ({ userId }) => {
 };
 
 const parseJsonArray = (value) => {
-  if (!value) return [];
-  try {
-    const parsed = JSON.parse(value);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (_error) {
+  if (!value) {
     return [];
   }
+  if (Array.isArray(value)) {
+    return value;
+  }
+  if (typeof value === "object") {
+    return Object.values(value)
+      .flat()
+      .filter((item) => typeof item === "string" && item.trim().length > 0);
+  }
+  if (typeof value === "string") {
+    try {
+      const parsed = JSON.parse(value);
+      return Array.isArray(parsed)
+        ? parsed
+        : value
+            .split(",")
+            .map((item) => item.trim())
+            .filter(Boolean);
+    } catch (_error) {
+      return value
+        .split(",")
+        .map((item) => item.trim())
+        .filter(Boolean);
+    }
+  }
+  return [];
 };

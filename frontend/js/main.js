@@ -340,11 +340,18 @@ const buildScaleTrack = (container, labels, activeIndex, accent) => {
   const labelsHtml = labels
     .map((label, index) => {
       const position = (index / denominator) * 100;
+      const alignClass =
+        index === 0
+          ? "metric-scale__label--start"
+          : index === maxIndex
+          ? "metric-scale__label--end"
+          : "";
       const activeClass =
         index === safeIndex
           ? "metric-scale__label is-active"
           : "metric-scale__label";
-      return `<span class="${activeClass}" style="left:${position}%">${label}</span>`;
+      const className = [activeClass, alignClass].filter(Boolean).join(" ");
+      return `<span class="${className}" style="left:${position}%">${label}</span>`;
     })
     .join("");
   container.innerHTML = `
@@ -2595,6 +2602,7 @@ const initDetailPage = async () => {
 
   const params = new URLSearchParams(window.location.search);
   const perfumeId = params.get("id");
+  const matchId = (value) => String(value ?? "") === String(perfumeId ?? "");
   const shell = document.getElementById("detailShell");
   const notesPanel = document.getElementById("detailNotesPanel");
   const metricsPanel = document.getElementById("detailMetricsPanel");
@@ -2819,7 +2827,7 @@ const initDetailPage = async () => {
 
   try {
     const perfumes = await fetchPerfumesFromApi();
-    const target = perfumes.find((item) => item.id === perfumeId);
+    const target = perfumes.find((item) => matchId(item.id));
     if (target) {
       applyPerfumeDetails(target);
       return;
@@ -2829,7 +2837,7 @@ const initDetailPage = async () => {
     console.warn("[detail] API error, using fallback");
   }
 
-  const fallback = perfumeList.find((item) => item.id === perfumeId);
+  const fallback = perfumeList.find((item) => matchId(item.id));
   applyPerfumeDetails(fallback);
 };
 
