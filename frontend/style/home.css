@@ -219,8 +219,8 @@
   border: 2px solid rgba(255, 255, 255, 0.32);
   background: linear-gradient(
     150deg,
-    rgba(255, 255, 255, 0.92),
-    rgba(255, 255, 255, 0.78)
+    rgba(255, 255, 255, 0.719),
+    rgba(255, 255, 255, 0.348)
   );
   box-shadow: 0 18px 32px rgba(17, 25, 40, 0.18);
   transition: transform 0.35s ease, border-color 0.25s ease, opacity 0.35s ease;
@@ -272,6 +272,78 @@
 
 .home-flip__wrapper {
   perspective: 1800px;
+}
+
+.hyang-intro {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(1rem, 2vw, 1.6rem);
+}
+
+.hyang-flip-card {
+  position: relative;
+  width: 100%;
+  max-width: 540px;
+  min-height: 160px;
+  margin: 0 auto;
+  border-radius: 24px;
+  background: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.719),
+    rgba(255, 255, 255, 0.348)
+  );
+  overflow: hidden;
+  box-shadow: 0 26px 50px rgba(17, 25, 40, 0.18);
+}
+
+.flip-panel {
+  position: absolute;
+  inset: 0;
+  padding: 1.6rem;
+  opacity: 0;
+  transform: rotateY(15deg) translateY(10px);
+  transform-origin: center right;
+  animation: flipCarousel 18s infinite ease-in-out;
+}
+
+.flip-panel h3 {
+  margin: 0 0 0.4rem;
+}
+
+.flip-panel p {
+  margin: 0;
+  line-height: 1.7;
+}
+
+.panel-1 {
+  animation-delay: 0s;
+}
+.panel-2 {
+  animation-delay: 6s;
+}
+.panel-3 {
+  animation-delay: 12s;
+}
+
+.hyang-flip-card:hover .flip-panel {
+  animation-play-state: paused;
+} /*호버 시 애니메이션 멈춰 읽을 수 있게*/
+
+@keyframes flipCarousel {
+  0% {
+    opacity: 0;
+    transform: rotateY(15deg) translateY(10px);
+  }
+  5%,
+  25% {
+    opacity: 1;
+    transform: rotateY(0deg) translateY(0);
+  }
+  30%,
+  100% {
+    opacity: 0;
+    transform: rotateY(-15deg) translateY(-10px);
+  }
 }
 
 .home-flip__card {
