@@ -2024,6 +2024,7 @@ const applyWeatherCard = (weatherInfo) => {
   const tempEl = document.getElementById("weatherTemp");
   const humidityEl = document.getElementById("weatherHumidity");
   const iconEl = document.getElementById("weatherIcon");
+  const instantCard = document.getElementById("instantWeatherCard");
 
   if (conditionEl) {
     conditionEl.textContent = weatherInfo.condition;
@@ -2088,6 +2089,20 @@ const applyWeatherCard = (weatherInfo) => {
     instantLink.href = `detail.html?id=${encodeURIComponent(
       recommendation.id ?? recommendation.name
     )}`;
+  }
+
+  // 추천 카드 테두리/포커스 색상 설정
+  if (instantCard) {
+    const match =
+      perfumeList
+        .map(normalizePerfumeForUi)
+        .find(
+          (perfume) =>
+            perfume?.id === recommendation.id ||
+            perfume?.name === recommendation.name
+        ) ?? null;
+    const accent = pickAccentColor(match ?? {});
+    instantCard.style.setProperty("--instant-accent", accent);
   }
 
   try {
@@ -2241,90 +2256,9 @@ const setupInstantFlipCard = () => {
     return;
   }
 
-  const tiltQuery = matchMediaQuery("(min-width: 720px)");
-  const motionQuery = matchMediaQuery("(prefers-reduced-motion: reduce)");
-  let tiltEnabled = false;
-  let rafId = null;
-  const tiltState = { x: 0, y: 0 };
-
-  const applyTiltTransform = () => {
-    if (!tiltEnabled) {
-      card.style.transform = "";
-      return;
-    }
-    const baseRotation = card.classList.contains("is-flipped") ? 180 : 0;
-    card.style.transform = `perspective(1000px) rotateX(${tiltState.x}deg) rotateY(${baseRotation + tiltState.y}deg)`;
-  };
-
-  const resetTilt = () => {
-    tiltState.x = 0;
-    tiltState.y = 0;
-    applyTiltTransform();
-  };
-
-  const handlePointerMove = (event) => {
-    if (!tiltEnabled) {
-      return;
-    }
-    if (event.pointerType && event.pointerType !== "mouse") {
-      return;
-    }
-    const rect = card.getBoundingClientRect();
-    if (!rect.width || !rect.height) {
-      return;
-    }
-    const relativeX = (event.clientX - rect.left) / rect.width - 0.5;
-    const relativeY = (event.clientY - rect.top) / rect.height - 0.5;
-    const targetY = Math.max(-1, Math.min(1, relativeX * 2)) * 6;
-    const targetX = Math.max(-1, Math.min(1, relativeY * -2)) * 6;
-    if (rafId) {
-      cancelAnimationFrame(rafId);
-    }
-    rafId = requestAnimationFrame(() => {
-      tiltState.x = Number(targetX.toFixed(3));
-      tiltState.y = Number(targetY.toFixed(3));
-      applyTiltTransform();
-      rafId = null;
-    });
-  };
-
-  const enableTilt = () => {
-    if (tiltEnabled) {
-      return;
-    }
-    card.addEventListener("pointermove", handlePointerMove);
-    card.addEventListener("pointerleave", resetTilt);
-    tiltEnabled = true;
-    applyTiltTransform();
-  };
-
-  const disableTilt = () => {
-    if (!tiltEnabled) {
-      return;
-    }
-    card.removeEventListener("pointermove", handlePointerMove);
-    card.removeEventListener("pointerleave", resetTilt);
-    tiltEnabled = false;
-    card.style.transform = "";
-  };
-
-  const evaluateTilt = () => {
-    const matchesDesktop = tiltQuery
-      ? tiltQuery.matches
-      : window.innerWidth >= 720;
-    if (!prefersReducedMotion() && matchesDesktop) {
-      enableTilt();
-    } else {
-      disableTilt();
-    }
-  };
-
   const toggle = () => {
     const flipped = card.classList.toggle("is-flipped");
     card.setAttribute("aria-pressed", String(flipped));
-    if (tiltEnabled) {
-      applyTiltTransform();
-    }
   };
 
   card.addEventListener("click", toggle);
@@ -2338,13 +2272,6 @@ const setupInstantFlipCard = () => {
       toggle();
     }
   });
-
-  evaluateTilt();
-  addMediaChangeListener(tiltQuery, evaluateTilt);
-  addMediaChangeListener(motionQuery, evaluateTilt);
-  if (!tiltQuery && typeof window !== "undefined") {
-    window.addEventListener("resize", evaluateTilt);
-  }
 
   card.dataset.bound = "true";
 };
