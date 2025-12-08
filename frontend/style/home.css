@@ -235,13 +235,13 @@
   opacity: 1;
   transform: none;
 }
-
+/*
 .about-card:hover,
 .flow-step:hover {
   border-color: rgba(214, 235, 255, 0.8);
   transform: translateY(-4px);
 }
-
+*/
 .flow-step {
   opacity: 0;
   transform: translateY(30px) scale(0.98) rotateX(6deg);

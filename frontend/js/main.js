@@ -2632,13 +2632,32 @@ const initDetailPage = async () => {
       renderTagPills(tagListEl, tagCandidates);
     }
 
-    const heartNotes =
+    const heartNotesOriginal =
       perfume.notes.middle.length > 0
         ? perfume.notes.middle
         : perfume.notes.heart ?? [];
-    renderNoteChips(topEl, perfume.notes.top);
+
+    // 노트 데이터가 없을 때 태그를 활용해 간단한 피라미드 생성
+    const hasOriginalNotes =
+      (perfume.notes.top?.length ?? 0) +
+        (heartNotesOriginal?.length ?? 0) +
+        (perfume.notes.base?.length ?? 0) >
+      0;
+    let topNotes = perfume.notes.top;
+    let heartNotes = heartNotesOriginal;
+    let baseNotes = perfume.notes.base;
+    if (!hasOriginalNotes) {
+      const fallback = Array.isArray(perfume.tags)
+        ? perfume.tags.filter(Boolean).map((tag) => tag.toString())
+        : [];
+      topNotes = fallback.slice(0, 3);
+      heartNotes = fallback.slice(3, 6);
+      baseNotes = fallback.slice(6, 9);
+    }
+
+    renderNoteChips(topEl, topNotes);
     renderNoteChips(heartEl, heartNotes);
-    renderNoteChips(baseEl, perfume.notes.base);
+    renderNoteChips(baseEl, baseNotes);
 
     if (bookmarkButton) {
       bookmarkButton.dataset.accent = accent;
@@ -2658,9 +2677,9 @@ const initDetailPage = async () => {
     }
 
     const hasNotes =
-      (perfume.notes.top?.length ?? 0) +
+      (topNotes?.length ?? 0) +
         (heartNotes?.length ?? 0) +
-        (perfume.notes.base?.length ?? 0) >
+        (baseNotes?.length ?? 0) >
       0;
     if (notesPanel) {
       notesPanel.hidden = !hasNotes;
