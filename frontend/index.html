@@ -133,58 +133,64 @@
               aria-pressed="false"
               aria-live="polite"
             >
-              <div class="home-flip__face home-flip__face--front">
-                <header class="home-flip__header">
-                  <i
-                    id="instantWeatherIcon"
-                    class="ri-sun-line"
-                    aria-hidden="true"
-                  ></i>
-                  <div>
-                    <p class="home-flip__label">오늘의 날씨</p>
-                    <p
-                      id="instantWeatherStatus"
-                      class="home-flip__value--large"
+              <div class="home-flip__inner">
+                <div class="home-flip__face home-flip__face--front">
+                  <header class="home-flip__header">
+                    <i
+                      id="instantWeatherIcon"
+                      class="ri-sun-line"
+                      aria-hidden="true"
+                    ></i>
+                    <div>
+                      <p class="home-flip__label">오늘의 날씨</p>
+                      <p
+                        id="instantWeatherStatus"
+                        class="home-flip__value--large"
+                      >
+                        맑음
+                      </p>
+                    </div>
+                  </header>
+                  <div class="home-flip__metrics">
+                    <span
+                      >기온<strong id="instantWeatherTemp">22℃</strong></span
                     >
-                      맑음
-                    </p>
+                    <span
+                      >습도<strong id="instantWeatherHumidity"
+                        >45%</strong
+                      ></span
+                    >
                   </div>
-                </header>
-                <div class="home-flip__metrics">
-                  <span>기온<strong id="instantWeatherTemp">22℃</strong></span>
-                  <span
-                    >습도<strong id="instantWeatherHumidity">45%</strong></span
-                  >
+                  <footer class="home-flip__hint">
+                    <span class="home-flip__chip">
+                      <i class="ri-magic-line" aria-hidden="true"></i>
+                      터치해 바로 추천 보기
+                    </span>
+                  </footer>
                 </div>
-                <footer class="home-flip__hint">
-                  <span class="home-flip__chip">
-                    <i class="ri-magic-line" aria-hidden="true"></i>
-                    터치해 바로 추천 보기
-                  </span>
-                </footer>
-              </div>
-              <div class="home-flip__face home-flip__face--back">
-                <p class="home-flip__badge">오늘의 추천 향수</p>
-                <h2 id="instantRecommendName" class="home-flip__name">
-                  Amber Night
-                </h2>
-                <p id="instantRecommendBrand" class="home-flip__brand">
-                  Nocturne Atelier
-                </p>
-                <p id="instantRecommendDesc" class="home-flip__desc">
-                  따뜻한 앰버와 우디 노트가 밤 공기와 어울리는 향.
-                </p>
-                <a
-                  id="instantRecommendLink"
-                  class="home-flip__cta"
-                  href="detail.html"
-                >
-                  상세 페이지로 이동
-                  <i class="ri-arrow-right-up-line" aria-hidden="true"></i>
-                </a>
-                <p class="home-flip__hint home-flip__hint--back">
-                  다시 터치하면 날씨 정보가 보여요.
-                </p>
+                <div class="home-flip__face home-flip__face--back">
+                  <p class="home-flip__badge">오늘의 추천 향수</p>
+                  <h2 id="instantRecommendName" class="home-flip__name">
+                    Amber Night
+                  </h2>
+                  <p id="instantRecommendBrand" class="home-flip__brand">
+                    Nocturne Atelier
+                  </p>
+                  <p id="instantRecommendDesc" class="home-flip__desc">
+                    따뜻한 앰버와 우디 노트가 밤 공기와 어울리는 향.
+                  </p>
+                  <a
+                    id="instantRecommendLink"
+                    class="home-flip__cta"
+                    href="detail.html"
+                  >
+                    상세 페이지로 이동
+                    <i class="ri-arrow-right-up-line" aria-hidden="true"></i>
+                  </a>
+                  <p class="home-flip__hint home-flip__hint--back">
+                    다시 터치하면 날씨 정보가 보여요.
+                  </p>
+                </div>
               </div>
             </div>
           </div>

@@ -282,38 +282,34 @@
   box-shadow: 0 30px 60px rgba(17, 25, 40, 0.24);
   border: 1.5px solid rgba(255, 255, 255, 0.35);
   overflow: hidden;
-  transition: transform 0.65s ease, box-shadow 0.3s ease;
-  transform-style: preserve-3d;
-  transform: perspective(1400px) rotateY(0deg);
-  background: radial-gradient(
-      circle at 18% 20%,
-      rgba(255, 214, 194, 0.34),
-      transparent 42%
-    ),
-    radial-gradient(
-      circle at 78% 70%,
-      rgba(164, 203, 255, 0.3),
-      transparent 48%
-    ),
-    linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.82),
-      rgba(233, 239, 250, 0.72)
-    );
+  /*background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.82),
+    rgba(233, 239, 250, 0.72)
+  );*/
 }
 
 .home-flip__card::before {
-  background: radial-gradient(
-      circle at 52% 58%,
-      rgba(255, 255, 255, 0.48),
-      transparent 60%
-    ),
-    linear-gradient(
-      160deg,
-      rgba(255, 255, 255, 0.65),
-      rgba(255, 255, 255, 0.18)
-    );
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.42);
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.264),
+    rgba(237, 240, 248, 0.265)
+  );
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45);
+}
+
+.home-flip__inner {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  transform-style: preserve-3d;
+  transition: transform 0.65s ease;
+  transform: rotateY(0deg);
 }
 
 .home-flip__face {
@@ -327,23 +323,27 @@
 }
 
 .home-flip__face--front {
-  background: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.354);
   backdrop-filter: blur(18px);
   transform: rotateY(0deg);
 }
 
 .home-flip__face--back {
-  background: rgba(16, 22, 42, 0.78);
+  /*background: linear-gradient(140deg, #1c2340, #3b4b93);*/
+  background: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.184),
+    rgba(255, 255, 255, 0.077)
+  );
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
   transform: rotateY(180deg);
-  border: 2px solid var(--instant-accent, rgba(255, 255, 255, 0.36));
-  color: #f4f6ff;
+  color: #262626;
   display: grid;
   gap: 0.35rem;
 }
 
-.home-flip__card.is-flipped {
-  transform: perspective(1400px) rotateY(180deg);
+.home-flip__card.is-flipped .home-flip__inner {
+  transform: rotateY(180deg);
 }
 
 .home-flip__badge {
@@ -352,9 +352,9 @@
   gap: 0.35rem;
   padding: 0.35rem 0.75rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.41);
   border: 1px solid rgba(255, 255, 255, 0.26);
-  color: #e7ebff;
+  color: var(--instant-accent, #f5b0ff);
   font-size: 0.85rem;
   width: fit-content;
 }
@@ -374,7 +374,7 @@
 .home-flip__desc {
   margin: 0.4rem 0 0.6rem;
   line-height: 1.6;
-  color: rgba(235, 238, 255, 0.92);
+  color: var(--instant-accent, #f5b0ff);
 }
 
 .home-flip__cta {
@@ -383,9 +383,9 @@
   gap: 0.4rem;
   width: fit-content;
   padding: 0.65rem 0.9rem;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.14);
-  color: #f8f9ff;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.41);
+  color: lightslategray;
   text-decoration: none;
   border: 1px solid rgba(255, 255, 255, 0.26);
   font-weight: 600;
@@ -398,30 +398,7 @@
 }
 
 .home-flip__hint--back {
-  margin: 0;
+  margin: 6px 0px 0px;
   font-size: 0.88rem;
-  color: rgba(235, 238, 255, 0.86);
+  color: lightslategray;
 }
-.home-flip__card.is-flipped .home-flip__face--front {
-  transform: rotateY(180deg);
-}
-
-.home-flip__chip {
-  background: rgba(255, 255, 255, 0.26);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  color: rgba(20, 20, 40, 0.8);
-}
-/*
-.glass-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  padding: 0.35rem 0.9rem;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  background: rgba(255, 255, 255, 0.2);
-  font-size: 0.78rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-*/
