@@ -8,7 +8,9 @@ const router = express.Router();
 
 // 회원가입 엔드포인트
 router.post("/register", async (req, res) => {
-  const { email, password, nickname } = req.body ?? {};
+  const email = (req.body?.email ?? "").toString().trim();
+  const password = (req.body?.password ?? "").toString();
+  const nickname = (req.body?.nickname ?? "").toString().trim();
 
   if (!email || !password || !nickname) {
     return res
@@ -49,7 +51,8 @@ router.post("/register", async (req, res) => {
 
 // 로그인 엔드포인트 (평문 비밀번호 비교 버전)
 router.post("/login", async (req, res) => {
-  const { email, password } = req.body ?? {};
+  const email = (req.body?.email ?? "").toString().trim();
+  const password = (req.body?.password ?? "").toString();
 
   if (!email || !password) {
     return res
@@ -64,14 +67,16 @@ router.post("/login", async (req, res) => {
     );
 
     if (rows.length === 0) {
+      console.warn("[auth] login fail - user not found:", email);
       return res
         .status(401)
         .json({ error: "이메일 또는 비밀번호가 올바르지 않습니다." });
     }
 
     const user = rows[0];
-    // 현재는 해시가 아닌 평문이라고 가정하고 문자열 비교
-    if (password !== user.password_hash) {
+    const passwordOk = await bcrypt.compare(password, user.password_hash);
+    if (!passwordOk) {
+      console.warn("[auth] login fail - password mismatch for:", email);
       return res
         .status(401)
         .json({ error: "이메일 또는 비밀번호가 올바르지 않습니다." });

@@ -1053,11 +1053,16 @@ const logFailure = (label, error) => {
 
 const apiGet = async (path, label = `[GET] ${path}`) => {
   try {
-    const response = await fetch(`${API_BASE}${path}`);
+    const response = await fetch(`${API_BASE}${path}`, {
+      credentials: "include",
+    });
+    const data = await response.json().catch(() => null);
     if (!response.ok) {
-      throw new Error(`${response.status} ${response.statusText}`);
+      const error = new Error(`${response.status} ${response.statusText}`);
+      error.status = response.status;
+      error.data = data;
+      throw error;
     }
-    const data = await response.json();
     logSuccess(label);
     return data;
   } catch (error) {
@@ -1071,12 +1076,16 @@ const apiPost = async (path, bodyObj, label = `[POST] ${path}`) => {
     const response = await fetch(`${API_BASE}${path}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify(bodyObj ?? {}),
     });
+    const data = await response.json().catch(() => null);
     if (!response.ok) {
-      throw new Error(`${response.status} ${response.statusText}`);
+      const error = new Error(`${response.status} ${response.statusText}`);
+      error.status = response.status;
+      error.data = data;
+      throw error;
     }
-    const data = await response.json();
     logSuccess(label);
     return data;
   } catch (error) {
@@ -2393,13 +2402,18 @@ const setupAuthForms = () => {
             console.warn("[auth] login logical failure");
           }
         })
-        .catch(() => {
-          console.warn("[auth] login network failure - using fallback user");
-          const fallbackUser = { email };
-          saveUser(fallbackUser);
-          updateUserBadge(fallbackUser);
-          if (window.location.pathname.endsWith("login.html")) {
-            window.location.href = "mypage.html";
+        .catch((error) => {
+          console.warn("[auth] login failure", error);
+          if (loginError) {
+            if (error?.status === 401) {
+              loginError.textContent = "이메일 또는 비밀번호가 올바르지 않습니다.";
+            } else {
+              loginError.textContent =
+                "로그인에 실패했습니다. 잠시 후 다시 시도해주세요.";
+            }
+          }
+          if (loginHelper) {
+            loginHelper.hidden = true;
           }
         });
     });
@@ -2443,12 +2457,11 @@ const setupAuthForms = () => {
             response?.message ?? "회원가입에 실패했습니다. 다시 시도해주세요.";
         }
       } catch (_error) {
-        console.warn("[auth] register network failure - using fallback user");
-        const fallbackUser = { email, nickname };
-        saveUser(fallbackUser);
-        updateUserBadge(fallbackUser);
-        registerForm.reset();
-        window.location.href = "mypage.html";
+        console.warn("[auth] register network failure");
+        if (registerError) {
+          registerError.textContent =
+            "회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.";
+        }
       }
     });
     registerForm.dataset.bound = "true";
