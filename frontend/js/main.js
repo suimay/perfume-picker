@@ -22,6 +22,97 @@ const resultView = {
   preferences: { notes: [], exclude: [], context: [] },
 };
 
+const curatedRecommendationFallback = [
+  {
+    id: "acqua-di-gio",
+    name: "Acqua di Gio",
+    brand: "Giorgio Armani",
+    description: "맑은 바닷바람과 라임이 어우러진 시원한 시트러스 아쿠아 향.",
+    tags: ["aqua", "citrus", "fresh"],
+    primary_tag: "aqua",
+    seasonality: ["summer"],
+    weather: ["humid", "sunny"],
+    image_url: "asset/perfumes/armani-acqua-di-gio.jpg",
+  },
+  {
+    id: "bleu-de-chanel",
+    name: "Bleu de Chanel",
+    brand: "Chanel",
+    description: "그랩루트와 우디 앰버가 어울린 시그니처 프레시 우디 향.",
+    tags: ["woody", "fresh", "citrus"],
+    primary_tag: "woody",
+    seasonality: ["all"],
+    weather: ["day", "night"],
+    image_url: "asset/perfumes/bleu-de-chanel.jpg",
+  },
+  {
+    id: "terre-dhermes",
+    name: "Terre d'Hermes",
+    brand: "Hermes",
+    description: "시더와 오렌지의 드라이 우디 시트러스가 이어지는 모던한 남성 향.",
+    tags: ["woody", "citrus", "earthy"],
+    primary_tag: "woody",
+    seasonality: ["spring", "autumn"],
+    weather: ["cloudy"],
+    image_url: "asset/perfumes/hermes-terre-dhermes.jpg",
+  },
+  {
+    id: "light-blue",
+    name: "Light Blue",
+    brand: "Dolce & Gabbana",
+    description: "레몬과 애플, 머스크가 만든 밝은 과일 시트러스 향.",
+    tags: ["citrus", "fruity", "fresh"],
+    primary_tag: "citrus",
+    seasonality: ["summer"],
+    weather: ["sunny"],
+    image_url: "asset/perfumes/dg-light-blue.jpg",
+  },
+  {
+    id: "dior-jadore",
+    name: "J'adore",
+    brand: "Dior",
+    description: "자스민과 일랑일랑이 부드럽게 퍼지는 플로럴 부케.",
+    tags: ["floral", "fruity", "soft"],
+    primary_tag: "floral",
+    seasonality: ["spring"],
+    weather: ["sunny", "mild"],
+    image_url: "asset/perfumes/dior-jadore.jpg",
+  },
+  {
+    id: "byredo-gypsy-water",
+    name: "Gypsy Water",
+    brand: "Byredo",
+    description: "베르가못과 파인, 인센스가 어우러진 투명한 우디 시트러스.",
+    tags: ["woody", "citrus", "green"],
+    primary_tag: "woody",
+    seasonality: ["autumn"],
+    weather: ["dry", "breezy"],
+    image_url: "asset/perfumes/byredo-gypsy-water.jpg",
+  },
+  {
+    id: "chloe-edp",
+    name: "Chloé Eau de Parfum",
+    brand: "Chloé",
+    description: "장미와 피오니가 살랑이는 클래식 플로럴 향.",
+    tags: ["floral", "soft"],
+    primary_tag: "floral",
+    seasonality: ["spring"],
+    weather: ["mild"],
+    image_url: "asset/perfumes/chloe-edp.jpg",
+  },
+  {
+    id: "dior-sauvage",
+    name: "Sauvage",
+    brand: "Dior",
+    description: "베르가못과 앰브록산이 시원하게 터지는 프레시 아로마틱 우디.",
+    tags: ["woody", "spicy", "fresh"],
+    primary_tag: "woody",
+    seasonality: ["all"],
+    weather: ["night", "clear"],
+    image_url: "asset/perfumes/dior-sauvage-edt.jpg",
+  },
+];
+
 const catalogView = {
   listEl: null,
   emptyStateEl: null,
@@ -1784,6 +1875,7 @@ const renderRecommendationBoard = (items, { source } = {}) => {
 
   const prepared = [];
   const seen = new Set();
+  let usedFallback = false;
   const pushItem = (item) => {
     const normalized = normalizePerfumeForUi(item);
     if (!normalized || seen.has(normalized.id)) {
@@ -1795,11 +1887,20 @@ const renderRecommendationBoard = (items, { source } = {}) => {
 
   (items ?? []).forEach(pushItem);
 
+  if (!prepared.length && curatedRecommendationFallback.length) {
+    curatedRecommendationFallback.slice(0, 3).forEach((fallback) => {
+      pushItem(fallback);
+    });
+    usedFallback = prepared.length > 0;
+    source = source || "curated";
+  }
+
   if (prepared.length < 3) {
-    perfumeList.forEach((fallback) => {
+    curatedRecommendationFallback.forEach((fallback) => {
       if (prepared.length >= 3) {
         return;
       }
+      usedFallback = true;
       pushItem(fallback);
     });
   }
@@ -1846,10 +1947,14 @@ const renderRecommendationBoard = (items, { source } = {}) => {
     const preferencePart = preferenceLabelsText.length
       ? `${preferenceLabelsText.join(", ")} 취향`
       : "선택한 취향";
-    const summaryText =
-      source === "dummy"
-        ? `${preferencePart}에 맞춘 임시 추천이에요.`
-        : `${preferencePart}과 최근 날씨를 바탕으로 향수를 골라봤어요.`;
+    let summaryText;
+    if (source === "api" && !usedFallback) {
+      summaryText = `${preferencePart}과 최근 날씨를 바탕으로 향수를 골라봤어요.`;
+    } else if (source === "api" && usedFallback) {
+      summaryText = `${preferencePart} 기반 추천에 큐레이션 향수를 보강해 보여드려요.`;
+    } else {
+      summaryText = `${preferencePart}에 맞춘 임시 추천이에요.`;
+    }
     resultView.summaryEl.textContent = summaryText;
   }
 };
@@ -1937,10 +2042,11 @@ const renderCardsFromApi = (payload) => {
   }
   const items = extractPerfumeArray(payload).slice(0, 8);
   if (!items.length) {
-    showEmptyState(
-      "추천할 향수가 없어요",
-      "선호하는 취향을 조금 더 넓혀보면 어떨까요?"
-    );
+    setResultLoading(false);
+    console.info("[result] API empty, showing curated fallback");
+    renderRecommendationBoard(curatedRecommendationFallback, {
+      source: "curated",
+    });
     return;
   }
 
@@ -1957,25 +2063,17 @@ const renderCardsFromDummy = () => {
   const { notes } = resultView.preferences;
   const matches =
     notes.length === 0
-      ? perfumeList
-      : perfumeList.filter(
+      ? curatedRecommendationFallback
+      : curatedRecommendationFallback.filter(
           (perfume) =>
             Array.isArray(perfume.tags) &&
             perfume.tags.some((tag) => notes.includes(tag))
         );
 
-  if (!matches.length) {
-    showEmptyState(
-      "추천할 향수가 없어요",
-      "다른 취향을 선택하면 새로운 향수를 소개해드릴게요."
-    );
-    return;
-  }
-
   setResultLoading(false);
-  console.info("[result] rendering dummy recommendations");
+  console.info("[result] rendering curated dummy recommendations");
   renderRecommendationBoard(matches, { source: "dummy" });
-  console.info("[result] fallback to dummy data");
+  console.info("[result] fallback to curated data");
 };
 
 const WEATHER_ICON_MAP = {
