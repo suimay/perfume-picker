@@ -108,7 +108,54 @@
     minmax(200px, 1fr)
   ); /*grid 랑 fr 값이 반복되기 때문에 repeat*/
 }
+
+.sense-grid--core {
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+}
+
+.sense-grid--extra {
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  grid-auto-flow: dense;
+  justify-items: stretch;
+}
+
+.sense-stack {
+  display: grid;
+  gap: 1rem;
+}
 .sense-card {
+  position: relative;
+  border-radius: 26px;
+  border: 2.5px solid rgba(255, 255, 255, 0.621);
+  border-right-color: rgba(255, 255, 255, 0.25);
+  border-bottom-color: rgba(255, 255, 255, 0.2);
+  /*background: rgba(255, 255, 255, 0.92);*/
+  /*box-shadow: 0 18px 36px rgba(17, 25, 40, 0.18);*/
+  backdrop-filter: blur(0.5px) saturate(0.01em);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  transition: transform var(--transition), box-shadow var(--transition),
+    border-color var(--transition), background var(--transition);
+  min-height: 192px;
+  overflow: hidden; /* ⬅️ 내부 그림자/배경이 라운드에 맞게 잘림 */
+}
+
+.sense-card--primary {
+  position: relative;
+  border-radius: 26px;
+  border: 2.5px solid rgba(255, 255, 255, 0.621);
+  border-right-color: rgba(255, 255, 255, 0.25);
+  border-bottom-color: rgba(255, 255, 255, 0.2);
+  /*background: rgba(255, 255, 255, 0.92);*/
+  /*box-shadow: 0 18px 36px rgba(17, 25, 40, 0.18);*/
+  backdrop-filter: blur(0.5px) saturate(0.01em);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  transition: transform var(--transition), box-shadow var(--transition),
+    border-color var(--transition), background var(--transition);
+  min-height: 192px;
+  overflow: hidden; /* ⬅️ 내부 그림자/배경이 라운드에 맞게 잘림 */
+}
+
+.sense-grid--extra .sense-card {
   position: relative;
   border-radius: 26px;
   border: 2.5px solid rgba(255, 255, 255, 0.621);
@@ -209,6 +256,42 @@
 .sense-card input:focus-visible + .sense-card__face {
   outline: 0;
   box-shadow: none; /* 링 제거 */
+}
+
+.sense-extra {
+  border-radius: 24px;
+  max-height: 0;
+  opacity: 0;
+
+  transition: max-height 0.4s ease, opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.sense-extra.is-expanded {
+  max-height: 1800px;
+  opacity: 1;
+  margin-top: 0.6rem;
+  pointer-events: auto;
+}
+
+.sense-toggle {
+  justify-self: center;
+  padding: 0.65rem 1.2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.4);
+  color: var(--color-text);
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.sense-toggle:hover,
+.sense-toggle:focus-visible {
+  background: rgba(255, 255, 255, 0.6);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(17, 25, 40, 0.16);
+  outline: none;
 }
 
 .select__submit {

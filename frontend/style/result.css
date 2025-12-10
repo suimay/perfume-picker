@@ -45,10 +45,11 @@
   overflow: hidden;
   border-radius: calc(var(--radius-large) + 6px);
   background: linear-gradient(
-    150deg,
-    rgba(255, 255, 255, 0.184),
-    rgba(255, 255, 255, 0.077)
+    130deg,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0.15)
   );
+
   border: 2px solid rgba(255, 255, 255, 0.45);
   border-right-color: rgba(255, 255, 255, 0.28);
   border-bottom-color: rgba(255, 255, 255, 0.2);

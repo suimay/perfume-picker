@@ -60,420 +60,461 @@
           <fieldset>
             <legend id="noteHeading">선호 노트 / 감각 선택</legend>
             <div class="fieldset-body">
-              <div class="sense-grid note-grid">
-                <label class="sense-card">
-                  <input
-                    type="checkbox"
-                    name="notes"
-                    value="citrus"
-                    aria-label="상큼함 선택"
-                  />
-                  <div class="sense-card__face">
-                    <span class="emoji" aria-hidden="true">🍋</span>
-                    <strong>상큼함</strong>
-                    <span>시트러스 · 레몬 · 오렌지</span>
-                    <!--<span class="badge" aria-hidden="true">✅</span>-->
-                  </div>
-                </label>
+              <div class="sense-stack" data-preference-group="notes">
+                <div class="sense-grid sense-grid--core">
+                  <label class="sense-card sense-card--primary">
+                    <input
+                      type="checkbox"
+                      name="notes"
+                      value="citrus"
+                      aria-label="상큼함 선택"
+                    />
+                    <div class="sense-card__face">
+                      <span class="emoji" aria-hidden="true">🍋</span>
+                      <strong>상큼함</strong>
+                      <span>시트러스 · 레몬 · 오렌지</span>
+                    </div>
+                  </label>
 
-                <label class="sense-card">
-                  <input
-                    type="checkbox"
-                    name="notes"
-                    value="sweet"
-                    aria-label="달달한 선택"
-                  />
-                  <div class="sense-card__face">
-                    <span class="emoji" aria-hidden="true">🍯</span>
-                    <strong>달달한</strong>
-                    <span>바닐라 · 꿀 · 과일</span>
-                    <!--<span class="badge" aria-hidden="true">✅</span>-->
-                  </div>
-                </label>
+                  <label class="sense-card sense-card--primary">
+                    <input
+                      type="checkbox"
+                      name="notes"
+                      value="sweet"
+                      aria-label="달달한 선택"
+                    />
+                    <div class="sense-card__face">
+                      <span class="emoji" aria-hidden="true">🍯</span>
+                      <strong>달달한</strong>
+                      <span>바닐라 · 꿀 · 디저트</span>
+                    </div>
+                  </label>
 
-                <label class="sense-card">
-                  <input
-                    type="checkbox"
-                    name="notes"
-                    value="cozy"
-                    aria-label="포근한 선택"
-                  />
-                  <div class="sense-card__face">
-                    <span class="emoji" aria-hidden="true">☁️</span>
-                    <strong>포근한</strong>
-                    <span>머스크 · 코튼 · 파우더리</span>
-                    <!--<span class="badge" aria-hidden="true">✅</span>-->
-                  </div>
-                </label>
+                  <label class="sense-card sense-card--primary">
+                    <input
+                      type="checkbox"
+                      name="notes"
+                      value="cozy"
+                      aria-label="포근한 선택"
+                    />
+                    <div class="sense-card__face">
+                      <span class="emoji" aria-hidden="true">☁️</span>
+                      <strong>포근한</strong>
+                      <span>머스크 · 코튼 · 캐시미어</span>
+                    </div>
+                  </label>
 
-                <label class="sense-card">
-                  <input
-                    type="checkbox"
-                    name="notes"
-                    value="powder"
-                    aria-label="파우더리 선택"
-                  />
-                  <div class="sense-card__face">
-                    <span class="emoji" aria-hidden="true">🫧</span>
-                    <strong>파우더리</strong>
-                    <span>베이비파우더 · 코튼 · 포슬포슬</span>
-                  </div>
-                </label>
+                  <label class="sense-card sense-card--primary">
+                    <input
+                      type="checkbox"
+                      name="notes"
+                      value="floral"
+                      aria-label="플로럴 선택"
+                    />
+                    <div class="sense-card__face">
+                      <span class="emoji" aria-hidden="true">🌸</span>
+                      <strong>플로럴</strong>
+                      <span>장미 · 자스민 · 화이트 플라워</span>
+                    </div>
+                  </label>
 
-                <label class="sense-card">
-                  <input
-                    type="checkbox"
-                    name="notes"
-                    value="cool"
-                    aria-label="차가운 선택"
-                  />
-                  <div class="sense-card__face">
-                    <span class="emoji" aria-hidden="true">❄️</span>
-                    <strong>차가운</strong>
-                    <span>아쿠아 · 민트</span>
-                    <!--<span class="badge" aria-hidden="true">✅</span>-->
-                  </div>
-                </label>
+                  <label class="sense-card sense-card--primary">
+                    <input
+                      type="checkbox"
+                      name="notes"
+                      value="fruity"
+                      aria-label="프루티 선택"
+                    />
+                    <div class="sense-card__face">
+                      <span class="emoji" aria-hidden="true">🍑</span>
+                      <strong>프루티</strong>
+                      <span>베리 · 복숭아 · 열대과일</span>
+                    </div>
+                  </label>
 
-                <label class="sense-card">
-                  <input
-                    type="checkbox"
-                    name="notes"
-                    value="calm"
-                    aria-label="차분한 선택"
-                  />
-                  <div class="sense-card__face">
-                    <span class="emoji" aria-hidden="true">🌿</span>
-                    <strong>차분한</strong>
-                    <span>우디 · 스파이시 · 허벌</span>
-                  </div>
-                </label>
+                  <label class="sense-card sense-card--primary">
+                    <input
+                      type="checkbox"
+                      name="notes"
+                      value="aqua"
+                      data-combo-values="aqua,marine,cool"
+                      aria-label="시원한 선택"
+                    />
+                    <div class="sense-card__face">
+                      <span class="emoji" aria-hidden="true">💧</span>
+                      <strong>시원한</strong>
+                      <span>차가운 · 마린 · 아쿠아 무드</span>
+                    </div>
+                  </label>
 
-                <label class="sense-card">
-                  <input
-                    type="checkbox"
-                    name="notes"
-                    value="herbal"
-                    aria-label="허벌 선택"
-                  />
-                  <div class="sense-card__face">
-                    <span class="emoji" aria-hidden="true">🌾</span>
-                    <strong>허벌 · 아로마</strong>
-                    <span>라벤더 · 세이지 · 허브 부케</span>
-                  </div>
-                </label>
+                  <label class="sense-card">
+                    <input
+                      type="checkbox"
+                      name="notes"
+                      value="calm"
+                      aria-label="차분한 선택"
+                    />
+                    <div class="sense-card__face">
+                      <span class="emoji" aria-hidden="true">🌿</span>
+                      <strong>차분한</strong>
+                      <span>우디 · 스파이시 · 허벌</span>
+                    </div>
+                  </label>
 
-                <label class="sense-card">
-                  <input
-                    type="checkbox"
-                    name="notes"
-                    value="floral"
-                    aria-label="플로럴 선택"
-                  />
-                  <div class="sense-card__face">
-                    <span class="emoji" aria-hidden="true">🌸</span>
-                    <strong>플로럴</strong>
-                    <span>장미 · 자스민 · 라일락 · 튜베로즈</span>
-                  </div>
-                </label>
+                  <label class="sense-card">
+                    <input
+                      type="checkbox"
+                      name="notes"
+                      value="powder"
+                      aria-label="파우더리 선택"
+                    />
+                    <div class="sense-card__face">
+                      <span class="emoji" aria-hidden="true">🫧</span>
+                      <strong>파우더리</strong>
+                      <span>부드럽고 포슬포슬한 여운</span>
+                    </div>
+                  </label>
+                </div>
 
-                <label class="sense-card">
-                  <input
-                    type="checkbox"
-                    name="notes"
-                    value="fruity"
-                    aria-label="프루티 선택"
-                  />
-                  <div class="sense-card__face">
-                    <span class="emoji" aria-hidden="true">🍎</span>
-                    <strong>프루티</strong>
-                    <span>사과 · 복숭아 · 베리 · 망고</span>
-                  </div>
-                </label>
+                <div class="sense-extra" data-notes-extra>
+                  <div class="sense-grid sense-grid--extra">
+                    <label class="sense-card">
+                      <input
+                        type="checkbox"
+                        name="notes"
+                        value="herbal"
+                        aria-label="허벌 선택"
+                      />
+                      <div class="sense-card__face">
+                        <span class="emoji" aria-hidden="true">🌾</span>
+                        <strong>허벌 · 아로마</strong>
+                        <span>라벤더 · 세이지 · 허브 부케</span>
+                      </div>
+                    </label>
 
-                <label class="sense-card">
-                  <input
-                    type="checkbox"
-                    name="notes"
-                    value="spicy"
-                    aria-label="스파이시 선택"
-                  />
-                  <div class="sense-card__face">
-                    <span class="emoji" aria-hidden="true">🔥</span>
-                    <strong>스파이시</strong>
-                    <span>시나몬 · 페퍼 · 넛메그 · 정향</span>
-                  </div>
-                </label>
+                    <label class="sense-card">
+                      <input
+                        type="checkbox"
+                        name="notes"
+                        value="spicy"
+                        aria-label="스파이시 선택"
+                      />
+                      <div class="sense-card__face">
+                        <span class="emoji" aria-hidden="true">🔥</span>
+                        <strong>스파이시</strong>
+                        <span>시나몬 · 페퍼 · 스파이스</span>
+                      </div>
+                    </label>
 
-                <label class="sense-card">
-                  <input
-                    type="checkbox"
-                    name="notes"
-                    value="green"
-                    aria-label="그린 선택"
-                  />
-                  <div class="sense-card__face">
-                    <span class="emoji" aria-hidden="true">🌱</span>
-                    <strong>그린</strong>
-                    <span>풀잎 · 이끼 · 대나무 · 그린티</span>
-                  </div>
-                </label>
+                    <label class="sense-card">
+                      <input
+                        type="checkbox"
+                        name="notes"
+                        value="green"
+                        aria-label="그린 선택"
+                      />
+                      <div class="sense-card__face">
+                        <span class="emoji" aria-hidden="true">🌱</span>
+                        <strong>그린</strong>
+                        <span>풀잎 · 이끼 · 그린티</span>
+                      </div>
+                    </label>
 
-                <label class="sense-card">
-                  <input
-                    type="checkbox"
-                    name="notes"
-                    value="leather"
-                    aria-label="레더 선택"
-                  />
-                  <div class="sense-card__face">
-                    <span class="emoji" aria-hidden="true">🪵</span>
-                    <strong>레더</strong>
-                    <span>가죽 · 스웨이드 · 스모키</span>
-                  </div>
-                </label>
+                    <label class="sense-card">
+                      <input
+                        type="checkbox"
+                        name="notes"
+                        value="leather"
+                        aria-label="레더 선택"
+                      />
+                      <div class="sense-card__face">
+                        <span class="emoji" aria-hidden="true">🪵</span>
+                        <strong>레더 · 스모키</strong>
+                        <span>가죽 · 스웨이드 · 스모키</span>
+                      </div>
+                    </label>
 
-                <label class="sense-card">
-                  <input
-                    type="checkbox"
-                    name="notes"
-                    value="gourmand"
-                    aria-label="구르망 선택"
-                  />
-                  <div class="sense-card__face">
-                    <span class="emoji" aria-hidden="true">🍫</span>
-                    <strong>구르망</strong>
-                    <span>초콜릿 · 캐러멜 · 쿠키 · 라떼</span>
-                  </div>
-                </label>
+                    <label class="sense-card">
+                      <input
+                        type="checkbox"
+                        name="notes"
+                        value="gourmand"
+                        aria-label="구르망 선택"
+                      />
+                      <div class="sense-card__face">
+                        <span class="emoji" aria-hidden="true">🍫</span>
+                        <strong>구르망</strong>
+                        <span>초콜릿 · 캐러멜 · 디저트</span>
+                      </div>
+                    </label>
 
-                <label class="sense-card">
-                  <input
-                    type="checkbox"
-                    name="notes"
-                    value="coffee"
-                    aria-label="커피 선택"
-                  />
-                  <div class="sense-card__face">
-                    <span class="emoji" aria-hidden="true">☕</span>
-                    <strong>커피</strong>
-                    <span>에스프레소 · 로스티드빈 · 모카</span>
-                  </div>
-                </label>
+                    <label class="sense-card">
+                      <input
+                        type="checkbox"
+                        name="notes"
+                        value="coffee"
+                        aria-label="커피 선택"
+                      />
+                      <div class="sense-card__face">
+                        <span class="emoji" aria-hidden="true">☕</span>
+                        <strong>커피</strong>
+                        <span>에스프레소 · 로스티드빈</span>
+                      </div>
+                    </label>
 
-                <label class="sense-card">
-                  <input
-                    type="checkbox"
-                    name="notes"
-                    value="marine"
-                    aria-label="마린 선택"
-                  />
-                  <div class="sense-card__face">
-                    <span class="emoji" aria-hidden="true">🌊</span>
-                    <strong>마린</strong>
-                    <span>오션 · 솔티 · 마린 노트</span>
+                    <label class="sense-card">
+                      <input
+                        type="checkbox"
+                        name="notes"
+                        value="tea"
+                        aria-label="티 선택"
+                      />
+                      <div class="sense-card__face">
+                        <span class="emoji" aria-hidden="true">🍵</span>
+                        <strong>티(Tea)</strong>
+                        <span>그린티 · 얼그레이 · 화이트티</span>
+                      </div>
+                    </label>
                   </div>
-                </label>
+                </div>
 
-                <label class="sense-card">
-                  <input
-                    type="checkbox"
-                    name="notes"
-                    value="tea"
-                    aria-label="티 선택"
-                  />
-                  <div class="sense-card__face">
-                    <span class="emoji" aria-hidden="true">🍵</span>
-                    <strong>티(Tea)</strong>
-                    <span>그린티 · 얼그레이 · 화이트티</span>
-                  </div>
-                </label>
+                <button
+                  type="button"
+                  class="sense-toggle"
+                  data-toggle="notes"
+                  aria-expanded="false"
+                >
+                  세부 취향 더 보기 ▾
+                </button>
               </div>
             </div>
           </fieldset>
         </section>
-
         <section class="select-section" aria-labelledby="excludeHeading">
           <fieldset>
             <legend id="excludeHeading">제외 옵션 선택</legend>
             <div class="fieldset-body">
-              <div class="sense-grid">
-                <label class="sense-card">
-                  <input
-                    type="checkbox"
-                    name="exclude"
-                    value="vanilla"
-                    aria-label="바닐라 제외"
-                  />
-                  <div class="sense-card__face">
-                    <span class="emoji" aria-hidden="true">🍨</span>
-                    <strong>바닐라 제외</strong>
-                    <span>달콤한 향은 피하고 싶어요</span>
-                    <!--<span class="badge" aria-hidden="true">✅</span>-->
-                  </div>
-                </label>
+              <div class="sense-stack" data-preference-group="exclude">
+                <div class="sense-grid sense-grid--core">
+                  <label class="sense-card sense-card--primary">
+                    <input
+                      type="checkbox"
+                      name="exclude"
+                      value="sweet"
+                      data-combo-values="sweet,gourmand,coffee,vanilla"
+                      data-combo-strategy="strict"
+                      aria-label="달달/디저트 계열 제외"
+                    />
+                    <div class="sense-card__face">
+                      <span class="emoji" aria-hidden="true">🍯</span>
+                      <strong>달달한 향 피하기</strong>
+                      <span>달달 · 구르망 · 커피 계열</span>
+                    </div>
+                  </label>
 
-                <label class="sense-card">
-                  <input
-                    type="checkbox"
-                    name="exclude"
-                    value="coffee"
-                    aria-label="커피 제외"
-                  />
-                  <div class="sense-card__face">
-                    <span class="emoji" aria-hidden="true">☕</span>
-                    <strong>커피 제외</strong>
-                    <span>커피/로스티드 향은 피할래요</span>
-                  </div>
-                </label>
+                  <label class="sense-card sense-card--primary">
+                    <input
+                      type="checkbox"
+                      name="exclude"
+                      value="floral"
+                      aria-label="플로럴 제외"
+                    />
+                    <div class="sense-card__face">
+                      <span class="emoji" aria-hidden="true">🌸</span>
+                      <strong>플로럴 피하기</strong>
+                      <span>장미 · 자스민 같은 꽃향</span>
+                    </div>
+                  </label>
 
-                <label class="sense-card">
-                  <input
-                    type="checkbox"
-                    name="exclude"
-                    value="gourmand"
-                    aria-label="구르망 제외"
-                  />
-                  <div class="sense-card__face">
-                    <span class="emoji" aria-hidden="true">🍫</span>
-                    <strong>구르망 제외</strong>
-                    <span>초콜릿·디저트 향은 원치 않아요</span>
-                  </div>
-                </label>
+                  <label class="sense-card sense-card--primary">
+                    <input
+                      type="checkbox"
+                      name="exclude"
+                      value="citrus"
+                      aria-label="시트러스 제외"
+                    />
+                    <div class="sense-card__face">
+                      <span class="emoji" aria-hidden="true">🍊</span>
+                      <strong>시트러스 피하기</strong>
+                      <span>상큼한 과일/레몬 계열</span>
+                    </div>
+                  </label>
 
-                <label class="sense-card">
-                  <input
-                    type="checkbox"
-                    name="exclude"
-                    value="citrus"
-                    aria-label="시트러스 제외"
-                  />
-                  <div class="sense-card__face">
-                    <span class="emoji" aria-hidden="true">🍊</span>
-                    <strong>시트러스 제외</strong>
-                    <span>산뜻한 과일향은 싫어요</span>
-                    <!--<span class="badge" aria-hidden="true">✅</span>-->
-                  </div>
-                </label>
+                  <label class="sense-card sense-card--primary">
+                    <input
+                      type="checkbox"
+                      name="exclude"
+                      value="woody"
+                      data-combo-values="woody,spicy"
+                      data-combo-strategy="strict"
+                      aria-label="우디/스파이시 제외"
+                    />
+                    <div class="sense-card__face">
+                      <span class="emoji" aria-hidden="true">🌲</span>
+                      <strong>우디 · 스파이시 피하기</strong>
+                      <span>나무 · 향신료 계열</span>
+                    </div>
+                  </label>
+                </div>
 
-                <label class="sense-card">
-                  <input
-                    type="checkbox"
-                    name="exclude"
-                    value="powder"
-                    aria-label="파우더리 제외"
-                  />
-                  <div class="sense-card__face">
-                    <span class="emoji" aria-hidden="true">🫧</span>
-                    <strong>파우더리 제외</strong>
-                    <span>파우더리한 향은 부담돼요</span>
-                    <!--<span class="badge" aria-hidden="true">✅</span>-->
-                  </div>
-                </label>
+                <div class="sense-extra" data-exclude-extra>
+                  <div class="sense-grid sense-grid--extra">
+                    <label class="sense-card">
+                      <input
+                        type="checkbox"
+                        name="exclude"
+                        value="powder"
+                        data-combo-values="powder,musk"
+                        data-combo-strategy="strict"
+                        aria-label="파우더리/머스크 제외"
+                      />
+                      <div class="sense-card__face">
+                        <span class="emoji" aria-hidden="true">🫧</span>
+                        <strong>파우더리/머스크 제외</strong>
+                        <span>포근한 파우더 · 머스크</span>
+                      </div>
+                    </label>
 
-                <label class="sense-card">
-                  <input
-                    type="checkbox"
-                    name="exclude"
-                    value="musk"
-                    aria-label="머스크 제외"
-                  />
-                  <div class="sense-card__face">
-                    <span class="emoji" aria-hidden="true">🧴</span>
-                    <strong>머스크 제외</strong>
-                    <span>머스크 계열은 피해주세요</span>
-                    <!--<span class="badge" aria-hidden="true">✅</span>-->
-                  </div>
-                </label>
+                    <label class="sense-card">
+                      <input
+                        type="checkbox"
+                        name="exclude"
+                        value="soapy"
+                        aria-label="비누향 제외"
+                      />
+                      <div class="sense-card__face">
+                        <span class="emoji" aria-hidden="true">🧼</span>
+                        <strong>비누/샴푸 느낌 제외</strong>
+                        <span>너무 깨끗한 비누/샴푸 향</span>
+                      </div>
+                    </label>
 
-                <label class="sense-card">
-                  <input
-                    type="checkbox"
-                    name="exclude"
-                    value="floral"
-                    aria-label="플로럴 제외"
-                  />
-                  <div class="sense-card__face">
-                    <span class="emoji" aria-hidden="true">🌸</span>
-                    <strong>플로럴 제외</strong>
-                    <span>장미·자스민 같은 꽃향은 싫어요</span>
-                  </div>
-                </label>
+                    <label class="sense-card">
+                      <input
+                        type="checkbox"
+                        name="exclude"
+                        value="vanilla"
+                        aria-label="바닐라만 제외"
+                      />
+                      <div class="sense-card__face">
+                        <span class="emoji" aria-hidden="true">🍨</span>
+                        <strong>바닐라만 제외</strong>
+                        <span>바닐라의 단맛을 피워요</span>
+                      </div>
+                    </label>
 
-                <label class="sense-card">
-                  <input
-                    type="checkbox"
-                    name="exclude"
-                    value="fruity"
-                    aria-label="프루티 제외"
-                  />
-                  <div class="sense-card__face">
-                    <span class="emoji" aria-hidden="true">🍎</span>
-                    <strong>프루티 제외</strong>
-                    <span>과일향은 부담스러워요</span>
-                  </div>
-                </label>
+                    <label class="sense-card">
+                      <input
+                        type="checkbox"
+                        name="exclude"
+                        value="coffee"
+                        aria-label="커피만 제외"
+                      />
+                      <div class="sense-card__face">
+                        <span class="emoji" aria-hidden="true">☕</span>
+                        <strong>커피만 제외</strong>
+                        <span>커피/로스티드 향만 피하기</span>
+                      </div>
+                    </label>
 
-                <label class="sense-card">
-                  <input
-                    type="checkbox"
-                    name="exclude"
-                    value="woody"
-                    aria-label="우디 제외"
-                  />
-                  <div class="sense-card__face">
-                    <span class="emoji" aria-hidden="true">🌲</span>
-                    <strong>우디 제외</strong>
-                    <span>나무 향은 선호하지 않아요</span>
-                  </div>
-                </label>
+                    <label class="sense-card">
+                      <input
+                        type="checkbox"
+                        name="exclude"
+                        value="gourmand"
+                        aria-label="구르망만 제외"
+                      />
+                      <div class="sense-card__face">
+                        <span class="emoji" aria-hidden="true">🍫</span>
+                        <strong>구르망만 제외</strong>
+                        <span>디저트/초콜릿 느낌만 제외</span>
+                      </div>
+                    </label>
 
-                <label class="sense-card">
-                  <input
-                    type="checkbox"
-                    name="exclude"
-                    value="green"
-                    aria-label="그린 제외"
-                  />
-                  <div class="sense-card__face">
-                    <span class="emoji" aria-hidden="true">🌱</span>
-                    <strong>그린 제외</strong>
-                    <span>풀·허브향은 싫어요</span>
-                  </div>
-                </label>
+                    <label class="sense-card">
+                      <input
+                        type="checkbox"
+                        name="exclude"
+                        value="marine"
+                        aria-label="마린만 제외"
+                      />
+                      <div class="sense-card__face">
+                        <span class="emoji" aria-hidden="true">🌊</span>
+                        <strong>마린만 제외</strong>
+                        <span>바다/솔티 노트만 피하기</span>
+                      </div>
+                    </label>
 
-                <label class="sense-card">
-                  <input
-                    type="checkbox"
-                    name="exclude"
-                    value="spicy"
-                    aria-label="스파이시 제외"
-                  />
-                  <div class="sense-card__face">
-                    <span class="emoji" aria-hidden="true">🔥</span>
-                    <strong>스파이시 제외</strong>
-                    <span>따뜻하고 매운 향은 싫어요</span>
-                  </div>
-                </label>
+                    <label class="sense-card">
+                      <input
+                        type="checkbox"
+                        name="exclude"
+                        value="tea"
+                        aria-label="티 계열 제외"
+                      />
+                      <div class="sense-card__face">
+                        <span class="emoji" aria-hidden="true">🍵</span>
+                        <strong>티 계열 제외</strong>
+                        <span>그린티 · 얼그레이 제외</span>
+                      </div>
+                    </label>
 
-                <label class="sense-card">
-                  <input
-                    type="checkbox"
-                    name="exclude"
-                    value="soapy"
-                    aria-label="비누향 제외"
-                  />
-                  <div class="sense-card__face">
-                    <span class="emoji" aria-hidden="true">🧼</span>
-                    <strong>비누향 제외</strong>
-                    <span>너무 깨끗한 비누향은 피하고 싶어요</span>
+                    <label class="sense-card">
+                      <input
+                        type="checkbox"
+                        name="exclude"
+                        value="green"
+                        aria-label="그린 제외"
+                      />
+                      <div class="sense-card__face">
+                        <span class="emoji" aria-hidden="true">🌱</span>
+                        <strong>그린 제외</strong>
+                        <span>풀/허브 계열 제외</span>
+                      </div>
+                    </label>
+
+                    <label class="sense-card">
+                      <input
+                        type="checkbox"
+                        name="exclude"
+                        value="leather"
+                        aria-label="레더 제외"
+                      />
+                      <div class="sense-card__face">
+                        <span class="emoji" aria-hidden="true">🪵</span>
+                        <strong>레더 제외</strong>
+                        <span>가죽/스모키 계열 제외</span>
+                      </div>
+                    </label>
+
+                    <label class="sense-card">
+                      <input
+                        type="checkbox"
+                        name="exclude"
+                        value="fruity"
+                        aria-label="프루티 제외"
+                      />
+                      <div class="sense-card__face">
+                        <span class="emoji" aria-hidden="true">🍎</span>
+                        <strong>프루티 제외</strong>
+                        <span>과일 향만 피하고 싶어요</span>
+                      </div>
+                    </label>
                   </div>
-                </label>
+                </div>
+
+                <button
+                  type="button"
+                  class="sense-toggle"
+                  data-toggle="exclude"
+                  aria-expanded="false"
+                >
+                  세부 제외 옵션 더 보기 ▾
+                </button>
               </div>
             </div>
           </fieldset>
         </section>
-
         <div class="select__submit">
           <button type="submit" class="select__submit__button">추천받기</button>
         </div>

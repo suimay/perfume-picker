@@ -2445,27 +2445,96 @@ const initSelectPage = () => {
     return;
   }
 
+  const parseComboValues = (input) =>
+    (input.dataset.comboValues || "")
+      .split(",")
+      .map((value) => value.trim())
+      .filter(Boolean);
+
+  const setInitialChecks = (name, presetSet) => {
+    form.querySelectorAll(`input[name="${name}"]`).forEach((checkbox) => {
+      const combos = parseComboValues(checkbox);
+      if (combos.length) {
+        const strategy = checkbox.dataset.comboStrategy || "any";
+        const matched =
+          strategy === "strict"
+            ? combos.every((value) => presetSet.has(value))
+            : combos.some((value) => presetSet.has(value));
+        checkbox.checked = matched;
+        return;
+      }
+      checkbox.checked = presetSet.has(checkbox.value);
+    });
+  };
+
   const stored = getPreferencePayload();
   const presetNotes = new Set(stored.notes ?? []);
   const presetExclude = new Set(stored.exclude ?? []);
 
-  form.querySelectorAll('input[name="notes"]').forEach((checkbox) => {
-    checkbox.checked = presetNotes.has(checkbox.value);
-  });
+  setInitialChecks("notes", presetNotes);
+  setInitialChecks("exclude", presetExclude);
 
-  form.querySelectorAll('input[name="exclude"]').forEach((checkbox) => {
-    checkbox.checked = presetExclude.has(checkbox.value);
-  });
+  const collectValues = (name) => {
+    const collected = [];
+    form.querySelectorAll(`input[name="${name}"]:checked`).forEach((input) => {
+      const combos = parseComboValues(input);
+      if (combos.length) {
+        collected.push(...combos);
+      } else {
+        collected.push(input.value);
+      }
+    });
+    return Array.from(new Set(collected));
+  };
+
+  const setupRevealToggle = (toggleSelector, targetSelector, labels) => {
+    const toggle = form.querySelector(toggleSelector);
+    const target = form.querySelector(targetSelector);
+    if (!toggle || !target) {
+      return;
+    }
+    const setState = (expanded) => {
+      target.classList.toggle("is-expanded", expanded);
+      toggle.setAttribute("aria-expanded", expanded ? "true" : "false");
+      toggle.textContent = expanded ? labels.expanded : labels.collapsed;
+      if (expanded) {
+        target.style.maxHeight = `${target.scrollHeight + 32}px`;
+        target.style.opacity = "1";
+        target.style.pointerEvents = "auto";
+      } else {
+        target.style.maxHeight = "0px";
+        target.style.opacity = "0";
+        target.style.pointerEvents = "none";
+      }
+    };
+    setState(false);
+    toggle.addEventListener("click", () => {
+      const expanded = !target.classList.contains("is-expanded");
+      setState(expanded);
+    });
+  };
+
+  setupRevealToggle(
+    '[data-toggle="notes"]',
+    "[data-notes-extra]",
+    {
+      expanded: "세부 취향 접기 ▲",
+      collapsed: "세부 취향 더 보기 ▾",
+    }
+  );
+  setupRevealToggle(
+    '[data-toggle="exclude"]',
+    "[data-exclude-extra]",
+    {
+      expanded: "세부 제외 옵션 접기 ▲",
+      collapsed: "세부 제외 옵션 더 보기 ▾",
+    }
+  );
 
   form.addEventListener("submit", (event) => {
     event.preventDefault();
-    const notes = Array.from(
-      form.querySelectorAll('input[name="notes"]:checked')
-    ).map((input) => input.value);
-
-    const exclude = Array.from(
-      form.querySelectorAll('input[name="exclude"]:checked')
-    ).map((input) => input.value);
+    const notes = collectValues("notes");
+    const exclude = collectValues("exclude");
 
     const preferencePayload = { notes, exclude, context: [] };
     savePreferences(preferencePayload);
