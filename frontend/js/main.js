@@ -2060,15 +2060,8 @@ const renderCardsFromDummy = () => {
     return;
   }
 
-  const { notes } = resultView.preferences;
-  const matches =
-    notes.length === 0
-      ? curatedRecommendationFallback
-      : curatedRecommendationFallback.filter(
-          (perfume) =>
-            Array.isArray(perfume.tags) &&
-            perfume.tags.some((tag) => notes.includes(tag))
-        );
+  const storedWeather = loadStoredWeather();
+  const matches = pickFallbackRecommendations(resultView.preferences, storedWeather);
 
   setResultLoading(false);
   console.info("[result] rendering curated dummy recommendations");
@@ -2081,6 +2074,151 @@ const WEATHER_ICON_MAP = {
   흐림: "ri-cloudy-line",
   비: "ri-rainy-line",
   눈: "ri-snowy-line",
+};
+
+const levelizeTemperature = (value) => {
+  if (typeof value !== "number") {
+    return [];
+  }
+  if (value <= 10) {
+    return ["추움"];
+  }
+  if (value <= 22) {
+    return ["선선함"];
+  }
+  return ["더움"];
+};
+
+const levelizeHumidity = (value) => {
+  if (typeof value !== "number") {
+    return [];
+  }
+  if (value <= 40) {
+    return ["건조"];
+  }
+  if (value <= 65) {
+    return ["보통"];
+  }
+  return ["습함"];
+};
+
+const mapConditionToTags = (condition) => {
+  const key = toKey(condition);
+  const tags = [];
+  if (!key) {
+    return tags;
+  }
+  if (key.includes("맑") || key.includes("sun") || key.includes("clear")) {
+    tags.push("밝음");
+  }
+  if (key.includes("흐") || key.includes("cloud")) {
+    tags.push("차분함");
+  }
+  if (key.includes("비") || key.includes("rain") || key.includes("drizzle")) {
+    tags.push("차분함", "습함");
+  }
+  if (key.includes("눈") || key.includes("snow")) {
+    tags.push("차분함", "차가움");
+  }
+  if (key.includes("안개") || key.includes("fog") || key.includes("mist")) {
+    tags.push("차분함", "선선함");
+  }
+  return tags;
+};
+
+const buildWeatherTags = (weather) => {
+  if (!weather) {
+    return [];
+  }
+  const tags = new Set();
+  levelizeTemperature(weather.temp).forEach((tag) => tags.add(toKey(tag)));
+  levelizeHumidity(weather.humidity).forEach((tag) => tags.add(toKey(tag)));
+  mapConditionToTags(weather.condition).forEach((tag) => tags.add(toKey(tag)));
+  return Array.from(tags).filter(Boolean);
+};
+
+const buildPerfumeTagSet = (perfume) => {
+  const tags = new Set();
+  const pushAll = (list) => {
+    if (!Array.isArray(list)) {
+      return;
+    }
+    list.forEach((value) => {
+      const key = toKey(value);
+      if (key) {
+        tags.add(key);
+      }
+    });
+  };
+  pushAll(perfume.tags);
+  pushAll(perfume.accords);
+  pushAll(perfume.seasonality);
+  pushAll(perfume.weather);
+  const primary = toKey(perfume.primaryTag ?? perfume.primary_tag);
+  if (primary) {
+    tags.add(primary);
+  }
+  return tags;
+};
+
+const scorePerfumesByWeatherAndPreference = (
+  perfumes,
+  preferences,
+  weatherTags
+) => {
+  const preferenceTags = new Set(
+    (preferences?.notes ?? []).map((value) => toKey(value))
+  );
+  const excludeTags = new Set(
+    (preferences?.exclude ?? []).map((value) => toKey(value))
+  );
+  const weatherSet = new Set(weatherTags.map(toKey));
+
+  return perfumes
+    .map((perfume) => {
+      const tagSet = buildPerfumeTagSet(perfume);
+
+      for (const excluded of excludeTags) {
+        if (excluded && tagSet.has(excluded)) {
+          return null; // 제외 노트 포함 시 제외
+        }
+      }
+
+      let score = 0;
+      weatherSet.forEach((tag) => {
+        if (tag && tagSet.has(tag)) {
+          score += 1;
+        }
+      });
+      preferenceTags.forEach((tag) => {
+        if (tag && tagSet.has(tag)) {
+          score += 2; // 선호 노트 가중치
+        }
+      });
+
+      return { item: perfume, score };
+    })
+    .filter(Boolean)
+    .sort((a, b) => b.score - a.score);
+};
+
+const pickFallbackRecommendations = (preferences, weather) => {
+  const normalized = perfumeList.map(normalizePerfumeForUi).filter(Boolean);
+  const weatherTags = buildWeatherTags(weather);
+  const scored = scorePerfumesByWeatherAndPreference(
+    normalized,
+    preferences,
+    weatherTags
+  );
+  const limit = 8;
+  const picked = scored.slice(0, limit).map(({ item }) => item);
+  if (picked.length > 0) {
+    return picked;
+  }
+  return curatedRecommendationFallback
+    .map(normalizePerfumeForUi)
+    .filter(Boolean)
+    .slice(0, limit);
 };
 
 const recommendByWeatherCard = (info) => {
