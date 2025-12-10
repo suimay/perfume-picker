@@ -49,76 +49,43 @@
 }
 
 .panel--intro {
-  --panel-accent: rgba(132, 171, 255, 0.35);
-  background: radial-gradient(
-      circle at 20% 20%,
-      rgba(126, 180, 255, 0.32),
-      transparent 48%
-    ),
-    radial-gradient(
-      circle at 80% 60%,
-      rgba(255, 210, 162, 0.28),
-      transparent 52%
-    ),
-    linear-gradient(
-      140deg,
-      rgba(255, 255, 255, 0.24),
-      rgba(255, 255, 255, 0.08)
-    );
-  box-shadow: 0 36px 80px rgba(17, 25, 40, 0.26);
+  background: linear-gradient(
+    130deg,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0.15)
+  );
+  box-shadow: 0 12px 34px rgba(17, 25, 40, 0.2);
+  backdrop-filter: blur(30px) saturate(200%);
 }
 
 .panel--notes {
-  --panel-accent: rgba(140, 234, 223, 0.32);
-  background: radial-gradient(
-      circle at 30% 25%,
-      rgba(140, 234, 223, 0.32),
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 80% 70%,
-      rgba(255, 186, 201, 0.26),
-      transparent 56%
-    ),
-    linear-gradient(140deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.1));
-  border-color: rgba(255, 255, 255, 0.46);
+  background: linear-gradient(
+    130deg,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0.15)
+  );
+  box-shadow: 0 12px 34px rgba(17, 25, 40, 0.2);
+  backdrop-filter: blur(30px) saturate(200%);
 }
 
 .panel--process {
-  --panel-accent: rgba(255, 223, 163, 0.3);
-  background: radial-gradient(
-      circle at 18% 30%,
-      rgba(255, 223, 163, 0.32),
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 82% 45%,
-      rgba(168, 200, 255, 0.28),
-      transparent 55%
-    ),
-    linear-gradient(140deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.1));
-  border-color: rgba(255, 255, 255, 0.4);
+  background: linear-gradient(
+    130deg,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0.15)
+  );
+  box-shadow: 0 12px 34px rgba(17, 25, 40, 0.2);
+  backdrop-filter: blur(30px) saturate(200%);
 }
 
 .panel--weather {
-  --panel-accent: rgba(174, 161, 255, 0.32);
-  background: radial-gradient(
-      circle at 24% 24%,
-      rgba(174, 161, 255, 0.32),
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 76% 68%,
-      rgba(132, 216, 255, 0.24),
-      transparent 56%
-    ),
-    linear-gradient(
-      140deg,
-      rgba(255, 255, 255, 0.24),
-      rgba(255, 255, 255, 0.08)
-    );
-  border-color: rgba(255, 255, 255, 0.5);
-  box-shadow: 0 38px 78px rgba(17, 25, 40, 0.26);
+  background: linear-gradient(
+    130deg,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0.15)
+  );
+  box-shadow: 0 12px 34px rgba(17, 25, 40, 0.2);
+  backdrop-filter: blur(30px) saturate(200%);
 }
 
 .panel:hover {

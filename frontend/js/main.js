@@ -2187,24 +2187,17 @@ const setupHeroInteractions = () => {
   };
 
   const disableParallax = () => {
-    if (!parallaxEnabled) {
-      return;
+    if (parallaxEnabled) {
+      heroSection.removeEventListener("pointermove", applyParallax);
+      heroSection.removeEventListener("pointerleave", resetLogo);
     }
-    heroSection.removeEventListener("pointermove", applyParallax);
-    heroSection.removeEventListener("pointerleave", resetLogo);
     parallaxEnabled = false;
     resetLogo();
   };
 
   const evaluateParallax = () => {
-    const matchesDesktop = desktopQuery
-      ? desktopQuery.matches
-      : window.innerWidth >= 720;
-    if (!prefersReducedMotion() && matchesDesktop) {
-      enableParallax();
-    } else {
-      disableParallax();
-    }
+    // Parallax 효과 비활성화: 항상 기본 위치로 유지
+    disableParallax();
   };
 
   evaluateParallax();

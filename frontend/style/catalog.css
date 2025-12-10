@@ -33,12 +33,11 @@
   border-bottom-color: rgba(255, 255, 255, 0.2);
   background: linear-gradient(
     130deg,
-    rgba(255, 255, 255, 0.22),
-    rgba(255, 255, 255, 0.08)
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0.15)
   );
   box-shadow: 0 12px 34px rgba(17, 25, 40, 0.2);
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  backdrop-filter: blur(30px) saturate(200%);
   padding: 1.45rem;
   position: relative;
   overflow: hidden;
@@ -146,7 +145,9 @@
 .catalog-card {
   position: relative;
   border-radius: var(--radius-large);
-  border: 2px solid rgba(255, 255, 255, 0.562);
+  border: 3px solid rgba(255, 255, 255, 0.45);
+  border-right-color: rgba(255, 255, 255, 0.28);
+  border-bottom-color: rgba(255, 255, 255, 0.2);
   background: linear-gradient(
     150deg,
     rgba(255, 255, 255, 0.184),
@@ -154,8 +155,7 @@
   );
   padding: 1.2rem 1.35rem 1.4rem;
   box-shadow: 0 12px 34px rgba(17, 25, 40, 0.2);
-  backdrop-filter: blur(16px) saturate(140%);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  backdrop-filter: blur(30px) saturate(200%);
   display: grid;
   gap: 1rem;
   grid-template-rows: auto 1fr;
@@ -193,11 +193,7 @@
   width: 100%;
   aspect-ratio: 4 / 3;
   border-radius: 18px;
-  background: linear-gradient(
-    135deg,
-    rgba(245, 246, 250, 0.9),
-    rgba(241, 243, 248, 0.94)
-  );
+  background: white;
   border: 1px solid rgba(31, 36, 48, 0.08);
   overflow: hidden;
   position: relative;
@@ -206,8 +202,9 @@
 }
 
 .catalog-card__figure--filled {
-  background-size: cover;
+  background-size: contain;
   background-position: center;
+  background-repeat: no-repeat;
   color: transparent;
 }
 
